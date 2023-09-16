@@ -16,7 +16,7 @@ const defaultTasks: Task[] = [
         description: 'Description One',
         created: '2023-10-10',
         important: false,
-        completed: false,
+        completed: true,
     },
     {
         id: 2,
@@ -32,7 +32,7 @@ const defaultTasks: Task[] = [
         description: 'Description Three',
         created: '2023-10-10',
         important: false,
-        completed: false,
+        completed: true,
     },
     {
         id: 4,
@@ -50,11 +50,21 @@ export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
+        toogleTaskCompleted: (state, action) => {
+            const id = action.payload;
+            const task = state.tasks.find(task => task.id === id)
+            if (task) {
+                task.completed = !task.completed
+            }
+        }
     },
     extraReducers: {}
 })
 
 export default tasksSlice.reducer
+
+export const { toogleTaskCompleted } = tasksSlice.actions;
+
 
 export const getTasks = (state: any) => state.tasks.tasks
 
