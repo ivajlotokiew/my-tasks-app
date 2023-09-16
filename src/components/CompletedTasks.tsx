@@ -1,8 +1,17 @@
-import React from 'react'
+import { useSelector } from "react-redux/es/hooks/useSelector"
+import { Task, getCompletedTasks } from "../features/tasks/tasksSlice"
+import TaskItem from "./TaskItem"
 
 const CompletedTasks = () => {
+    const completedTasks = useSelector(getCompletedTasks)
+
     return (
-        <div>CompletedTasks</div>
+        <div >
+            {completedTasks?.map((task: Task) =>
+                <div key={task.id}>
+                    <TaskItem task={task} />
+                </div>)}
+        </div>
     )
 }
 

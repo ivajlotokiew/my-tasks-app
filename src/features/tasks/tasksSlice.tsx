@@ -68,6 +68,10 @@ export const { toogleTaskCompleted } = tasksSlice.actions;
 
 export const getTasks = (state: any) => state.tasks.tasks
 
+export const getCompletedTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.completed)
+
+export const getUncompletedTasks = (state: any) => state.tasks.tasks.filter((task: Task) => !task.completed)
+
 // export const { increaseReactionsCount } = postsSlice.actions;
 
 
