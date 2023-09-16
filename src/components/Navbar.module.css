@@ -1,0 +1,10 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: rgb(20, 30, 51);
+}
+
+.navLink {
+  margin: 20px;
+}

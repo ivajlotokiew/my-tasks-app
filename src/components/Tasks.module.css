@@ -1,0 +1,11 @@
+.wrapper {
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.task {
+  background: rgb(20, 30, 51);
+  border-radius: 5px;
+}
