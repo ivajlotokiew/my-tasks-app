@@ -1,0 +1,63 @@
+import { createSlice } from "@reduxjs/toolkit"
+
+export interface Task {
+    id: number;
+    title: string;
+    description?: string;
+    important: boolean;
+    completed: boolean;
+}
+
+const defaultTasks: Task[] = [
+    {
+        id: 1,
+        title: 'Task1',
+        description: 'Description One',
+        important: false,
+        completed: false,
+    },
+    {
+        id: 2,
+        title: 'Task2',
+        description: 'Description Two',
+        important: false,
+        completed: false,
+    },
+    {
+        id: 3,
+        title: 'Task3',
+        description: 'Description Three',
+        important: false,
+        completed: false,
+    },
+    {
+        id: 4,
+        title: 'Task4',
+        description: 'Description four',
+        important: false,
+        completed: false,
+    },
+]
+
+const initialState = { tasks: defaultTasks };
+
+export const tasksSlice = createSlice({
+    name: 'tasks',
+    initialState,
+    reducers: {
+    },
+    extraReducers: {}
+})
+
+export default tasksSlice.reducer
+
+export const getTasks = (state: any) => state.tasks.tasks
+
+// export const { increaseReactionsCount } = postsSlice.actions;
+
+
+// export const getPostById = (id: number) => (state: postState) => state.posts.posts?.find((post: Post) => post.id === id)
+
+// export const isLoadingPosts = (state: postState) => state.posts.isLoading;
+
+// export const selectPostsError = (state: postState) => state.posts.error;
