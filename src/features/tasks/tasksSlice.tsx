@@ -14,7 +14,7 @@ const defaultTasks: Task[] = [
         id: 1,
         title: 'Task1',
         description: 'Description One',
-        created: '2023-10-10',
+        created: '2023-09-17',
         important: true,
         completed: true,
     },
@@ -38,7 +38,7 @@ const defaultTasks: Task[] = [
         id: 4,
         title: 'Task4',
         description: 'Description four',
-        created: '2023-10-10',
+        created: '2023-09-17',
         important: false,
         completed: false,
     },
@@ -48,7 +48,7 @@ const defaultTasks: Task[] = [
         description: 'Description five',
         created: '2023-10-10',
         important: true,
-        completed: true,
+        completed: false,
     },
     {
         id: 6,
@@ -90,11 +90,14 @@ export const getUncompletedTasks = (state: any) => state.tasks.tasks.filter((tas
 
 export const getImportantTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.important)
 
-// export const { increaseReactionsCount } = postsSlice.actions;
+export const getTodayTasks = (state: any) => {
+    debugger
+    const todayDate = new Date()
+    const day = todayDate.getDate().toString().padStart(2, '0')
+    const month = (todayDate.getMonth() + 1).toString().padStart(2, '0')
+    const year = todayDate.getFullYear()
 
+    const todayToStr: string = `${year}-${month}-${day}`
 
-// export const getPostById = (id: number) => (state: postState) => state.posts.posts?.find((post: Post) => post.id === id)
-
-// export const isLoadingPosts = (state: postState) => state.posts.isLoading;
-
-// export const selectPostsError = (state: postState) => state.posts.error;
+    return state.tasks.tasks.filter((task: Task) => task.created === todayToStr)
+}
