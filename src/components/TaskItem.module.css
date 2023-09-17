@@ -9,3 +9,19 @@
 .actions {
   display: flex;
 }
+
+.hdgLabelPopup {
+  border: 1px solid black;
+  color: black;
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 3px;
+  display: none;
+  position: absolute;
+  transform: translateY(120%);
+  background-color: aliceblue;
+}
+
+.icon:hover ~ .hdgLabelPopup {
+  display: block;
+}

@@ -1,8 +1,7 @@
-import { Task } from "../features/tasks/tasksSlice";
+import { Task, toggleCompletedTaskReducer, toogleImportantTaskReducer } from "../features/tasks/tasksSlice";
 import CustomButton from "./CustomButton";
 import styles from "./TaskItem.module.css";
 import { useDispatch } from 'react-redux'
-import { toogleTaskCompleted } from "../features/tasks/tasksSlice"
 
 interface Props {
     task: Task
@@ -11,8 +10,12 @@ interface Props {
 const TaskItem = ({ task }: Props) => {
     const dispatch = useDispatch();
 
-    const handleClick = () => {
-        dispatch(toogleTaskCompleted(task.id))
+    const toggleCompletedTask = () => {
+        dispatch(toggleCompletedTaskReducer(task.id))
+    }
+
+    const toggleImportantTask = () => {
+        dispatch(toogleImportantTaskReducer(task.id))
     }
 
     return (
@@ -24,7 +27,19 @@ const TaskItem = ({ task }: Props) => {
                 {task.created}
             </div>
             <div className={styles.actions}>
-                <CustomButton onClick={handleClick}>{task.completed ? 'completed' : 'uncompleted'}</CustomButton>
+                <CustomButton onClick={toggleCompletedTask}>{task.completed ? 'completed' : 'uncompleted'}</CustomButton>
+                <div className={styles.hdgLabelInfo} style={{ display: "flex", alignItems: "center" }}>
+                    <img src={task.important ? '/star-white.svg' : '/star-red.svg'}
+                        className={styles.icon}
+                        role="button"
+                        alt='mySvgImage'
+                        width="25"
+                        onClick={toggleImportantTask}
+                        style={{ cursor: "pointer", marginLeft: "10px" }} />
+                    <div className={styles.hdgLabelPopup}>
+                        Mark as {task.important ? ' not important' : ' important'}
+                    </div>
+                </div>
             </div>
         </>
     )

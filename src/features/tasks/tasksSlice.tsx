@@ -66,11 +66,18 @@ export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        toogleTaskCompleted: (state, action) => {
+        toggleCompletedTaskReducer: (state, action) => {
             const id = action.payload;
             const task = state.tasks.find(task => task.id === id)
             if (task) {
                 task.completed = !task.completed
+            }
+        },
+        toogleImportantTaskReducer: (state, action) => {
+            const id = action.payload;
+            const task = state.tasks.find(task => task.id === id)
+            if (task) {
+                task.important = !task.important
             }
         }
     },
@@ -79,7 +86,7 @@ export const tasksSlice = createSlice({
 
 export default tasksSlice.reducer
 
-export const { toogleTaskCompleted } = tasksSlice.actions;
+export const { toggleCompletedTaskReducer, toogleImportantTaskReducer } = tasksSlice.actions;
 
 
 export const getTasks = (state: any) => state.tasks.tasks
