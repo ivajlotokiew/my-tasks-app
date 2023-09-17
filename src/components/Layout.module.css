@@ -4,6 +4,7 @@
   grid-template-columns: 2fr 7fr 2fr;
   color: rgb(148, 163, 184);
   background-color: rgb(15, 23, 42);
+  min-height: 100vh;
 }
 
 a {

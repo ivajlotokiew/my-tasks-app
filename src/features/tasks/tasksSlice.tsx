@@ -91,7 +91,6 @@ export const getUncompletedTasks = (state: any) => state.tasks.tasks.filter((tas
 export const getImportantTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.important)
 
 export const getTodayTasks = (state: any) => {
-    debugger
     const todayDate = new Date()
     const day = todayDate.getDate().toString().padStart(2, '0')
     const month = (todayDate.getMonth() + 1).toString().padStart(2, '0')

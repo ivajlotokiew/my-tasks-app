@@ -1,12 +1,12 @@
 .wrapper {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
 }
 
 .task {
-  padding: 5px 25px;
+  padding: 5px 25px 25px;
   background: rgb(20, 30, 51);
   border-radius: 10px;
 }

@@ -1,12 +1,13 @@
 import { getTasks } from "../features/tasks/tasksSlice"
-import { useSelector } from "react-redux/es/hooks/useSelector"
 import { Task } from "../features/tasks/tasksSlice"
 import TaskItem from "./TaskItem"
 import styles from "./Tasks.module.css"
 
-const Tasks = () => {
-    const tasks = useSelector(getTasks)
+interface Props {
+    tasks: Task[]
+}
 
+const Tasks = ({ tasks }: Props) => {
     return (
         <div className={styles.wrapper}>
             {tasks.map((task: Task) =>

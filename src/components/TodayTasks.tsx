@@ -1,18 +1,12 @@
 import { useSelector } from "react-redux/es/hooks/useSelector"
-import { Task, getTodayTasks } from "../features/tasks/tasksSlice"
-import TaskItem from "./TaskItem"
-import styles from "./TodayTasks.module.css"
+import { getTodayTasks } from "../features/tasks/tasksSlice"
+import Tasks from "./Tasks"
 
 const TodayTasks = () => {
     const tasks = useSelector(getTodayTasks)
 
     return (
-        <div className={styles.wrapper}>
-            {tasks.map((task: Task) =>
-                <div className={styles.task} key={task.id}>
-                    <TaskItem task={task} />
-                </div>)}
-        </div>
+        <Tasks tasks={tasks} />
     )
 }
 
