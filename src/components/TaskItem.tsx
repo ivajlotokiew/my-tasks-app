@@ -19,7 +19,10 @@ const TaskItem = ({ task }: Props) => {
         <>
             <h2>{task.title}</h2>
             <h3>{task.description}</h3>
-            <div className={styles.created}>{task.created}</div>
+            <div className={styles.created}>
+                <img src='/calendar.svg' alt='mySvgImage' width="25" />
+                {task.created}
+            </div>
             <div className={styles.actions}>
                 <CustomButton onClick={handleClick}>{task.completed ? 'completed' : 'uncompleted'}</CustomButton>
             </div>

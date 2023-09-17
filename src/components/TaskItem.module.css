@@ -1,5 +1,9 @@
 .created {
+  display: flex;
+  align-items: center;
   margin-top: 70px;
+  margin-bottom: 15px;
+  gap: 5px;
 }
 
 .actions {
