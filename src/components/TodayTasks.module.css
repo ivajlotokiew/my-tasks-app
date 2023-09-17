@@ -1,7 +1,0 @@
-.wrapper {
-    composes: wrapper from "./Tasks.module.css";
-}
-  
-  .task {
-    composes: task from "./Tasks.module.css";
-}
