@@ -15,7 +15,7 @@ const defaultTasks: Task[] = [
         title: 'Task1',
         description: 'Description One',
         created: '2023-10-10',
-        important: false,
+        important: true,
         completed: true,
     },
     {
@@ -31,7 +31,7 @@ const defaultTasks: Task[] = [
         title: 'Task3',
         description: 'Description Three',
         created: '2023-10-10',
-        important: false,
+        important: true,
         completed: true,
     },
     {
@@ -41,6 +41,22 @@ const defaultTasks: Task[] = [
         created: '2023-10-10',
         important: false,
         completed: false,
+    },
+    {
+        id: 5,
+        title: 'Task5',
+        description: 'Description five',
+        created: '2023-10-10',
+        important: true,
+        completed: true,
+    },
+    {
+        id: 6,
+        title: 'Task6',
+        description: 'Description six',
+        created: '2023-10-10',
+        important: false,
+        completed: true,
     },
 ]
 
@@ -71,6 +87,8 @@ export const getTasks = (state: any) => state.tasks.tasks
 export const getCompletedTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.completed)
 
 export const getUncompletedTasks = (state: any) => state.tasks.tasks.filter((task: Task) => !task.completed)
+
+export const getImportantTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.important)
 
 // export const { increaseReactionsCount } = postsSlice.actions;
 
