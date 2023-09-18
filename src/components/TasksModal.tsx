@@ -1,6 +1,5 @@
 import Modal from 'react-modal';
-import React from 'react';
-import styles from './TasksModal.module.css'
+import { useEffect } from 'react';
 
 const customStyles = {
   content: {
@@ -15,9 +14,18 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-function TasksModal() {
+interface Props {
+  modalIsOpen: boolean;
+  setIsOpen: (modalIsOpen: boolean) => void;
+  children: JSX.Element;
+}
+
+function TasksModal({ children, modalIsOpen, setIsOpen }: Props) {
   let subtitle: any;
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  useEffect(() => {
+    setIsOpen(modalIsOpen)
+  }, [modalIsOpen, setIsOpen])
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -30,13 +38,7 @@ function TasksModal() {
 
   return (
     <>
-      <img src='/three-dots-vertical-white.svg'
-        className={styles.threeDotsIcon}
-        role="button"
-        alt='mySvgImage'
-        width="22"
-        onClick={() => setIsOpen(true)}
-        style={{ cursor: "pointer", marginLeft: "10px" }} />
+      {children}
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}

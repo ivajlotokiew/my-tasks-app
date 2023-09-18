@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Task, toggleCompletedTaskReducer, toogleImportantTaskReducer, deleteTaskReducer } from "../features/tasks/tasksSlice";
 import CustomButton from "./CustomButton";
 import styles from "./TaskItem.module.css";
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const TaskItem = ({ task }: Props) => {
+    const [showModal, setShowModal] = useState(false)
     const dispatch = useDispatch();
 
     const toggleCompletedTask = () => {
@@ -21,6 +23,10 @@ const TaskItem = ({ task }: Props) => {
 
     const deleteTask = () => {
         dispatch(deleteTaskReducer(task.id))
+    }
+
+    const handleShowModalEvent = () => {
+        setShowModal(modal => !modal)
     }
 
     return (
@@ -54,7 +60,15 @@ const TaskItem = ({ task }: Props) => {
                     <div className={styles.deleteTaskLabelPopup}>
                         Delete task
                     </div>
-                    <TasksModal />
+                    <TasksModal modalIsOpen={showModal} setIsOpen={setShowModal}>
+                        <img src='/three-dots-vertical-white.svg'
+                            className={styles.threeDotsIcon}
+                            role="button"
+                            alt='mySvgImage'
+                            width="22"
+                            onClick={handleShowModalEvent}
+                            style={{ cursor: "pointer", marginLeft: "10px" }} />
+                    </TasksModal>
                     <div className={styles.editTaskLabelPopup}>
                         Edit task
                     </div>
