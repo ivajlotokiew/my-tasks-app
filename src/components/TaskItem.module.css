@@ -8,9 +8,12 @@
 
 .actions {
   display: flex;
+  justify-content: space-between;
 }
 
-.hdgLabelPopup {
+.importantTaskLabelPopup,
+.deleteTaskLabelPopup,
+.editTaskLabelPopup {
   border: 1px solid black;
   color: black;
   font-size: 14px;
@@ -18,10 +21,23 @@
   padding: 3px;
   display: none;
   position: absolute;
-  transform: translateY(120%);
   background-color: aliceblue;
 }
 
-.icon:hover ~ .hdgLabelPopup {
+.importantTaskLabelPopup {
+  transform: translate(0px, 40px);
+}
+
+.deleteTaskLabelPopup {
+  transform: translate(35px, 40px);
+}
+
+.editTaskLabelPopup {
+  transform: translate(80px, 40px);
+}
+
+.starIcon:hover ~ .importantTaskLabelPopup,
+.trashIcon:hover ~ .deleteTaskLabelPopup,
+.threeDotsIcon:hover ~ .editTaskLabelPopup {
   display: block;
 }

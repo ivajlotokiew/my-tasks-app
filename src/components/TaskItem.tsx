@@ -30,15 +30,36 @@ const TaskItem = ({ task }: Props) => {
                 <CustomButton onClick={toggleCompletedTask}>{task.completed ? 'completed' : 'uncompleted'}</CustomButton>
                 <div className={styles.hdgLabelInfo} style={{ display: "flex", alignItems: "center" }}>
                     <img src={task.important ? '/star-white.svg' : '/star-red.svg'}
-                        className={styles.icon}
+                        className={styles.starIcon}
                         role="button"
                         alt='mySvgImage'
-                        width="25"
+                        width="22"
                         onClick={toggleImportantTask}
                         style={{ cursor: "pointer", marginLeft: "10px" }} />
-                    <div className={styles.hdgLabelPopup}>
+                    <div className={styles.importantTaskLabelPopup}>
                         Mark as {task.important ? ' not important' : ' important'}
                     </div>
+                    <img src='/trash-white.svg'
+                        className={styles.trashIcon}
+                        role="button"
+                        alt='mySvgImage'
+                        width="22"
+                        onClick={toggleImportantTask}
+                        style={{ cursor: "pointer", marginLeft: "10px" }} />
+                    <div className={styles.deleteTaskLabelPopup}>
+                        Delete task
+                    </div>
+                    <img src='/three-dots-vertical-white.svg'
+                        className={styles.threeDotsIcon}
+                        role="button"
+                        alt='mySvgImage'
+                        width="22"
+                        onClick={toggleImportantTask}
+                        style={{ cursor: "pointer", marginLeft: "10px" }} />
+                    <div className={styles.editTaskLabelPopup}>
+                        Edit task
+                    </div>
+
                 </div>
             </div>
         </>
