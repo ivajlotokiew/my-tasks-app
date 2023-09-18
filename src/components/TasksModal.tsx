@@ -1,7 +1,8 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TasksModal.module.css'
-import { Task } from '../features/tasks/tasksSlice';
+import { Task, editTaskReducer } from '../features/tasks/tasksSlice';
+import { useDispatch } from 'react-redux'
 
 const customStyles = {
   content: {
@@ -30,6 +31,7 @@ interface Props {
 
 function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props) {
   let subtitle: any;
+  const dispatch = useDispatch()
   const [title, setTitle] = useState(() => task ? task.title : '')
   const [description, setDescription] = useState(() => task ? task.description : '')
   const [date, setDate] = useState(() => task ? task.created : (new Date()).toString())
@@ -71,11 +73,18 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
 
   const handleSubmitData = (event: any) => {
     event.preventDefault()
-    console.log("Title", title)
-    console.log("Desc", description)
-    console.log("Date", date)
-    console.log("Imp", importantChecked)
-    console.log("comp", completedChecked)
+    if (task) {
+      const editedTask: Task = {
+        id: task.id,
+        title, description,
+        created: date,
+        important: importantChecked,
+        completed: completedChecked
+      }
+
+      dispatch(editTaskReducer(editedTask))
+      setIsOpen(false)
+    }
   }
 
   return (

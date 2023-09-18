@@ -40,7 +40,7 @@ const TaskItem = ({ task }: Props) => {
             <div className={styles.actions}>
                 <CustomButton onClick={toggleCompletedTask}>{task.completed ? 'completed' : 'uncompleted'}</CustomButton>
                 <div className={styles.hdgLabelInfo} style={{ display: "flex", alignItems: "center" }}>
-                    <img src={task.important ? '/star-white.svg' : '/star-red.svg'}
+                    <img src={task.important ? '/star-red.svg' : '/star-white.svg'}
                         className={styles.starIcon}
                         role="button"
                         alt='mySvgImage'
@@ -48,7 +48,7 @@ const TaskItem = ({ task }: Props) => {
                         onClick={toggleImportantTask}
                         style={{ cursor: "pointer", marginLeft: "10px" }} />
                     <div className={styles.importantTaskLabelPopup}>
-                        Mark as {task.important ? ' not important' : ' important'}
+                        {task.important ? 'Unmark ' : 'Mark '} as important
                     </div>
                     <img src='/trash-white.svg'
                         className={styles.trashIcon}
