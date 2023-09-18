@@ -60,7 +60,7 @@ const TaskItem = ({ task }: Props) => {
                     <div className={styles.deleteTaskLabelPopup}>
                         Delete task
                     </div>
-                    <TasksModal modalIsOpen={showModal} setIsOpen={setShowModal} nameForm={'Edit task'}>
+                    <TasksModal task={task} modalIsOpen={showModal} setIsOpen={setShowModal} nameForm={'Edit task'}>
                         <img src='/three-dots-vertical-white.svg'
                             className={styles.threeDotsIcon}
                             role="button"

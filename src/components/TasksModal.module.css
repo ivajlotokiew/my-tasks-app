@@ -21,7 +21,7 @@
 }
 
 .modalWrapper input[type="submit"]:hover {
-  background-color: #45a049;
+  opacity: 0.9;
 }
 
 .modalWrapper div {
