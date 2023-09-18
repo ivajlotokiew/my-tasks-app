@@ -1,7 +1,8 @@
-import { Task, toggleCompletedTaskReducer, toogleImportantTaskReducer } from "../features/tasks/tasksSlice";
+import { Task, toggleCompletedTaskReducer, toogleImportantTaskReducer, deleteTaskReducer } from "../features/tasks/tasksSlice";
 import CustomButton from "./CustomButton";
 import styles from "./TaskItem.module.css";
 import { useDispatch } from 'react-redux'
+import TasksModal from "./TasksModal";
 
 interface Props {
     task: Task
@@ -16,6 +17,10 @@ const TaskItem = ({ task }: Props) => {
 
     const toggleImportantTask = () => {
         dispatch(toogleImportantTaskReducer(task.id))
+    }
+
+    const deleteTask = () => {
+        dispatch(deleteTaskReducer(task.id))
     }
 
     return (
@@ -44,18 +49,12 @@ const TaskItem = ({ task }: Props) => {
                         role="button"
                         alt='mySvgImage'
                         width="22"
-                        onClick={toggleImportantTask}
+                        onClick={deleteTask}
                         style={{ cursor: "pointer", marginLeft: "10px" }} />
                     <div className={styles.deleteTaskLabelPopup}>
                         Delete task
                     </div>
-                    <img src='/three-dots-vertical-white.svg'
-                        className={styles.threeDotsIcon}
-                        role="button"
-                        alt='mySvgImage'
-                        width="22"
-                        onClick={toggleImportantTask}
-                        style={{ cursor: "pointer", marginLeft: "10px" }} />
+                    <TasksModal />
                     <div className={styles.editTaskLabelPopup}>
                         Edit task
                     </div>

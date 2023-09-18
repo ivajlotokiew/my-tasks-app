@@ -1,0 +1,3 @@
+.threeDotsIcon:hover ~ .editTaskLabelPopup {
+  display: block;
+}
