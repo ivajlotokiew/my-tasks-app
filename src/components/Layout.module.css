@@ -1,6 +1,6 @@
 .wrapper {
   display: grid;
-  width: fit-content;
+  width: 100%;
   grid-gap: 2rem;
   grid-template-areas:
     "leftNav head rightNav"
