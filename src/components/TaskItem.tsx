@@ -31,8 +31,8 @@ const TaskItem = ({ task }: Props) => {
 
     return (
         <>
-            <h2>{task.title}</h2>
-            <h3>{task.description}</h3>
+            <h3>{task.title}</h3>
+            <h4>{task.description}</h4>
             <div className={styles.created}>
                 <img src='/calendar.svg' alt='mySvgImage' width="25" />
                 {task.created}

@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux'
 
 const customStyles = {
   content: {
-    width: '30rem',
-    top: '30%',
+    width: '25rem',
+    top: '35%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
@@ -31,10 +31,15 @@ interface Props {
 
 function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props) {
   let subtitle: any;
+  const todayDate = new Date();
+  const day = todayDate.getDate().toString()
+  const month = (todayDate.getMonth() + 1).toString()
+  const year = todayDate.getFullYear().toString()
+  const today = year + '-' + month.padStart(2, '0') + '-' + day.padStart(2, '0')
   const dispatch = useDispatch()
   const [title, setTitle] = useState(() => task ? task.title : '')
   const [description, setDescription] = useState(() => task ? task.description : '')
-  const [date, setDate] = useState(() => task ? task.created : (new Date()).toString())
+  const [date, setDate] = useState(() => task ? task.created : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
 
@@ -48,7 +53,6 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
   }
 
   const closeModal = () => {
-    clearFields();
     setIsOpen(false);
   }
 
@@ -97,6 +101,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
       dispatch(AddTaskReducer(formTask))
     }
 
+    clearFields();
     closeModal()
   }
 
@@ -135,13 +140,15 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
             id="taskDate"
             name="taskDate"
             defaultValue={date}
+            min={today}
             onChange={(event) => handleDateInput(event)} />
 
           <label htmlFor="description">Description (optional)</label>
-          <input type="text" id="description"
+          <textarea id="description"
             name="description"
             placeholder="Description..."
             style={{ marginBottom: '20px' }}
+            rows={4}
             defaultValue={description}
             onChange={(event) => handleDescriptionInput(event)} />
 
