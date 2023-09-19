@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 export interface Task {
-    id: number;
+    id?: number;
     title: string;
     description?: string;
     created: string;
     important: boolean;
     completed: boolean;
 }
+
+const MAX_NUMBER_ID = Number.MAX_VALUE
 
 const defaultTasks: Task[] = [
     {
@@ -66,6 +68,13 @@ export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
+        AddTaskReducer: (state, action) => {
+            const length = state.tasks.length - 1
+            const lastId = state.tasks[length].id
+            const newTask = { ...action.payload, id: lastId ? lastId + 1 : MAX_NUMBER_ID }
+
+            state.tasks.push(newTask)
+        },
         editTaskReducer: (state, action) => {
             const id = action.payload.id;
             const task = state.tasks.find(task => task.id === id)!
@@ -98,9 +107,10 @@ export const tasksSlice = createSlice({
 
 export default tasksSlice.reducer
 
-export const { toggleCompletedTaskReducer,
-    toogleImportantTaskReducer,
+export const { AddTaskReducer,
     editTaskReducer,
+    toggleCompletedTaskReducer,
+    toogleImportantTaskReducer,
     deleteTaskReducer } = tasksSlice.actions;
 
 

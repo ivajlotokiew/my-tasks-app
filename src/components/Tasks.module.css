@@ -10,3 +10,19 @@
   background: rgb(20, 30, 51);
   border-radius: 10px;
 }
+
+.newTask {
+  display: flex;
+  border: dashed;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  border-color: rgb(34, 50, 85);
+}
+
+.newTask:hover {
+  background-color: rgb(28, 41, 70);
+  border-color: rgb(74, 89, 130);
+  transition: background-color 0.3s ease;
+}

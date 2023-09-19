@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TasksModal.module.css'
-import { Task, editTaskReducer } from '../features/tasks/tasksSlice';
+import { Task, editTaskReducer, AddTaskReducer } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 
 const customStyles = {
@@ -26,7 +26,7 @@ interface Props {
   modalIsOpen: boolean;
   setIsOpen: (modalIsOpen: boolean) => void;
   nameForm: string;
-  children: JSX.Element;
+  children?: JSX.Element;
 }
 
 function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props) {
@@ -48,7 +48,16 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
   }
 
   const closeModal = () => {
+    clearFields();
     setIsOpen(false);
+  }
+
+  const clearFields = () => {
+    setTitle('')
+    setDescription('')
+    setDate((new Date()).toString())
+    setImportantChecked(false)
+    setCompletedChecked(false)
   }
 
   const handleTitleInput = (event: any) => {
@@ -73,18 +82,22 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
 
   const handleSubmitData = (event: any) => {
     event.preventDefault()
-    if (task) {
-      const editedTask: Task = {
-        id: task.id,
-        title, description,
-        created: date,
-        important: importantChecked,
-        completed: completedChecked
-      }
-
-      dispatch(editTaskReducer(editedTask))
-      setIsOpen(false)
+    const formTask: Task = {
+      title,
+      description,
+      created: date,
+      important: importantChecked,
+      completed: completedChecked
     }
+
+    if (task) {
+      formTask.id = task.id
+      dispatch(editTaskReducer(formTask))
+    } else {
+      dispatch(AddTaskReducer(formTask))
+    }
+
+    closeModal()
   }
 
   return (
@@ -114,7 +127,8 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
             name="title"
             placeholder="Title..."
             defaultValue={title}
-            onChange={(event) => handleTitleInput(event)} />
+            onChange={(event) => handleTitleInput(event)}
+            required />
 
           <label htmlFor="taskDate">Date</label>
           <input type="date"
