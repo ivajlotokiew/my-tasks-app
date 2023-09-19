@@ -15,7 +15,8 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: 'rgb(15, 23, 42)',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    border: 'none',
   },
 };
 
@@ -53,6 +54,16 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
   }
 
   const closeModal = () => {
+    if (!task) {
+      clearFields()
+    } else {
+      setTitle(task.title)
+      setDate(task.created)
+      setDescription(task.description)
+      setImportantChecked(task.important)
+      setCompletedChecked(task.completed)
+    }
+
     setIsOpen(false);
   }
 
@@ -114,6 +125,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Modal"
+        overlayClassName={styles.Overlay}
       >
 
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{nameForm}</h2>

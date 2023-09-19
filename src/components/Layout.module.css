@@ -1,6 +1,9 @@
 .wrapper {
   display: grid;
   grid-gap: 2rem;
+  grid-template-areas:
+    "leftNav head rightNav"
+    "leftNav main rightNav";
   grid-template-columns: 2fr 7fr 2fr;
   color: rgb(148, 163, 184);
   background-color: rgb(15, 23, 42);
@@ -10,4 +13,20 @@
 a {
   text-decoration: none;
   color: unset;
+}
+
+.wrapper > div:first-child {
+  grid-area: head;
+}
+
+.wrapper > div:nth-child(2) {
+  grid-area: leftNav;
+}
+
+.wrapper > div:nth-child(3) {
+  grid-area: main;
+}
+
+.wrapper > div:last-child {
+  grid-area: rightNav;
 }
