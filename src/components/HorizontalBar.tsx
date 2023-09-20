@@ -20,8 +20,18 @@ const HorizontalBar = () => {
     }
 
     useEffect(() => {
+        window.addEventListener("click", handleOutsideClick);
+
+        return () => window.removeEventListener("click", handleOutsideClick);
+    }, []);
+
+    useEffect(() => {
         if (!search.length) dispatch(searchTaskReducer(search))
     }, [dispatch, search, setSearch])
+
+    const handleOutsideClick = () => {
+        setShowPopup(false)
+    };
 
     const showCurrentDate = () => {
         const todayDate = new Date()
@@ -45,6 +55,11 @@ const HorizontalBar = () => {
         dispatch(searchTaskReducer(search))
     }
 
+    const HandleAlertPopupEvent = (event: any) => {
+        event.stopPropagation();
+        setShowPopup(show => !show)
+    }
+
     return (
         <div className={styles.wrapper}>
             <form className={styles.form}>
@@ -56,7 +71,7 @@ const HorizontalBar = () => {
             <div>{showCurrentDate()}</div>
             <div className={styles.notificationPart}>
                 <img src={Boolean(todayTasks.length) ? '/bell-alert.svg' : '/bell.svg'}
-                    onClick={() => setShowPopup(show => !show)}
+                    onClick={HandleAlertPopupEvent}
                     role="button"
                     alt='Notification bell'
                     width="30px"
