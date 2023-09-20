@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import NoPage from './components/NoPage';
-import CompletedTasks from './components/CompletedTasks';
-import ImportantTasks from './components/ImportantTasks';
-import UncompletedTasks from './components/UncompletedTasks';
-import TodayTasks from './components/TodayTasks';
-import AllTasks from './components/AllTasks';
+import NoPage from './components/pages/NoPage';
+import CompletedTasks from './components/pages/CompletedTasks';
+import ImportantTasks from './components/pages/ImportantTasks';
+import UncompletedTasks from './components/pages/UncompletedTasks';
+import TodayTasks from './components/pages/TodayTasks';
+import AllTasks from './components/pages/AllTasks';
 
 function App() {
   return (
