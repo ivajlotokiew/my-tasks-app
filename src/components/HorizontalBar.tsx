@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
 import { useDispatch } from 'react-redux/es/hooks/useDispatch'
-import { searchTaskReducer } from '../features/tasks/tasksSlice'
+import { getTodayTasks, searchTaskReducer } from '../features/tasks/tasksSlice'
 import CustomButton from './CustomButton'
 import TasksModal from './TasksModal'
+import { useSelector } from 'react-redux'
+import AlertsPopup from './AlertsPopup'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
+    const [showPopup, setShowPopup] = useState(false)
+    const todayTasks = useSelector(getTodayTasks)
+    const isPopupVisible = Boolean(todayTasks.length && showPopup)
+
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
     }
@@ -50,11 +56,12 @@ const HorizontalBar = () => {
             <div>{showCurrentDate()}</div>
             <div className={styles.notificationPart}>
                 <img src='/bell.svg'
-                    className={styles.bellIcon}
+                    onClick={() => setShowPopup(show => !show)}
                     role="button"
                     alt='Notification bell'
                     width="25px"
                     style={{ cursor: "pointer", marginRight: "15px" }} />
+                {isPopupVisible && <div className={styles.popup}><AlertsPopup tasksCount={todayTasks.length} /></div>}
 
                 <TasksModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                     <CustomButton
