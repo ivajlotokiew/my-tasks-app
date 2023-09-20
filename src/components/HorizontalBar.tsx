@@ -55,11 +55,11 @@ const HorizontalBar = () => {
             </form>
             <div>{showCurrentDate()}</div>
             <div className={styles.notificationPart}>
-                <img src='/bell.svg'
+                <img src={Boolean(todayTasks.length) ? '/bell-alert.svg' : '/bell.svg'}
                     onClick={() => setShowPopup(show => !show)}
                     role="button"
                     alt='Notification bell'
-                    width="25px"
+                    width="30px"
                     style={{ cursor: "pointer", marginRight: "15px" }} />
                 {isPopupVisible && <div className={styles.popup}><AlertsPopup tasksCount={todayTasks.length} /></div>}
 
