@@ -128,7 +128,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
         overlayClassName={styles.Overlay}
       >
 
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{nameForm}</h2>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{ fontWeight: '600' }}>{nameForm}</h2>
         <img src='/close-white.svg'
           className={styles.closeIcon}
           role="button"
@@ -143,7 +143,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
             id="title"
             name="title"
             placeholder="Title..."
-            defaultValue={title}
+            value={title}
             onChange={(event) => handleTitleInput(event)}
             required />
 
@@ -151,7 +151,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
           <input type="date"
             id="taskDate"
             name="taskDate"
-            defaultValue={date}
+            value={date}
             min={today}
             onChange={(event) => handleDateInput(event)} />
 
@@ -161,7 +161,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
             placeholder="Description..."
             style={{ marginBottom: '20px' }}
             rows={4}
-            defaultValue={description}
+            value={description}
             onChange={(event) => handleDescriptionInput(event)} />
 
           <label className={styles.container}>Mark as important

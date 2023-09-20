@@ -10,13 +10,20 @@
 .modalWrapper input[type="text"],
 .modalWrapper input[type="date"],
 textarea {
+  all: unset;
   width: 100%;
+  background: rgb(20, 30, 51);
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.modalWrapper input[type="text"]:hover,
+.modalWrapper input[type="date"]:hover,
+textarea:hover {
+  border: 1px solid rgb(91, 33, 182);
 }
 
 .modalWrapper input[type="submit"] {

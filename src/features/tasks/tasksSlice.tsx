@@ -87,6 +87,19 @@ export const tasksSlice = createSlice({
             const tasks = state.tasks.filter(task => task.id !== id)
             state.tasks = tasks;
         },
+        searchTaskReducer: (state, action) => {
+            debugger
+            const str = action.payload
+            // This is a hack used while implementing the logic for real task storage
+            if (!str.length) {
+                state.tasks = defaultTasks
+                return;
+            }
+
+            const tasks = state.tasks.filter((task: Task) =>
+                task.title.toLowerCase().includes(str.toLowerCase()))
+            state.tasks = [...tasks]
+        },
         toggleCompletedTaskReducer: (state, action) => {
             const id = action.payload;
             const task = state.tasks.find(task => task.id === id)
@@ -109,6 +122,7 @@ export default tasksSlice.reducer
 
 export const { AddTaskReducer,
     editTaskReducer,
+    searchTaskReducer,
     toggleCompletedTaskReducer,
     toogleImportantTaskReducer,
     deleteTaskReducer } = tasksSlice.actions;
