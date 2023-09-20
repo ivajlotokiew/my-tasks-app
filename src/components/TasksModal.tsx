@@ -70,7 +70,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
   const clearFields = () => {
     setTitle('')
     setDescription('')
-    setDate((new Date()).toString())
+    setDate(today)
     setImportantChecked(false)
     setCompletedChecked(false)
   }
@@ -152,6 +152,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
             id="taskDate"
             name="taskDate"
             value={date}
+            required
             min={today}
             onChange={(event) => handleDateInput(event)} />
 
