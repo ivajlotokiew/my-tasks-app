@@ -2,6 +2,7 @@
   display: flex;
   margin-top: 30px;
   justify-content: space-between;
+  align-items: center;
 }
 
 .form {
@@ -53,4 +54,18 @@ input[type="search"]:focus {
   box-shadow: 0 0 3px 0 rgb(66, 27, 127);
   border-color: rgb(91, 33, 182);
   outline: none;
+}
+
+.notificationPart {
+  display: flex;
+}
+
+.notificationPart::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: red;
+  border-radius: 50%;
+  transform: translate(18px, 10px);
 }

@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
 import { useDispatch } from 'react-redux/es/hooks/useDispatch'
 import { searchTaskReducer } from '../features/tasks/tasksSlice'
+import CustomButton from './CustomButton'
+import TasksModal from './TasksModal'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')
     const dispatch = useDispatch()
+    const [showModal, setShowModal] = useState(false)
+    const handleShowModalEvent = () => {
+        setShowModal(modal => !modal)
+    }
 
     useEffect(() => {
         if (!search.length) dispatch(searchTaskReducer(search))
@@ -42,6 +48,22 @@ const HorizontalBar = () => {
                 </button>
             </form>
             <div>{showCurrentDate()}</div>
+            <div className={styles.notificationPart}>
+                <img src='/bell.svg'
+                    className={styles.bellIcon}
+                    role="button"
+                    alt='Notification bell'
+                    width="25px"
+                    style={{ cursor: "pointer", marginRight: "15px" }} />
+
+                <TasksModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
+                    <CustomButton
+                        style={{ height: '50px', background: 'rgb(91, 33, 182)' }}
+                        onClick={handleShowModalEvent}>
+                        Add new task
+                    </CustomButton>
+                </TasksModal>
+            </div>
         </div>
     )
 }
