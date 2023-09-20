@@ -9,12 +9,12 @@ export interface Task {
     completed: boolean;
 }
 
-const MAX_NUMBER_ID = Number.MAX_VALUE
+const ID_MAX_NUMBER = Number.MAX_VALUE
 
 const defaultTasks: Task[] = [
     {
         id: 1,
-        title: 'Task1',
+        title: 'First task',
         description: 'Description One',
         created: '2023-09-17',
         important: true,
@@ -22,7 +22,7 @@ const defaultTasks: Task[] = [
     },
     {
         id: 2,
-        title: 'Task2',
+        title: 'Second task',
         description: 'Description Two',
         created: '2023-10-10',
         important: false,
@@ -30,7 +30,7 @@ const defaultTasks: Task[] = [
     },
     {
         id: 3,
-        title: 'Task3',
+        title: 'Important task',
         description: 'Description Three',
         created: '2023-10-10',
         important: true,
@@ -38,7 +38,7 @@ const defaultTasks: Task[] = [
     },
     {
         id: 4,
-        title: 'Task4',
+        title: 'Need haircut',
         description: 'Description four',
         created: '2023-09-17',
         important: false,
@@ -46,7 +46,7 @@ const defaultTasks: Task[] = [
     },
     {
         id: 5,
-        title: 'Task5',
+        title: 'Go movie',
         description: 'Description five',
         created: '2023-10-10',
         important: true,
@@ -54,7 +54,7 @@ const defaultTasks: Task[] = [
     },
     {
         id: 6,
-        title: 'Task6',
+        title: 'Must prepare dinner',
         description: 'Description six',
         created: '2023-10-10',
         important: false,
@@ -71,7 +71,7 @@ export const tasksSlice = createSlice({
         AddTaskReducer: (state, action) => {
             const length = state.tasks.length - 1
             const lastId = state.tasks[length].id
-            const newTask = { ...action.payload, id: lastId ? lastId + 1 : MAX_NUMBER_ID }
+            const newTask = { ...action.payload, id: lastId ? lastId + 1 : ID_MAX_NUMBER }
 
             state.tasks.push(newTask)
         },
@@ -88,9 +88,8 @@ export const tasksSlice = createSlice({
             state.tasks = tasks;
         },
         searchTaskReducer: (state, action) => {
-            debugger
             const str = action.payload
-            // This is a hack used while implementing the logic for real task storage
+            // This is a hack to use until the actual task storage logic is implemented
             if (!str.length) {
                 state.tasks = defaultTasks
                 return;
