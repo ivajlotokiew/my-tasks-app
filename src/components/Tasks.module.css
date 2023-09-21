@@ -1,4 +1,15 @@
 .wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.container {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -13,7 +24,7 @@
   min-height: 250px;
 }
 
-.wrapper div:first-child:not(.newTask) {
+.container div:first-child:not(.newTask) {
   background-color: rgb(91, 33, 182);
 }
 

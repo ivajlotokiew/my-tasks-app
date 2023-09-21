@@ -6,6 +6,7 @@ import CustomButton from './CustomButton'
 import TasksModal from './TasksModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
+import SortBox from './SortBox'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')

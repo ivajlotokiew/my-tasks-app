@@ -7,8 +7,7 @@ const TodayTasks = () => {
 
     return (
         <div>
-            <h2 style={{ color: '#FFFFFF', fontWeight: '500' }}>Today's tasks ({tasks.length} {tasks.length !== 1 ? 'tasks' : 'task'})</h2>
-            <Tasks tasks={tasks} />
+            <Tasks tasks={tasks} stateTasksName="Today's" />
         </div>
     )
 }
