@@ -4,15 +4,16 @@ import styles from './CompletedTasksProgressBar.module.css'
 interface Props {
     all: number;
     completed: number;
+    progressBarName: string;
 }
 
-const CompletedTasksProgressBar = ({ all, completed }: Props) => {
+const CompletedTasksProgressBar = ({ all, completed, progressBarName }: Props) => {
     const progress = Math.round(completed / all * 100)
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.tasksInfo}>
-                <span>All tasks</span>
+                <span>{progressBarName}</span>
                 <span>{completed}/{all}</span>
             </div>
             <ProgressBar
