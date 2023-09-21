@@ -1,11 +1,13 @@
-import { getTasks, getCompletedTasks } from "../../features/tasks/tasksSlice"
+import { getTasks, getCompletedTasks, getTodayTasks } from "../../features/tasks/tasksSlice"
 import CompletedTasksProgressBar from "./CompletedTasksProgressBar"
+import ShowTodayTasks from "./ShowTodayTasks"
 import styles from "./Section.module.css"
 import { useSelector } from "react-redux"
 
 const Section = () => {
     const allTasks = useSelector(getTasks)
     const completedTasks = useSelector(getCompletedTasks)
+    const todayTasks = useSelector(getTodayTasks)
 
     return (
         <div className={styles.wrapper}>
@@ -16,6 +18,7 @@ const Section = () => {
                 </div>
                 <CompletedTasksProgressBar all={allTasks.length} completed={completedTasks.length} />
                 <hr style={{ border: '1px dashed' }} />
+                <ShowTodayTasks tasks={todayTasks} />
             </div>
         </div>
     )
