@@ -37,6 +37,7 @@ const TaskItem = ({ task }: Props) => {
                 <img src='/calendar.svg' alt='mySvgImage' width="25" />
                 {task.created}
             </div>
+            <hr className={styles.lineSeparator} />
             <div className={styles.actions}>
                 <CustomButton onClick={toggleCompletedTask}>{task.completed ? 'completed' : 'uncompleted'}</CustomButton>
                 <div className={styles.hdgLabelInfo} style={{ display: "flex", alignItems: "center" }}>
