@@ -11,7 +11,7 @@ const DeleteAllData = () => {
     return (
         <>
             <CustomButton
-                style={{ color: 'red', backgroundColor: 'transparent', fontSize: '16px' }}
+                style={{ color: '#e82626', backgroundColor: 'transparent', fontSize: '16px' }}
                 onClick={deleteAllData}>Delete all data
             </CustomButton>
         </>
