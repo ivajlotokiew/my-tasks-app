@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "./Navbar"
 import styles from "./Layout.module.css"
-import Section from "./Section"
+import Section from "./sectionContainer/Section"
 import HorizontalBar from "./HorizontalBar"
 
 const Layout = () => {

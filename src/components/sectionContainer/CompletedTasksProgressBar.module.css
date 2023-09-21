@@ -1,0 +1,18 @@
+.wrapper {
+  margin: 50px 0px;
+}
+
+.tasksInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.container {
+  background-color: rgb(29, 42, 62);
+  border-radius: 5px;
+}
+
+.barCompleted {
+  background-color: rgb(91, 33, 182);
+}
