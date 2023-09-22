@@ -48,7 +48,6 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
   const [selectedOption, setSelectedOption] = useState("disabledOption");
 
-
   useEffect(() => {
     setIsOpen(modalIsOpen)
   }, [modalIsOpen, setIsOpen])

@@ -6,7 +6,6 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const CustomButton = ({ children, ...attributes }: Props) => {
-    console.log('Attributes: ', attributes)
     return (
         <button
             type="button"

@@ -4,13 +4,14 @@ import TaskItem from "./TaskItem"
 import styles from "./Tasks.module.css"
 import TasksModal from "./TasksModal"
 import CustomDropdown, { Option } from "./common/CustomDropdown/CustomDropdown"
+import useSortTasks from "./hooks/useSortTasks"
 
 const options: Option[] = [
     { label: "Sort by", disabled: true, value: "disabledOption" },
-    { label: "Earlier first", value: 1 },
-    { label: "Later first", value: 2 },
-    { label: "Computed first", value: 3 },
-    { label: "Uncomputed first", value: 4 },
+    { label: "Earlier first", value: 'time-first' },
+    { label: "Later first", value: 'time-last' },
+    { label: "Computed first", value: 'completed-first' },
+    { label: "Uncomputed first", value: 'uncompleted-first' },
 ];
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 
 const Tasks = ({ tasks, stateTasksName }: Props) => {
     const [showModal, setShowModal] = useState(false)
-    const [selectedOption, setSelectedOption] = useState("disabledOption");
+    const { setSortedBy, sortedTasks, sortedBy } = useSortTasks({ tasks });
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
@@ -28,7 +29,7 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
 
 
     const handleSelectChange = (event: any) => {
-        setSelectedOption(event.target.value);
+        setSortedBy(event.target.value);
     };
 
     return (
@@ -38,11 +39,11 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
                 <CustomDropdown
                     options={options}
                     onChange={handleSelectChange}
-                    selectedValue={selectedOption}
+                    selectedValue={sortedBy}
                 />
             </div>
             <div className={styles.container}>
-                {tasks.map((task: Task) =>
+                {sortedTasks.map((task: Task) =>
                     <div className={styles.task} key={task.id}>
                         <TaskItem task={task} />
                     </div>)}
