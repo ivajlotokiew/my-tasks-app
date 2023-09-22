@@ -41,7 +41,7 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
                     onChange={handleSelectChange}
                     selectedValue={sortedBy}
                 />
-            </div>
+            </div >
             <div className={styles.container}>
                 {sortedTasks.map((task: Task) =>
                     <div className={styles.task} key={task.id}>
@@ -53,7 +53,7 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
                     </div>
                 </TasksModal>
             </div>
-        </div>
+        </div >
     )
 }
 
