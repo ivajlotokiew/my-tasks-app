@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Task, toggleCompletedTaskReducer, toogleImportantTaskReducer, deleteTaskReducer } from "../features/tasks/tasksSlice";
-import CustomButton from "./CustomButton";
+import CustomButton from "./common/CustomButton/CustomButton";
 import styles from "./TaskItem.module.css";
 import { useDispatch } from 'react-redux'
 import TasksModal from "./TasksModal";

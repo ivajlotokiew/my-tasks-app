@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
 import { useDispatch } from 'react-redux/es/hooks/useDispatch'
 import { getTodayTasks, searchTaskReducer } from '../features/tasks/tasksSlice'
-import CustomButton from './CustomButton'
+import CustomButton from './common/CustomButton/CustomButton'
 import TasksModal from './TasksModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
-import SortBox from './SortBox'
+import { showCurrentDate } from './utils/utils'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')
@@ -33,19 +33,6 @@ const HorizontalBar = () => {
     const handleOutsideClick = () => {
         setShowPopup(false)
     };
-
-    const showCurrentDate = () => {
-        const todayDate = new Date()
-        const monthNames = ["Jan", "Feb", "March", "April", "May", "June",
-            "July", "Aug", "Sep", "Oct", "Nov", "Dec"
-        ];
-
-        const year = todayDate.getFullYear();
-        const date = monthNames[todayDate.getMonth()];
-        const day = todayDate.getDate().toString().padStart(2, '0')
-
-        return `${year}, ${date} ${day}`
-    }
 
     const handleInputSearchEvent = (event: any) => {
         setSearch(event.target.value)

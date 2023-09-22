@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { formatDate } from "../../components/utils/utils";
 
 export interface Task {
     id?: number;
+    dir: string;
     title: string;
     description?: string;
     created: string;
@@ -14,14 +16,16 @@ const ID_MAX_NUMBER = Number.MAX_VALUE
 const defaultTasks: Task[] = [
     {
         id: 1,
+        dir: 'Main',
         title: 'First task',
         description: 'Description One',
-        created: '2023-09-21',
+        created: formatDate(new Date()),
         important: true,
         completed: true,
     },
     {
         id: 2,
+        dir: 'Main',
         title: 'Second task',
         description: 'Description Two',
         created: '2023-10-10',
@@ -30,14 +34,16 @@ const defaultTasks: Task[] = [
     },
     {
         id: 3,
+        dir: 'Main',
         title: 'Important task',
         description: 'Description Three',
-        created: '2023-10-10',
+        created: formatDate(new Date()),
         important: true,
         completed: true,
     },
     {
         id: 4,
+        dir: 'Main',
         title: 'Need haircut',
         description: 'Description four',
         created: '2023-09-21',
@@ -46,14 +52,16 @@ const defaultTasks: Task[] = [
     },
     {
         id: 5,
+        dir: 'Main',
         title: 'Go movie',
         description: 'Description five',
-        created: '2023-09-20',
+        created: formatDate(new Date()),
         important: true,
         completed: false,
     },
     {
         id: 6,
+        dir: 'Main',
         title: 'Must prepare dinner',
         description: 'Description six',
         created: '2023-10-10',
@@ -62,7 +70,14 @@ const defaultTasks: Task[] = [
     },
 ]
 
-const initialState = { tasks: defaultTasks };
+const defaultDirectories = [
+    { name: 'Main' }
+]
+
+const initialState = {
+    tasks: defaultTasks,
+    directories: defaultDirectories
+};
 
 export const tasksSlice = createSlice({
     name: 'tasks',

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import CustomButton from "../CustomButton"
+import CustomButton from "../common/CustomButton/CustomButton"
 import { deleteAllDataReducer } from "../../features/tasks/tasksSlice"
 
 const DeleteAllData = () => {

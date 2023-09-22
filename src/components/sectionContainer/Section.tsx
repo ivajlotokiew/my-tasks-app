@@ -4,7 +4,7 @@ import ShowTodaysTasks from "./ShowTodaysTasks"
 import styles from "./Section.module.css"
 import { useSelector } from "react-redux"
 import DeleteAllData from "./DeleteAllData"
-import CustomButton from "../CustomButton"
+import CustomButton from "../common/CustomButton/CustomButton"
 
 const Section = () => {
     const allTasks = useSelector(getTasks)

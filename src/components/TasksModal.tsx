@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import styles from './TasksModal.module.css'
 import { Task, editTaskReducer, AddTaskReducer } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
+import { formatDate } from './utils/utils';
 
 const customStyles = {
   content: {
@@ -32,11 +33,7 @@ interface Props {
 
 function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props) {
   let subtitle: any;
-  const todayDate = new Date();
-  const day = todayDate.getDate().toString()
-  const month = (todayDate.getMonth() + 1).toString()
-  const year = todayDate.getFullYear().toString()
-  const today = year + '-' + month.padStart(2, '0') + '-' + day.padStart(2, '0')
+  const today = formatDate(new Date())
   const dispatch = useDispatch()
   const [title, setTitle] = useState(() => task ? task.title : '')
   const [description, setDescription] = useState(() => task ? task.description : '')
@@ -99,6 +96,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
     event.preventDefault()
     const formTask: Task = {
       title,
+      dir: 'Main',
       description,
       created: date,
       important: importantChecked,

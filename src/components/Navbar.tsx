@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import styles from "./Navbar.module.css"
-import CustomButton from "./CustomButton"
+import CustomButton from "./common/CustomButton/CustomButton"
 import { useState } from "react"
 import TasksModal from "./TasksModal"
 

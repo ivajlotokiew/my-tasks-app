@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import CustomButton from "./CustomButton"
+import CustomButton from "./common/CustomButton/CustomButton"
 import styles from './AlertsPopup.module.css'
 
 interface Props {
