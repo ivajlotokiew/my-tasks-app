@@ -33,7 +33,14 @@ const Navbar = () => {
             </div>
             {navBarMenu.map((item) =>
                 <div className={styles.navLink} key={item.target}>
-                    <NavLink to={item.target} >
+                    <NavLink to={item.target} style={({ isActive }) => {
+                        return {
+                            display: "block",
+                            backgroundColor: isActive ? "rgba(255, 0, 0, 0.3)" : "",
+                            borderRightWidth: '10px',
+                            borderColor: isActive ? 'yellow' : 'blue',
+                        };
+                    }}>
                         {item.name}
                     </NavLink>
                 </div>)}
