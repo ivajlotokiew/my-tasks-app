@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import DeleteAllData from "./DeleteAllData"
 import CustomButton from "../common/CustomButton/CustomButton"
 
+
 const Section = () => {
     const allTasks = useSelector(getTasks)
     const completedTasks = useSelector(getCompletedTasks)

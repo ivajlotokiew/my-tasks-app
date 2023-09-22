@@ -11,8 +11,9 @@ const useSortTasks = ({ tasks }: Props) => {
 
   useEffect(() => {
     const copyTasks = [...tasks];
+
     const sortByFirstAdded = () =>
-      copyTasks.sort((a: Task, b: Task) => {
+      tasks.sort((a: Task, b: Task) => {
         const first = Date.parse(a.created);
         const second = Date.parse(b.created);
         if (first > second) return 1;

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
-import CustomButton from "./common/CustomButton/CustomButton"
 import styles from './AlertsPopup.module.css'
+import CustomButton from "./common/CustomButton/CustomButton"
 
 interface Props {
     tasksCount: number
