@@ -9,7 +9,7 @@ import CustomDropdown, { Option } from './common/CustomDropdown/CustomDropdown';
 const customStyles = {
   content: {
     width: '25rem',
-    top: '35%',
+    top: '45%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
