@@ -3,9 +3,9 @@ import { Task } from "../features/tasks/tasksSlice"
 import TaskItem from "./TaskItem"
 import styles from "./Tasks.module.css"
 import TasksModal from "./TasksModal"
-import CustomDropdown from "./common/CustomDropdown/CustomDropdown"
+import CustomDropdown, { Option } from "./common/CustomDropdown/CustomDropdown"
 
-const options = [
+const options: Option[] = [
     { label: "Sort by", disabled: true, value: "disabledOption" },
     { label: "Earlier first", value: 1 },
     { label: "Later first", value: 2 },

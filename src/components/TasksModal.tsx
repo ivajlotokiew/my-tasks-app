@@ -4,6 +4,7 @@ import styles from './TasksModal.module.css'
 import { Task, editTaskReducer, AddTaskReducer } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { formatDate } from './utils/utils';
+import CustomDropdown, { Option } from './common/CustomDropdown/CustomDropdown';
 
 const customStyles = {
   content: {
@@ -29,9 +30,14 @@ interface Props {
   setIsOpen: (modalIsOpen: boolean) => void;
   nameForm: string;
   children?: JSX.Element;
+  dropdownOptions?: Option[];
 }
 
-function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props) {
+const defaultDropdownOptions: Option[] = [
+  { label: "Main", value: "main" },
+]
+
+function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdownOptions = defaultDropdownOptions }: Props) {
   let subtitle: any;
   const today = formatDate(new Date())
   const dispatch = useDispatch()
@@ -40,6 +46,8 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
   const [date, setDate] = useState(() => task ? task.created : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
+  const [selectedOption, setSelectedOption] = useState("disabledOption");
+
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
@@ -72,6 +80,10 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
     setCompletedChecked(false)
   }
 
+  const handleSelectChange = (event: any) => {
+    setSelectedOption(event.target.value);
+  };
+
   const handleTitleInput = (event: any) => {
     setTitle(event.target.value)
   }
@@ -96,7 +108,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
     event.preventDefault()
     const formTask: Task = {
       title,
-      dir: 'Main',
+      dir: selectedOption,
       description,
       created: date,
       important: importantChecked,
@@ -158,10 +170,16 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task }: Props)
           <textarea id="description"
             name="description"
             placeholder="Description..."
-            style={{ marginBottom: '20px' }}
             rows={4}
             value={description}
             onChange={(event) => handleDescriptionInput(event)} />
+
+          <label>Select directory</label>
+          <CustomDropdown options={dropdownOptions}
+            selectedValue={selectedOption}
+            onChange={handleSelectChange}
+            style={{ width: '100%', padding: '12px 20px', margin: '8px 0 20px 0' }}
+          />
 
           <label className={styles.container}>Mark as important
             <input type="checkbox"

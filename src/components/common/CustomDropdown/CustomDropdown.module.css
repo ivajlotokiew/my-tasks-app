@@ -1,5 +1,5 @@
 .wrapper {
-  width: 18%;
+  width: inherit;
   height: 50px;
   border-radius: 5px;
   padding-left: 5px;

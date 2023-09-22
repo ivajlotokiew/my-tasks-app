@@ -1,20 +1,22 @@
 import styles from './CustomDropdown.module.css'
 
-type Option = {
+export type Option = {
     label: string;
     value: any;
-    disabled?: boolean
+    disabled?: boolean;
 };
 
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
     options: Option[],
+    onChange: (e: any) => void;
     selectedValue: string,
 }
 
-const CustomDropdown = ({ options, selectedValue, ...attributes }: Props) => {
+const CustomDropdown = ({ options, selectedValue, onChange, ...attributes }: Props) => {
     return (
         <>
             <select className={styles.wrapper}
+                onChange={onChange}
                 {...attributes}
                 value={selectedValue}>
                 {options.map(option => (
