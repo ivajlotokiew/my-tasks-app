@@ -13,8 +13,8 @@ const SortBox = () => {
             <option value="disabledOption" disabled>Sort by</option>
             <option value="1">Earlier first</option>
             <option value="2">Later first</option>
-            <option value="3">Computed first</option>
-            <option value="4">Uncomputed first</option>
+            <option value="3">Completed first</option>
+            <option value="4">Uncompleted first</option>
         </select>
     )
 }
