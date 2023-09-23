@@ -21,12 +21,11 @@ interface Props {
 
 const Tasks = ({ tasks, stateTasksName }: Props) => {
     const [showModal, setShowModal] = useState(false)
-    const { setSortedBy, sortedTasks, sortedBy } = useSortTasks({ tasks });
+    const { setSortedBy, sortedBy } = useSortTasks({ tasks });
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
     }
-
 
     const handleSelectChange = (event: any) => {
         setSortedBy(event.target.value);
@@ -43,7 +42,7 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
                 />
             </div >
             <div className={styles.container}>
-                {sortedTasks.map((task: Task) =>
+                {tasks.map((task: Task) =>
                     <div className={styles.task} key={task.id}>
                         <TaskItem task={task} />
                     </div>)}

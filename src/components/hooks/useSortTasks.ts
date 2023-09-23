@@ -13,7 +13,7 @@ const useSortTasks = ({ tasks }: Props) => {
     const copyTasks = [...tasks];
 
     const sortByFirstAdded = () =>
-      tasks.sort((a: Task, b: Task) => {
+      copyTasks.sort((a: Task, b: Task) => {
         const first = Date.parse(a.created);
         const second = Date.parse(b.created);
         if (first > second) return 1;
@@ -51,7 +51,8 @@ const useSortTasks = ({ tasks }: Props) => {
       setSortedTasks(sortByUncompletedFirst());
   }, [sortedBy, tasks]);
 
-  return { sortedBy, setSortedBy, sortedTasks };
+  tasks = sortedTasks;
+  return { sortedBy, setSortedBy };
 };
 
 export default useSortTasks;
