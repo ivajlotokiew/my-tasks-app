@@ -29,10 +29,7 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
 
     const handleSelectChange = (event: any) => {
         setSortedBy(event.target.value);
-    };
-
-    console.log('Original: ', tasks)
-    console.log('Hook: ', sortedTasks)
+    }
 
     return (
         <div className={styles.wrapper}>

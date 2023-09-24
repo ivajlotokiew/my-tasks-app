@@ -11,8 +11,8 @@ import axios from 'axios';
 
 function App() {
   useEffect(() => {
-    axios.get(`/api/tasks`)
-      .then(({ data }) => console.log(data))
+    axios.get(`/api/tasks/1/directory`)
+      .then(({ data }) => console.log('Server data: ', data))
       .catch((e) => {
         console.error(e);
       });

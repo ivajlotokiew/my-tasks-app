@@ -3,7 +3,8 @@ import { formatDate } from "../../components/utils/utils";
 
 export interface Task {
     id?: number;
-    dir: string;
+    directoryId?: number;
+    dir?: string;
     title: string;
     description?: string;
     created: string;
