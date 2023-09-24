@@ -7,14 +7,12 @@ import UncompletedTasks from './components/pages/UncompletedTasks';
 import TodayTasks from './components/pages/TodayTasks';
 import AllTasks from './components/pages/AllTasks';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
   useEffect(() => {
-    fetch(`/api/tasks`)
-      .then((res) => res.json())
-      .then((json) => {
-        debugger
-      })
+    axios.get(`/api/tasks`)
+      .then(({ data }) => console.log(data))
       .catch((e) => {
         console.error(e);
       });
