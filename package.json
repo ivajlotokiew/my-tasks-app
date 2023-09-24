@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-modal": "^3.16.0"
+    "@types/react-modal": "^3.16.0",
+    "miragejs": "^0.1.47"
   }
 }

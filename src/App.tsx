@@ -6,8 +6,19 @@ import ImportantTasks from './components/pages/ImportantTasks';
 import UncompletedTasks from './components/pages/UncompletedTasks';
 import TodayTasks from './components/pages/TodayTasks';
 import AllTasks from './components/pages/AllTasks';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    fetch(`/api/tasks`)
+      .then((res) => res.json())
+      .then((json) => {
+        debugger
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, [])
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

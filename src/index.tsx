@@ -6,10 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux'
 import { store } from './store';
+import { makeServer } from "./backend/server";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+// Call make Server
+makeServer();
 root.render(
   <React.StrictMode>
     <BrowserRouter>
