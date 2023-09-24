@@ -1,6 +1,5 @@
 import { createServer, Model, hasMany, belongsTo } from "miragejs";
 import { tasks } from "./backend/models/task-data";
-import { directories } from "./backend/models/directory-data";
 
 export function makeServer() {
   const server = createServer({
@@ -15,7 +14,13 @@ export function makeServer() {
     },
     fixtures: {
       tasks,
-      directories,
+    },
+    seeds(server) {
+      let mainDirectory = server.create("directory", { name: "Main" });
+
+      tasks.forEach((task) =>
+        server.create("task", { ...task, directory: mainDirectory })
+      );
     },
     routes() {
       this.get("/api/tasks", (schema) => {
