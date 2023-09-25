@@ -6,17 +6,8 @@ import ImportantTasks from './components/pages/ImportantTasks';
 import UncompletedTasks from './components/pages/UncompletedTasks';
 import TodayTasks from './components/pages/TodayTasks';
 import AllTasks from './components/pages/AllTasks';
-import { useEffect } from 'react';
-import axios from 'axios';
 
 function App() {
-  useEffect(() => {
-    axios.get(`/api/directories/${1}/tasks`)
-      .then(({ data }) => console.log("Data: ", data))
-      .catch((e) => {
-        console.error(e);
-      });
-  }, [])
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

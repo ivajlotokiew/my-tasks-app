@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TasksModal.module.css'
-import { Task, editTaskReducer, AddTaskReducer } from '../features/tasks/tasksSlice';
+import { Task, editTaskReducer, addTaskReducer } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { formatDate } from './utils/utils';
 import CustomDropdown, { Option } from './common/CustomDropdown/CustomDropdown';
@@ -107,7 +107,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
     event.preventDefault()
     const formTask: Task = {
       title,
-      dir: selectedOption,
+      directoryId: 1,
       description,
       created: date,
       important: importantChecked,
@@ -118,7 +118,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
       formTask.id = task.id
       dispatch(editTaskReducer(formTask))
     } else {
-      dispatch(AddTaskReducer(formTask))
+      dispatch(addTaskReducer(formTask))
     }
 
     clearFields();

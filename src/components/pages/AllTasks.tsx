@@ -1,9 +1,16 @@
-import { useSelector } from "react-redux/es/hooks/useSelector"
-import { getTasks } from "../../features/tasks/tasksSlice"
+import { useEffect } from "react"
 import Tasks from "../Tasks"
+import { showTasks, fetchTasks } from "../../features/tasks/tasksSlice"
+import { useSelector } from "react-redux/es/hooks/useSelector"
+import { useDispatch } from "react-redux"
 
 const AllTasks = () => {
-    const tasks = useSelector(getTasks)
+    const dispatch = useDispatch()
+    const tasks = useSelector(showTasks)
+
+    useEffect(() => {
+        dispatch(fetchTasks())
+    }, [dispatch])
 
     return (
         <div>

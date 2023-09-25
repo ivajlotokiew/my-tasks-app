@@ -23,7 +23,37 @@ export function makeServer() {
       );
     },
     routes() {
-      this.get("/api/tasks", (schema) => {
+      this.get("/api/tasks", (schema, { queryParams }) => {
+        const { search } = queryParams;
+
+        if (search) {
+          return schema.tasks.where((task) => task.title.includes(search));
+        }
+
+        return schema.tasks.all();
+      });
+
+      this.post("/api/tasks", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody);
+
+        return schema.tasks.create(attrs);
+      });
+
+      this.patch("/api/tasks/:id", function (schema, request) {
+        let attrs = JSON.parse(request.requestBody);
+
+        return schema.tasks.find(request.params.id).update(attrs);
+      });
+
+      this.delete("/api/tasks", (schema) => {
+        this.db.tasks.remove();
+        return schema.tasks.all();
+      });
+
+      this.delete("/api/tasks/:id", (schema, { params }) => {
+        const { id } = params;
+        schema.tasks.find(id).destroy();
+
         return schema.tasks.all();
       });
 

@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { formatDate } from "../../components/utils/utils";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "axios";
 
 export interface Task {
     id?: number;
@@ -12,148 +12,127 @@ export interface Task {
     completed: boolean;
 }
 
-const ID_MAX_NUMBER = Number.MAX_VALUE
+export interface Directory {
+    id: number;
+    name: string;
+}
 
-const defaultTasks: Task[] = [
-    {
-        id: 1,
-        dir: 'Main',
-        title: 'First task',
-        description: 'Description One',
-        created: formatDate(new Date()),
-        important: true,
-        completed: true,
-    },
-    {
-        id: 2,
-        dir: 'Main',
-        title: 'Second task',
-        description: 'Description Two',
-        created: '2023-10-10',
-        important: false,
-        completed: false,
-    },
-    {
-        id: 3,
-        dir: 'Main',
-        title: 'Important task',
-        description: 'Description Three',
-        created: formatDate(new Date()),
-        important: true,
-        completed: true,
-    },
-    {
-        id: 4,
-        dir: 'Main',
-        title: 'Need haircut',
-        description: 'Description four',
-        created: '2023-09-21',
-        important: false,
-        completed: false,
-    },
-    {
-        id: 5,
-        dir: 'Main',
-        title: 'Go movie',
-        description: 'Description five',
-        created: formatDate(new Date()),
-        important: true,
-        completed: false,
-    },
-    {
-        id: 6,
-        dir: 'Main',
-        title: 'Must prepare dinner',
-        description: 'Description six',
-        created: '2023-10-10',
-        important: false,
-        completed: true,
-    },
-]
+interface iInitialState {
+    tasks: Task[],
+    directories: Directory[],
+}
 
-const defaultDirectories = [
-    { name: 'Main' }
-]
-
-const initialState = {
-    tasks: defaultTasks,
-    directories: defaultDirectories
+const initialState: iInitialState = {
+    tasks: [],
+    directories: [],
 };
 
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
-    reducers: {
-        AddTaskReducer: (state, action) => {
-            const length = state.tasks.length - 1
-            const lastId = state.tasks[length].id
-            const newTask = { ...action.payload, id: lastId ? lastId + 1 : ID_MAX_NUMBER }
-
-            state.tasks.push(newTask)
-        },
-        editTaskReducer: (state, action) => {
-            const id = action.payload.id;
-            const task = state.tasks.find(task => task.id === id)!
-            const index = state.tasks.indexOf(task);
-
-            state.tasks[index] = action.payload
-        },
-        deleteAllDataReducer: (state) => {
-            state.tasks = [] as Task[];
-        },
-        deleteTaskReducer: (state, action) => {
-            const id = action.payload;
-            const tasks = state.tasks.filter(task => task.id !== id)
-            state.tasks = tasks;
-        },
-        searchTaskReducer: (state, action) => {
-            const str = action.payload
-            // This is a hack to use until the actual task storage logic is implemented
-            if (!str.length) {
-                state.tasks = defaultTasks
-                return;
-            }
-
-            const tasks = state.tasks.filter((task: Task) =>
-                task.title.toLowerCase().includes(str.toLowerCase()))
-            state.tasks = [...tasks]
-        },
-        toggleCompletedTaskReducer: (state, action) => {
-            const id = action.payload;
-            const task = state.tasks.find(task => task.id === id)
-            if (task) {
-                task.completed = !task.completed
-            }
-        },
-        toogleImportantTaskReducer: (state, action) => {
-            const id = action.payload;
-            const task = state.tasks.find(task => task.id === id)
-            if (task) {
-                task.important = !task.important
-            }
-        }
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            //   .addCase(fetchTasks.pending, (state) => {
+            //     state.isLoading = true;
+            //     state.error = {} as ServerError;
+            //   })
+            .addCase(fetchTasks.fulfilled, (state, { payload }) => {
+                state.tasks = payload;
+                // state.count = payload.count;
+                // state.isLoading = false;
+                // state.error = {} as ServerError;
+            })
+            //   .addCase(fetchTasks.rejected, (state, { payload }) => {
+            //     const msg = payload.message
+            //     const status = payload.response.status
+            //     state.error = { statusCode: Number(status), description: msg };
+            //     state.isLoading = false;
+            //   });
+            .addCase(addTaskReducer.fulfilled, (state, { payload }) => {
+                const newTask = payload;
+                state.tasks.push(newTask)
+                // state.count = payload.count;
+                // state.isLoading = false;
+                // state.error = {} as ServerError;
+            })
+            .addCase(editTaskReducer.fulfilled, (state, { payload }) => {
+                const id = payload.id;
+                const task = state.tasks.find(task => task.id === id)!
+                const index = state.tasks.indexOf(task);
+                state.tasks[index] = payload
+                // state.count = payload.count;
+                // state.isLoading = false;
+                // state.error = {} as ServerError;
+            })
+            .addCase(deleteTaskReducer.fulfilled, (state, { payload }) => {
+                state.tasks = payload
+                // state.count = payload.count;
+                // state.isLoading = false;
+                // state.error = {} as ServerError;
+            })
     },
-    extraReducers: {}
 })
+
+export const fetchTasks: any = createAsyncThunk('tasks/gatTasks',
+    async (params: {}, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get(`/api/tasks`, { params })
+            return data.tasks;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    });
+
+export const addTaskReducer: any = createAsyncThunk('tasks/addTasks',
+    async (params, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`/api/tasks`, params)
+            return data.task;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    });
+
+export const editTaskReducer: any = createAsyncThunk('tasks/editTasks',
+    async (params: Task, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.patch(`/api/tasks/${params.id}`, params)
+            return data.task;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    });
+
+export const deleteTaskReducer: any = createAsyncThunk('tasks/deleteTasks',
+    async (params: Task, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.delete(`/api/tasks/${params.id}`)
+            return data.tasks;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    });
+
+export const deleteAllDataReducer: any = createAsyncThunk('tasks/deleteTasks',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.delete(`/api/tasks`)
+            return data.tasks;
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    });
 
 export default tasksSlice.reducer
 
-export const { AddTaskReducer,
-    editTaskReducer,
-    searchTaskReducer,
-    deleteAllDataReducer,
-    toggleCompletedTaskReducer,
-    toogleImportantTaskReducer,
-    deleteTaskReducer } = tasksSlice.actions;
+export const showTasks = (state: any) => state.tasks.tasks
 
+export const getCompletedTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.completed)
 
-export const getTasks = (state: any) => state.tasks.tasks
+export const getUncompletedTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => !task.completed)
 
-export const getCompletedTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.completed)
-
-export const getUncompletedTasks = (state: any) => state.tasks.tasks.filter((task: Task) => !task.completed)
-
-export const getImportantTasks = (state: any) => state.tasks.tasks.filter((task: Task) => task.important)
+export const getImportantTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.important)
 
 export const getTodayTasks = (state: any) => {
     const todayDate = new Date()

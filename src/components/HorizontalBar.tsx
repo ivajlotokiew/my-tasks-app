@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
 import { useDispatch } from 'react-redux/es/hooks/useDispatch'
-import { getTodayTasks, searchTaskReducer } from '../features/tasks/tasksSlice'
+import { getTodayTasks, fetchTasks } from '../features/tasks/tasksSlice'
 import TasksModal from './TasksModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
@@ -27,7 +27,7 @@ const HorizontalBar = () => {
     }, []);
 
     useEffect(() => {
-        if (!search.length) dispatch(searchTaskReducer(search))
+        if (!search.length) dispatch(fetchTasks())
     }, [dispatch, search, setSearch])
 
     const handleOutsideClick = () => {
@@ -40,7 +40,7 @@ const HorizontalBar = () => {
 
     const handleBtnEvent = (event: any) => {
         event.preventDefault()
-        dispatch(searchTaskReducer(search))
+        dispatch(fetchTasks({ search }))
     }
 
     const HandleAlertPopupEvent = (event: any) => {

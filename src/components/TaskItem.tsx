@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Task, toggleCompletedTaskReducer, toogleImportantTaskReducer, deleteTaskReducer } from "../features/tasks/tasksSlice";
+import { useEffect, useState } from "react";
+import { Task, editTaskReducer, deleteTaskReducer } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch } from 'react-redux'
 import TasksModal from "./TasksModal";
@@ -11,18 +11,28 @@ interface Props {
 
 const TaskItem = ({ task }: Props) => {
     const [showModal, setShowModal] = useState(false)
+    const [taskCompleted, setTaskCompleted] = useState<boolean>(task.completed)
+    const [taskImportant, setTaskImportant] = useState<boolean>(task.important)
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(editTaskReducer({ ...task, completed: taskCompleted }))
+    }, [dispatch, taskCompleted])
+
+    useEffect(() => {
+        dispatch(editTaskReducer({ ...task, important: taskImportant }))
+    }, [dispatch, taskImportant])
+
     const toggleCompletedTask = () => {
-        dispatch(toggleCompletedTaskReducer(task.id))
+        setTaskCompleted(completed => !completed)
     }
 
     const toggleImportantTask = () => {
-        dispatch(toogleImportantTaskReducer(task.id))
+        setTaskImportant(important => !important)
     }
 
     const deleteTask = () => {
-        dispatch(deleteTaskReducer(task.id))
+        dispatch(deleteTaskReducer(task))
     }
 
     const handleShowModalEvent = () => {
