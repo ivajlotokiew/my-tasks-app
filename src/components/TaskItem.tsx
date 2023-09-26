@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Task, editTaskReducer, deleteTaskReducer } from "../features/tasks/tasksSlice";
+import { Task, editTaskAction, deleteTaskAction } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch } from 'react-redux'
 import TasksModal from "./TasksModal";
@@ -16,11 +16,11 @@ const TaskItem = ({ task }: Props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(editTaskReducer({ ...task, completed: taskCompleted }))
+        dispatch(editTaskAction({ ...task, completed: taskCompleted }))
     }, [dispatch, taskCompleted])
 
     useEffect(() => {
-        dispatch(editTaskReducer({ ...task, important: taskImportant }))
+        dispatch(editTaskAction({ ...task, important: taskImportant }))
     }, [dispatch, taskImportant])
 
     const toggleCompletedTask = () => {
@@ -32,7 +32,7 @@ const TaskItem = ({ task }: Props) => {
     }
 
     const deleteTask = () => {
-        dispatch(deleteTaskReducer(task))
+        dispatch(deleteTaskAction(task))
     }
 
     const handleShowModalEvent = () => {

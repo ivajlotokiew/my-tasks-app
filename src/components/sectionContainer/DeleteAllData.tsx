@@ -1,11 +1,11 @@
 import { useDispatch } from "react-redux"
-import { deleteAllDataReducer } from "../../features/tasks/tasksSlice"
+import { deleteAllDataAction } from "../../features/tasks/tasksSlice"
 import CustomButton from "../common/CustomButton/CustomButton"
 
 const DeleteAllData = () => {
     const dispatch = useDispatch()
     const deleteAllData = () => {
-        dispatch(deleteAllDataReducer())
+        dispatch(deleteAllDataAction())
     }
 
     return (
