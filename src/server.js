@@ -77,8 +77,8 @@ export function makeServer() {
         const { id } = params;
         schema.tasks.find(id).destroy();
         const tasks = schema.tasks.all().models;
-        const count = tasks.lengh;
-
+        const count = tasks.length;
+        debugger;
         return { tasks, count };
       });
 
