@@ -57,9 +57,10 @@ export function makeServer() {
 
       this.post("/api/tasks", (schema, request) => {
         let attrs = JSON.parse(request.requestBody);
+        const task = schema.tasks.create(attrs);
         const count = schema.tasks.all().models.length;
 
-        return { task: schema.tasks.create(attrs), count };
+        return { task, count };
       });
 
       this.patch("/api/tasks/:id", function (schema, request) {
