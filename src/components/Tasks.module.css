@@ -13,7 +13,6 @@
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
 }
 
 .task {
@@ -24,7 +23,7 @@
   min-height: 250px;
 }
 
-.container div:first-child:not(.newTask) {
+.container > div:first-child:not(.newTask) {
   background-color: rgb(91, 33, 182);
 }
 

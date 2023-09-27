@@ -6,6 +6,7 @@
     "leftNav head rightNav"
     "leftNav main rightNav";
   grid-template-columns: 2fr 7fr 2fr;
+  grid-template-rows: 100px auto;
   color: rgb(148, 163, 184);
   background-color: rgb(15, 23, 42);
   min-height: 100vh;

@@ -1,9 +1,27 @@
-import { useSelector } from "react-redux/es/hooks/useSelector"
-import { getUncompletedTasks } from "../../features/tasks/tasksSlice"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchTasks, showUncompletedTasks } from "../../features/tasks/tasksSlice"
 import Tasks from "../Tasks"
+import { useEffect, useState } from "react"
 
 const UncompletedTasks = () => {
-    const tasks = useSelector(getUncompletedTasks)
+    const dispatch = useDispatch()
+    const tasks = useSelector(showUncompletedTasks)
+    const [error, setError] = useState<any>(null)
+
+    useEffect(() => {
+        const getUncompletedTasks = async () => {
+            try {
+                await dispatch(fetchTasks({ completed: false })).unwrap()
+            } catch (e) {
+                setError(e);
+                console.error(e);
+            }
+        }
+
+        getUncompletedTasks()
+    }, [dispatch, error])
+
+    if (error) return <h2>{error}</h2>
 
     return (
         <div>
@@ -11,5 +29,6 @@ const UncompletedTasks = () => {
         </div>
     )
 }
+
 
 export default UncompletedTasks

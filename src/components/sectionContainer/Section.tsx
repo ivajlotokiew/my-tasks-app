@@ -1,4 +1,4 @@
-import { showTasks, getCompletedTasks, getTodayTasks, Task } from "../../features/tasks/tasksSlice"
+import { showCompletedTasks, getTodayTasks, showTasksCount, Task } from "../../features/tasks/tasksSlice"
 import CompletedTasksProgressBar from "./CompletedTasksProgressBar"
 import ShowTodaysTasks from "./ShowTodaysTasks"
 import styles from "./Section.module.css"
@@ -8,11 +8,11 @@ import CustomButton from "../common/CustomButton/CustomButton"
 
 
 const Section = () => {
-    const allTasks = useSelector(showTasks)
-    const completedTasks = useSelector(getCompletedTasks)
+    const completedTasks = useSelector(showCompletedTasks)
     const todayTasks = useSelector(getTodayTasks)
     const todayTasksCompleted = todayTasks.filter((task: Task) => task.completed)
     const showTodaysTasks = Boolean(todayTasks.length > 0)
+    const allTasksCount = useSelector(showTasksCount)
 
     const RedirectPage = () => {
         window.open('https://github.com/ivajlotokiew', '_blank')
@@ -32,7 +32,7 @@ const Section = () => {
                         progressBarName="Tasks today"
                     />}
                     <CompletedTasksProgressBar
-                        all={allTasks.length}
+                        all={allTasksCount}
                         completed={completedTasks.length}
                         progressBarName="All tasks"
                     />

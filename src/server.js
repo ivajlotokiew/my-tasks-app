@@ -25,18 +25,41 @@ export function makeServer() {
     routes() {
       this.get("/api/tasks", (schema, { queryParams }) => {
         const { search } = queryParams;
+        const { important } = queryParams;
+        let { completed } = queryParams;
+        const tasks = schema.tasks.all().models;
+        const count = tasks.length;
 
         if (search) {
-          return schema.tasks.where((task) => task.title.includes(search));
+          const tasks = schema.tasks.where((task) =>
+            task.title.includes(search)
+          ).models;
+
+          return { tasks, count };
         }
 
-        return schema.tasks.all();
+        if (important) {
+          const tasks = schema.tasks.where((task) => task.important).models;
+          return { tasks, count };
+        }
+
+        if (completed !== undefined) {
+          completed = completed === "true" ? true : false;
+          const tasks = schema.tasks.where(
+            (task) => task.completed === completed
+          ).models;
+
+          return { tasks, count };
+        }
+
+        return { tasks, count };
       });
 
       this.post("/api/tasks", (schema, request) => {
         let attrs = JSON.parse(request.requestBody);
+        const count = schema.tasks.all().models.length;
 
-        return schema.tasks.create(attrs);
+        return { task: schema.tasks.create(attrs), count };
       });
 
       this.patch("/api/tasks/:id", function (schema, request) {
@@ -47,14 +70,16 @@ export function makeServer() {
 
       this.delete("/api/tasks", (schema) => {
         this.db.tasks.remove();
-        return schema.tasks.all();
+        return { tasks: schema.tasks.all(), count: 0 };
       });
 
       this.delete("/api/tasks/:id", (schema, { params }) => {
         const { id } = params;
         schema.tasks.find(id).destroy();
+        const tasks = schema.tasks.all().models;
+        const count = tasks.lengh;
 
-        return schema.tasks.all();
+        return { tasks, count };
       });
 
       this.get("/api/directories", (schema) => {

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import Tasks from "../Tasks"
 import { useSelector } from "react-redux/es/hooks/useSelector"
-import { showTasks, fetchTasks, isLoading } from "../../features/tasks/tasksSlice"
+import { showTasks, fetchTasks } from "../../features/tasks/tasksSlice"
 import { useDispatch } from "react-redux"
 
 const AllTasks = () => {
     const dispatch = useDispatch()
-    const loading = useSelector(isLoading)
     const tasks = useSelector(showTasks)
     const [error, setError] = useState<any>(null)
 
@@ -27,7 +26,6 @@ const AllTasks = () => {
 
     return (
         <div>
-            {loading && <div> Loading...</div>}
             <Tasks tasks={tasks} stateTasksName="All" />
         </div>
     )
