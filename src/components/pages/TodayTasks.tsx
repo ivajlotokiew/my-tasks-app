@@ -11,7 +11,7 @@ const TodayTasks = () => {
     useEffect(() => {
         const getTodayTasks = async () => {
             try {
-                await dispatch(fetchTasks({ completed: true })).unwrap()
+                await dispatch(fetchTasks({ today: true })).unwrap()
             } catch (e) {
                 setError(e);
                 console.error(e);

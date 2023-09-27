@@ -47,7 +47,7 @@ const TaskItem = ({ task }: Props) => {
             <h5>{task.description}</h5>
             <div className={styles.created}>
                 <img src='/calendar.svg' alt='mySvgImage' width="25" />
-                {task.created}
+                {task.date}
             </div>
             <hr className={styles.lineSeparator} />
             <LoadingOverlay

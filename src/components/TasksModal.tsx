@@ -43,7 +43,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
   const dispatch = useDispatch()
   const [title, setTitle] = useState(() => task ? task.title : '')
   const [description, setDescription] = useState(() => task ? task.description : '')
-  const [date, setDate] = useState(() => task ? task.created : today)
+  const [dateTask, setDateTask] = useState(() => task ? task.date : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
   const [selectedOption, setSelectedOption] = useState("disabledOption");
@@ -62,7 +62,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
       clearFields()
     } else {
       setTitle(task.title)
-      setDate(task.created)
+      setDateTask(task.date)
       setDescription(task.description)
       setImportantChecked(task.important)
       setCompletedChecked(task.completed)
@@ -74,7 +74,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
   const clearFields = () => {
     setTitle('')
     setDescription('')
-    setDate(today)
+    setDateTask(today)
     setImportantChecked(false)
     setCompletedChecked(false)
   }
@@ -92,7 +92,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
   }
 
   const handleDateInput = (event: any) => {
-    setDate(event.target.value)
+    setDateTask(event.target.value)
   }
 
   const handleImportantChecked = (event: any) => {
@@ -109,7 +109,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
       title,
       directoryId: 1,
       description,
-      created: date,
+      date: dateTask,
       important: importantChecked,
       completed: completedChecked
     }
@@ -160,7 +160,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
           <input type="date"
             id="taskDate"
             name="taskDate"
-            value={date}
+            value={dateTask}
             required
             min={today}
             onChange={(event) => handleDateInput(event)} />

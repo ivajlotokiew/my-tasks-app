@@ -13,8 +13,8 @@ const useSortTasks = ({ tasks }: Props) => {
     const sortByDate = (sortedOrder: string): Task[] => {
       const tasksCopy = [...tasks];
       const sorted = tasksCopy.sort((a: Task, b: Task) => {
-        const first = Date.parse(a.created);
-        const second = Date.parse(b.created);
+        const first = Date.parse(a.date);
+        const second = Date.parse(b.date);
         if (first > second) return 1;
         if (first < second) return -1;
         return 0;
