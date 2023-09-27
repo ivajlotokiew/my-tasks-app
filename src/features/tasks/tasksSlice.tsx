@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
+import { formatDate } from "../../components/utils/utils";
 
 export interface Task {
     id?: number;
@@ -186,6 +187,8 @@ export const showUncompletedTasks = (state: any) => state.tasks.tasks?.filter((t
 
 export const showImportantTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.important)
 
+export const showTodaysTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.date === formatDate(new Date()))
+
 export const getError = (state: any) => state.tasks.error
 
 export const isLoading = (state: any) => state.tasks.isLoading.tasksIsLoading
@@ -199,9 +202,3 @@ export const isLoadingDeletedTask = (state: any) => state.tasks.isLoading.delete
 export const isLoadingAllDeletedTasks = (state: any) => state.tasks.isLoading.allDeletedTasksIsLoading
 
 export const showTasksCount = (state: any) => state.tasks.count
-
-// export const getTodayTasks = (state: any) => {
-//     const todayToStr: string = formatDate(new Date())
-
-//     return state.tasks.tasks.filter((task: Task) => task.date === todayToStr)
-// }

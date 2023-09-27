@@ -34,7 +34,7 @@ export function makeServer() {
 
         if (today) {
           const tasks = schema.tasks.where(
-            (task) => (task.date = formatDate(new Date()))
+            (task) => task.date === formatDate(new Date())
           ).models;
 
           return { tasks, count };
