@@ -1,4 +1,4 @@
-import { showCompletedTasks, getTodayTasks, showTasksCount, Task } from "../../features/tasks/tasksSlice"
+import { showCompletedTasks, showTasks, showTasksCount, Task } from "../../features/tasks/tasksSlice"
 import CompletedTasksProgressBar from "./CompletedTasksProgressBar"
 import ShowTodaysTasks from "./ShowTodaysTasks"
 import styles from "./Section.module.css"
@@ -9,7 +9,7 @@ import CustomButton from "../common/CustomButton/CustomButton"
 
 const Section = () => {
     const completedTasks = useSelector(showCompletedTasks)
-    const todayTasks = useSelector(getTodayTasks)
+    const todayTasks = useSelector(showTasks)
     const todayTasksCompleted = todayTasks.filter((task: Task) => task.completed)
     const showTodaysTasks = Boolean(todayTasks.length > 0)
     const allTasksCount = useSelector(showTasksCount)

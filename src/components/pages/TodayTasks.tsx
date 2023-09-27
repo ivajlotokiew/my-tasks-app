@@ -1,9 +1,27 @@
-import { useSelector } from "react-redux/es/hooks/useSelector"
-import { getTodayTasks } from "../../features/tasks/tasksSlice"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchTasks, showTasks } from "../../features/tasks/tasksSlice"
 import Tasks from "../Tasks"
+import { useEffect, useState } from "react"
 
 const TodayTasks = () => {
-    const tasks = useSelector(getTodayTasks)
+    const dispatch = useDispatch()
+    const tasks = useSelector(showTasks)
+    const [error, setError] = useState<any>(null)
+
+    useEffect(() => {
+        const getTodayTasks = async () => {
+            try {
+                await dispatch(fetchTasks({ completed: true })).unwrap()
+            } catch (e) {
+                setError(e);
+                console.error(e);
+            }
+        }
+
+        getTodayTasks()
+    }, [dispatch, error])
+
+    if (error) return <h2>{error}</h2>
 
     return (
         <div>
@@ -11,5 +29,6 @@ const TodayTasks = () => {
         </div>
     )
 }
+
 
 export default TodayTasks

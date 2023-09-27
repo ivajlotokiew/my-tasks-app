@@ -1,5 +1,6 @@
 import { createServer, Model, hasMany, belongsTo } from "miragejs";
 import { tasks } from "./backend/models/task-data";
+import { formatDate } from "./components/utils/utils";
 
 export function makeServer() {
   const server = createServer({
@@ -26,9 +27,17 @@ export function makeServer() {
       this.get("/api/tasks", (schema, { queryParams }) => {
         const { search } = queryParams;
         const { important } = queryParams;
+        const { today } = queryParams;
         let { completed } = queryParams;
         const tasks = schema.tasks.all().models;
         const count = tasks.length;
+
+        if (today) {
+          const tasks = schema.tasks.where(
+            (task) => (task.create = formatDate(new Date()))
+          ).models;
+          return { tasks, count };
+        }
 
         if (search) {
           const tasks = schema.tasks.where((task) =>
