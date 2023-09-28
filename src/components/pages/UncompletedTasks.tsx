@@ -30,5 +30,4 @@ const UncompletedTasks = () => {
     )
 }
 
-
 export default UncompletedTasks

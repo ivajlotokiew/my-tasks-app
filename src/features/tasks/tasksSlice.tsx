@@ -2,15 +2,21 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 import { formatDate } from "../../components/utils/utils";
 
+export interface User {
+    id: number,
+    name: string,
+    imgURL: string,
+}
+
 export interface Task {
-    id?: number;
-    directoryId?: number;
-    dir?: string;
-    title: string;
-    description?: string;
-    date: string;
-    important: boolean;
-    completed: boolean;
+    id?: number,
+    directoryId?: number,
+    dir?: string,
+    title: string,
+    description?: string,
+    date: string,
+    important: boolean,
+    completed: boolean,
 }
 
 export interface Directory {
@@ -24,17 +30,22 @@ interface iTaskLoading {
     editedTaskIsLoading: boolean,
     deletedTaskIsLoading: boolean,
     allDeletedTasksIsLoading: boolean,
+    userIsLoading: boolean,
 }
 
 interface iInitialState {
+    user: User,
     tasks: Task[],
     directories: Directory[],
     error: string | null,
     isLoading: iTaskLoading,
     count: number,
+    todaysTasksCount: number
+    completedTasksCount: number
 }
 
 const initialState: iInitialState = {
+    user: { id: 0, name: '', imgURL: '' },
     tasks: [],
     directories: [],
     isLoading: {
@@ -42,17 +53,29 @@ const initialState: iInitialState = {
         addedTaskIsLoading: false,
         allDeletedTasksIsLoading: false,
         deletedTaskIsLoading: false,
-        editedTaskIsLoading: false
+        editedTaskIsLoading: false,
+        userIsLoading: false,
     },
     error: null,
     count: 0,
+    todaysTasksCount: 0,
+    completedTasksCount: 0,
 };
 
+export const fetchUser: any = createAsyncThunk('tasks/getUser',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get("/api/user/me")
+            return data
+        } catch (error) {
+            return rejectWithValue("We couldn't load your tasks. Try again soon.");
+        }
+    });
+
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
-    async (params: {}, { rejectWithValue }) => {
+    async (params: {}, { rejectWithValue, dispatch }) => {
         try {
             const { data } = await axios.get(`/api/tasks`, { params })
-            debugger
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");
@@ -105,6 +128,21 @@ export const tasksSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(fetchUser.pending, (state) => {
+                state.isLoading.userIsLoading = true;
+            })
+            .addCase(fetchUser.fulfilled, (state, { payload }) => {
+                state.user = payload.user;
+                state.error = null;
+                state.isLoading.userIsLoading = false;
+                state.count = payload.count;
+                state.todaysTasksCount = payload.todaysTasksCount;
+                state.completedTasksCount = payload.completedTasksCount;
+            })
+            .addCase(fetchUser.rejected, (state, { payload }) => {
+                state.error = payload.name
+                state.isLoading.userIsLoading = false;
+            })
             .addCase(fetchTasks.pending, (state) => {
                 state.isLoading.tasksIsLoading = true;
             })
@@ -179,6 +217,8 @@ export const tasksSlice = createSlice({
 
 export default tasksSlice.reducer
 
+export const showUserData = (state: any) => state.tasks.user
+
 export const showTasks = (state: any) => state.tasks.tasks
 
 export const showCompletedTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.completed)
@@ -201,4 +241,11 @@ export const isLoadingDeletedTask = (state: any) => state.tasks.isLoading.delete
 
 export const isLoadingAllDeletedTasks = (state: any) => state.tasks.isLoading.allDeletedTasksIsLoading
 
+export const isLoadingUserData = (state: any) => state.tasks.isLoading.userIsLoading
+
 export const showTasksCount = (state: any) => state.tasks.count
+
+export const showTodaysTasksCount = (state: any) => state.tasks.todaysTasksCount
+
+export const showCompletedTasksCount = (state: any) => state.tasks.completedTasksCount
+

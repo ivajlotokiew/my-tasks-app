@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Task, editTaskAction, deleteTaskAction, isLoadingEditedTask } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,25 +12,15 @@ interface Props {
 
 const TaskItem = ({ task }: Props) => {
     const [showModal, setShowModal] = useState(false)
-    const [taskCompleted, setTaskCompleted] = useState<boolean>(task.completed)
-    const [taskImportant, setTaskImportant] = useState<boolean>(task.important)
     const dispatch = useDispatch()
     const loading = useSelector(isLoadingEditedTask)
 
-    useEffect(() => {
-        dispatch(editTaskAction({ ...task, completed: taskCompleted }))
-    }, [dispatch, taskCompleted])
-
-    useEffect(() => {
-        dispatch(editTaskAction({ ...task, important: taskImportant }))
-    }, [dispatch, taskImportant])
-
     const toggleCompletedTask = () => {
-        setTaskCompleted(completed => !completed)
+        dispatch(editTaskAction({ ...task, completed: !task.completed }))
     }
 
     const toggleImportantTask = () => {
-        setTaskImportant(important => !important)
+        dispatch(editTaskAction({ ...task, important: !task.important }))
     }
 
     const deleteTask = () => {
@@ -103,7 +93,6 @@ const TaskItem = ({ task }: Props) => {
                     </div>
                 </div>
             </LoadingOverlay>
-
         </>
     )
 }

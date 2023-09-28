@@ -30,5 +30,4 @@ const TodayTasks = () => {
     )
 }
 
-
 export default TodayTasks

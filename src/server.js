@@ -24,6 +24,20 @@ export function makeServer() {
       );
     },
     routes() {
+      const getAllTasks = () => {
+        return this.db.tasks;
+      };
+
+      const getCompletedTasks = () => {
+        return this.db.tasks.where((task) => task.completed);
+      };
+
+      const getTodaysTasks = () => {
+        return this.db.tasks.where(
+          (task) => task.date === formatDate(new Date())
+        );
+      };
+
       this.get("/api/tasks", (schema, { queryParams }) => {
         const { search } = queryParams;
         const { important } = queryParams;
@@ -42,7 +56,7 @@ export function makeServer() {
 
         if (search) {
           const tasks = schema.tasks.where((task) =>
-            task.title.includes(search)
+            task.title.toLowerCase().includes(search.toLowerCase())
           ).models;
 
           return { tasks, count };
@@ -89,7 +103,7 @@ export function makeServer() {
         schema.tasks.find(id).destroy();
         const tasks = schema.tasks.all().models;
         const count = tasks.length;
-        debugger;
+
         return { tasks, count };
       });
 
@@ -109,6 +123,19 @@ export function makeServer() {
         let task = schema.tasks.find(taskId);
 
         return task.directory;
+      });
+
+      this.get("/api/user/me", () => {
+        const allTasksCount = getAllTasks().length;
+        const todaysTasksCount = getTodaysTasks().length;
+        const completedTasksCount = getCompletedTasks().length;
+        const user = {
+          id: 1,
+          name: "Ivaylo Tokiev",
+          imgURL: "img_avatar.png",
+        };
+
+        return { user, allTasksCount, todaysTasksCount, completedTasksCount };
       });
     },
   });
