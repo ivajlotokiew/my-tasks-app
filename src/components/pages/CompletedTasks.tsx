@@ -1,31 +1,31 @@
 import { useSelector, useDispatch } from "react-redux"
-import { fetchTasks, showCompletedTasks } from "../../features/tasks/tasksSlice"
+import { fetchTasks, showTasks } from "../../features/tasks/tasksSlice"
 import Tasks from "../Tasks"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 const CompletedTasks = () => {
     const dispatch = useDispatch()
-    const tasks = useSelector(showCompletedTasks)
+    const tasks = useSelector(showTasks)
     const [error, setError] = useState<any>(null)
 
-    useEffect(() => {
-        const getCompletedTasks = async () => {
-            try {
-                await dispatch(fetchTasks({ completed: true })).unwrap()
-            } catch (e) {
-                setError(e);
-                console.error(e);
-            }
+    const reload = useCallback(async () => {
+        try {
+            await dispatch(fetchTasks({ completed: true })).unwrap()
+        } catch (e) {
+            setError(e);
+            console.error(e);
         }
+    }, [dispatch, setError])
 
-        getCompletedTasks()
-    }, [dispatch, error])
+    useEffect(() => {
+        reload()
+    }, [reload])
 
     if (error) return <h2>{error}</h2>
 
     return (
         <div>
-            <Tasks tasks={tasks} stateTasksName="Completed" />
+            <Tasks tasks={tasks} reload={reload} stateTasksName="Completed" />
         </div>
     )
 }

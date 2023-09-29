@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TasksModal.module.css'
-import { Task, editTaskAction, addTaskAction } from '../features/tasks/tasksSlice';
+import { Task, editTaskAction, addTaskAction, fetchTasks } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { formatDate } from './utils/utils';
 import CustomDropdown, { Option } from './common/CustomDropdown/CustomDropdown';
@@ -47,6 +47,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
   const [selectedOption, setSelectedOption] = useState("disabledOption");
+  const [error, setError] = useState<any>(null)
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
@@ -68,6 +69,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
       setCompletedChecked(task.completed)
     }
 
+    setError(null)
     setIsOpen(false);
   }
 
@@ -103,7 +105,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
     setCompletedChecked(event.target.checked)
   }
 
-  const handleSubmitData = (event: any) => {
+  const handleSubmitData = async (event: any) => {
     event.preventDefault()
     const formTask: Task = {
       title,
@@ -116,7 +118,14 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
 
     if (task) {
       formTask.id = task.id
-      dispatch(editTaskAction(formTask))
+      try {
+        await dispatch(editTaskAction(formTask)).unwrap()
+        dispatch(fetchTasks({ today: true })).unwrap()
+      } catch (err) {
+        setError(err);
+        console.error(err);
+        return
+      }
     } else {
       dispatch(addTaskAction(formTask))
     }
@@ -145,8 +154,8 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
           width="25"
           onClick={closeModal}
           style={{ cursor: "pointer", marginLeft: "10px" }} />
-        <form className={styles.modalWrapper} onSubmit={(event) => handleSubmitData(event)}>
 
+        <form className={styles.modalWrapper} onSubmit={(event) => handleSubmitData(event)}>
           <label htmlFor="title">Tittle</label>
           <input type="text"
             id="title"
@@ -194,8 +203,8 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
             <span className={styles.checkmark} />
           </label>
 
+          {error && <span style={{ color: "red" }}>{error}</span>}
           <input type="submit" value="Submit"></input>
-
         </form>
       </Modal>
     </>

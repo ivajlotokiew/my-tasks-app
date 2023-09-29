@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Tasks from "../Tasks"
 import { useSelector } from "react-redux/es/hooks/useSelector"
 import { showTasks, fetchTasks } from "../../features/tasks/tasksSlice"
@@ -9,24 +9,25 @@ const AllTasks = () => {
     const tasks = useSelector(showTasks)
     const [error, setError] = useState<any>(null)
 
-    useEffect(() => {
-        const getAllPosts = async () => {
-            try {
-                await dispatch(fetchTasks()).unwrap()
-            } catch (e) {
-                setError(e);
-                console.error(e);
-            }
-        }
 
-        getAllPosts()
-    }, [dispatch, error])
+    const reload = useCallback(async () => {
+        try {
+            await dispatch(fetchTasks()).unwrap()
+        } catch (e) {
+            setError(e);
+            console.error(e);
+        }
+    }, [dispatch, setError])
+
+    useEffect(() => {
+        reload()
+    }, [reload])
 
     if (error) return <h2>{error}</h2>
 
     return (
         <div>
-            <Tasks tasks={tasks} stateTasksName="All" />
+            <Tasks tasks={tasks} reload={reload} stateTasksName="All" />
         </div>
     )
 }

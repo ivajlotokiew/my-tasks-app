@@ -1,31 +1,31 @@
 import { useSelector, useDispatch } from "react-redux"
-import { fetchTasks, showTodaysTasks } from "../../features/tasks/tasksSlice"
+import { fetchTasks, showTasks } from "../../features/tasks/tasksSlice"
 import Tasks from "../Tasks"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 const TodayTasks = () => {
     const dispatch = useDispatch()
-    const tasks = useSelector(showTodaysTasks)
+    const tasks = useSelector(showTasks)
     const [error, setError] = useState<any>(null)
 
-    useEffect(() => {
-        const getTodayTasks = async () => {
-            try {
-                await dispatch(fetchTasks({ today: true })).unwrap()
-            } catch (e) {
-                setError(e);
-                console.error(e);
-            }
+    const reload = useCallback(async () => {
+        try {
+            await dispatch(fetchTasks({ today: true })).unwrap()
+        } catch (e) {
+            setError(e);
+            console.error(e);
         }
+    }, [dispatch, setError])
 
-        getTodayTasks()
-    }, [dispatch, error])
+    useEffect(() => {
+        reload()
+    }, [reload])
 
     if (error) return <h2>{error}</h2>
 
     return (
         <div>
-            <Tasks tasks={tasks} stateTasksName="Today's" />
+            <Tasks tasks={tasks} reload={reload} stateTasksName="Today's" />
         </div>
     )
 }

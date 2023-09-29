@@ -73,7 +73,7 @@ export const fetchUser: any = createAsyncThunk('tasks/getUser',
     });
 
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
-    async (params: {}, { rejectWithValue, dispatch }) => {
+    async (params: {}, { rejectWithValue }) => {
         try {
             const { data } = await axios.get(`/api/tasks`, { params })
             return data
@@ -135,7 +135,7 @@ export const tasksSlice = createSlice({
                 state.user = payload.user;
                 state.error = null;
                 state.isLoading.userIsLoading = false;
-                state.count = payload.count;
+                state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
@@ -150,7 +150,6 @@ export const tasksSlice = createSlice({
                 state.tasks = payload.tasks;
                 state.isLoading.tasksIsLoading = false;
                 state.error = null;
-                state.count = payload.count
             })
             .addCase(fetchTasks.rejected, (state, { payload }) => {
                 state.error = payload.name
@@ -164,7 +163,9 @@ export const tasksSlice = createSlice({
                 state.tasks.push(newTask)
                 state.isLoading.addedTaskIsLoading = false;
                 state.error = null;
-                state.count = payload.count;
+                state.count = payload.allTasksCount;
+                state.todaysTasksCount = payload.todaysTasksCount;
+                state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(addTaskAction.rejected, (state, { payload }) => {
                 state.error = payload.name
@@ -192,7 +193,9 @@ export const tasksSlice = createSlice({
                 state.tasks = payload.tasks
                 state.isLoading.deletedTaskIsLoading = false
                 state.error = null
-                state.count = payload.count
+                state.count = payload.allTasksCount;
+                state.todaysTasksCount = payload.todaysTasksCount;
+                state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(deleteTaskAction.rejected, (state, { payload }) => {
                 state.error = payload.name
@@ -205,7 +208,6 @@ export const tasksSlice = createSlice({
                 state.tasks = payload.tasks
                 state.isLoading.allDeletedTasksIsLoading = false;
                 state.error = null;
-                state.count = payload.count
             })
             .addCase(deleteAllDataAction.rejected, (state, { payload }) => {
                 state.error = payload.name
@@ -214,20 +216,11 @@ export const tasksSlice = createSlice({
     },
 })
 
-
 export default tasksSlice.reducer
 
 export const showUserData = (state: any) => state.tasks.user
 
 export const showTasks = (state: any) => state.tasks.tasks
-
-export const showCompletedTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.completed)
-
-export const showUncompletedTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => !task.completed)
-
-export const showImportantTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.important)
-
-export const showTodaysTasks = (state: any) => state.tasks.tasks?.filter((task: Task) => task.date === formatDate(new Date()))
 
 export const getError = (state: any) => state.tasks.error
 
@@ -248,4 +241,3 @@ export const showTasksCount = (state: any) => state.tasks.count
 export const showTodaysTasksCount = (state: any) => state.tasks.todaysTasksCount
 
 export const showCompletedTasksCount = (state: any) => state.tasks.completedTasksCount
-

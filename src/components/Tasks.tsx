@@ -19,9 +19,10 @@ const options: Option[] = [
 interface Props {
     tasks: Task[];
     stateTasksName: string;
+    reload: () => void;
 }
 
-const Tasks = ({ tasks, stateTasksName }: Props) => {
+const Tasks = ({ tasks, stateTasksName, reload }: Props) => {
     const [showModal, setShowModal] = useState(false)
     const { setSortedBy, sortedBy, sortedTasks } = useSortTasks({ tasks });
     const loading = useSelector(isLoading)
@@ -63,7 +64,7 @@ const Tasks = ({ tasks, stateTasksName }: Props) => {
                 <div className={styles.container}>
                     {sortedTasks.map((task: Task) =>
                         <div className={styles.task} key={task.id}>
-                            <TaskItem task={task} />
+                            <TaskItem task={task} reload={reload} />
                         </div>)}
                     <TasksModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                         <div className={`${styles.task} ${styles.newTask}`} onClick={handleShowModalEvent}>

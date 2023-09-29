@@ -51,7 +51,7 @@ export function makeServer() {
             (task) => task.date === formatDate(new Date())
           ).models;
 
-          return { tasks, count };
+          return { tasks };
         }
 
         if (search) {
@@ -59,12 +59,12 @@ export function makeServer() {
             task.title.toLowerCase().includes(search.toLowerCase())
           ).models;
 
-          return { tasks, count };
+          return { tasks };
         }
 
         if (important) {
           const tasks = schema.tasks.where((task) => task.important).models;
-          return { tasks, count };
+          return { tasks };
         }
 
         if (completed !== undefined) {
@@ -73,18 +73,20 @@ export function makeServer() {
             (task) => task.completed === completed
           ).models;
 
-          return { tasks, count };
+          return { tasks };
         }
 
-        return { tasks, count };
+        return { tasks };
       });
 
       this.post("/api/tasks", (schema, request) => {
         let attrs = JSON.parse(request.requestBody);
         const task = schema.tasks.create(attrs);
-        const count = schema.tasks.all().models.length;
+        const allTasksCount = getAllTasks().length;
+        const todaysTasksCount = getTodaysTasks().length;
+        const completedTasksCount = getCompletedTasks().length;
 
-        return { task, count };
+        return { task, allTasksCount, todaysTasksCount, completedTasksCount };
       });
 
       this.patch("/api/tasks/:id", function (schema, request) {
@@ -102,9 +104,11 @@ export function makeServer() {
         const { id } = params;
         schema.tasks.find(id).destroy();
         const tasks = schema.tasks.all().models;
-        const count = tasks.length;
+        const allTasksCount = getAllTasks().length;
+        const todaysTasksCount = getTodaysTasks().length;
+        const completedTasksCount = getCompletedTasks().length;
 
-        return { tasks, count };
+        return { tasks, allTasksCount, todaysTasksCount, completedTasksCount };
       });
 
       this.get("/api/directories", (schema) => {

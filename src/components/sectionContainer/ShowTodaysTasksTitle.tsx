@@ -4,7 +4,7 @@ interface Props {
     tasks: Task[]
 }
 
-const ShowTodaysTasks = ({ tasks }: Props) => {
+const ShowTodaysTasksTitle = ({ tasks }: Props) => {
     return (
         <>
             {
@@ -20,4 +20,4 @@ const ShowTodaysTasks = ({ tasks }: Props) => {
     )
 }
 
-export default ShowTodaysTasks
+export default ShowTodaysTasksTitle

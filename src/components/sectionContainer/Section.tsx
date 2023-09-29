@@ -1,14 +1,14 @@
 import {
     showTasks,
-    showTodaysTasksCount,
     showCompletedTasksCount,
+    showTodaysTasksCount,
     showTasksCount,
     showUserData,
     Task
 }
     from "../../features/tasks/tasksSlice"
 import CompletedTasksProgressBar from "./CompletedTasksProgressBar"
-import ShowTodaysTasks from "./ShowTodaysTasks"
+import ShowTodaysTasksTitle from "./ShowTodaysTasksTitle"
 import styles from "./Section.module.css"
 import { useSelector } from "react-redux"
 import DeleteAllData from "./DeleteAllData"
@@ -19,8 +19,8 @@ const Section = () => {
     const todayTasksCompleted = todayTasks.filter((task: Task) => task.completed)
     const displayTodaysTasks = Boolean(todayTasks.length > 0)
     const allTasksCount = useSelector(showTasksCount)
-    const todayTasksCount = useSelector(showTodaysTasksCount)
     const completedTasksCount = useSelector(showCompletedTasksCount)
+    const todaysTasksCount = useSelector(showTodaysTasksCount)
     const userData = useSelector(showUserData)
 
     // console.log('user data: ', userData)
@@ -40,18 +40,21 @@ const Section = () => {
                         <span>Hi, User!</span>
                         <img src="img_avatar.png" alt="Avatar" className={styles.avatar} />
                     </div>
+
                     {displayTodaysTasks && <CompletedTasksProgressBar
-                        all={todayTasksCount}
-                        completed={todayTasksCompleted.length}
                         progressBarName="Tasks today"
+                        all={todaysTasksCount}
+                        completed={todayTasksCompleted.length}
                     />}
+
                     <CompletedTasksProgressBar
+                        progressBarName="All tasks"
                         all={allTasksCount}
                         completed={completedTasksCount}
-                        progressBarName="All tasks"
                     />
+
                     <hr style={{ border: '1px dashed', marginBottom: '25px' }} />
-                    {displayTodaysTasks && <ShowTodaysTasks tasks={todayTasks} />}
+                    {displayTodaysTasks && <ShowTodaysTasksTitle tasks={todayTasks} />}
                 </div>
                 <div className={styles.footer}>
                     <DeleteAllData />

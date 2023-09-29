@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Task, editTaskAction, deleteTaskAction, isLoadingEditedTask } from "../features/tasks/tasksSlice";
+import { Task, editTaskAction, deleteTaskAction, isLoadingEditedTask, fetchUser } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch, useSelector } from 'react-redux'
 import TasksModal from "./TasksModal";
@@ -7,24 +7,29 @@ import CustomButton from "./common/CustomButton/CustomButton";
 import LoadingOverlay from 'react-loading-overlay-ts';
 
 interface Props {
-    task: Task
+    task: Task,
+    reload: () => void,
 }
 
-const TaskItem = ({ task }: Props) => {
+const TaskItem = ({ task, reload }: Props) => {
     const [showModal, setShowModal] = useState(false)
     const dispatch = useDispatch()
     const loading = useSelector(isLoadingEditedTask)
 
     const toggleCompletedTask = () => {
-        dispatch(editTaskAction({ ...task, completed: !task.completed }))
+        dispatch(editTaskAction({ ...task, completed: !task.completed })).then(() => {
+            reload()
+        })
     }
 
-    const toggleImportantTask = () => {
-        dispatch(editTaskAction({ ...task, important: !task.important }))
+    const toggleImportantTask = async () => {
+        await dispatch(editTaskAction({ ...task, important: !task.important }))
+        reload()
     }
 
-    const deleteTask = () => {
-        dispatch(deleteTaskAction(task))
+    const deleteTask = async () => {
+        await dispatch(deleteTaskAction(task))
+        reload()
     }
 
     const handleShowModalEvent = () => {
