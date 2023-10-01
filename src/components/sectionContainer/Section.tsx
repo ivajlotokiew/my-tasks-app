@@ -23,11 +23,6 @@ const Section = () => {
     const todaysTasksCount = useSelector(showTodaysTasksCount)
     const userData = useSelector(showUserData)
 
-    // console.log('user data: ', userData)
-    // console.log('all', allTasksCount)
-    // console.log('today', todayTasksCount)
-    // console.log('completed', completedTasksCount)
-
     const RedirectPage = () => {
         window.open('https://github.com/ivajlotokiew', '_blank')
     }
@@ -37,8 +32,8 @@ const Section = () => {
             <div className={styles.container}>
                 <div className={styles.heading}>
                     <div className={styles.account}>
-                        <span>Hi, User!</span>
-                        <img src="img_avatar.png" alt="Avatar" className={styles.avatar} />
+                        <span>{'Hi, ' + userData.name}</span>
+                        <img src={userData.imgURL} alt="Avatar" className={styles.avatar} />
                     </div>
 
                     {displayTodaysTasks && <CompletedTasksProgressBar

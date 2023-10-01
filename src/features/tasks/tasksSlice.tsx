@@ -75,6 +75,7 @@ export const fetchUser: any = createAsyncThunk('tasks/getUser',
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
     async (params: {}, { rejectWithValue }) => {
         try {
+            debugger
             const { data } = await axios.get(`/api/tasks`, { params })
             return data
         } catch (error) {
@@ -96,7 +97,7 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
     async (params: Task, { rejectWithValue }) => {
         try {
             const { data } = await axios.patch(`/api/tasks/${params.id}`, params)
-            return data.task;
+            return data;
         } catch (error) {
             return rejectWithValue("We couldn't edit the task. Try again soon.");
         }
@@ -175,12 +176,14 @@ export const tasksSlice = createSlice({
                 state.isLoading.editedTaskIsLoading = true;
             })
             .addCase(editTaskAction.fulfilled, (state, { payload }) => {
-                const id = payload.id;
+                const id = payload.task.id;
                 const task = state.tasks.find(task => task.id === id)!
                 const index = state.tasks.indexOf(task);
-                state.tasks[index] = payload
+                state.tasks[index] = payload.task
                 state.isLoading.editedTaskIsLoading = false;
                 state.error = null;
+                state.todaysTasksCount = payload.todaysTasksCount;
+                state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(editTaskAction.rejected, (state, { payload }) => {
                 state.error = payload.name

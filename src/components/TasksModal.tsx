@@ -5,6 +5,7 @@ import { Task, editTaskAction, addTaskAction, fetchTasks } from '../features/tas
 import { useDispatch } from 'react-redux'
 import { formatDate } from './utils/utils';
 import CustomDropdown, { Option } from './common/CustomDropdown/CustomDropdown';
+import { useNavigate } from 'react-router-dom';
 
 const customStyles = {
   content: {
@@ -22,22 +23,30 @@ const customStyles = {
   },
 };
 
+const stateTasksObj = [
+  { value: "Today's", label: 'today' },
+  { value: "Completed", label: 'completed' },
+  { value: "Uncompleted", label: 'uncommpleted' },
+  { value: "Important", label: 'important' },
+]
+
 Modal.setAppElement('#root');
 
 interface Props {
-  task?: Task;
-  modalIsOpen: boolean;
-  setIsOpen: (modalIsOpen: boolean) => void;
-  nameForm: string;
-  children?: JSX.Element;
-  dropdownOptions?: Option[];
+  task?: Task,
+  modalIsOpen: boolean,
+  setIsOpen: (modalIsOpen: boolean) => void,
+  nameForm: string,
+  children?: JSX.Element,
+  dropdownOptions?: Option[],
+  stateTasks?: string,
 }
 
 const defaultDropdownOptions: Option[] = [
   { label: "Main", value: "main" },
 ]
 
-function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdownOptions = defaultDropdownOptions }: Props) {
+function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks, dropdownOptions = defaultDropdownOptions }: Props) {
   let subtitle: any;
   const today = formatDate(new Date())
   const dispatch = useDispatch()
@@ -48,6 +57,7 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
   const [selectedOption, setSelectedOption] = useState("disabledOption");
   const [error, setError] = useState<any>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
@@ -118,16 +128,21 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, dropdown
 
     if (task) {
       formTask.id = task.id
+      debugger;
+      const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
       try {
         await dispatch(editTaskAction(formTask)).unwrap()
-        dispatch(fetchTasks({ today: true })).unwrap()
+        dispatch(fetchTasks({
+          ...(state && { [state]: true })
+        })).unwrap()
       } catch (err) {
         setError(err);
         console.error(err);
         return
       }
     } else {
-      dispatch(addTaskAction(formTask))
+      await dispatch(addTaskAction(formTask))
+      navigate("/")
     }
 
     clearFields();

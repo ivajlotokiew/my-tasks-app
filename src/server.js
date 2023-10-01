@@ -43,8 +43,8 @@ export function makeServer() {
         const { important } = queryParams;
         const { today } = queryParams;
         let { completed } = queryParams;
+        let { uncompleted } = queryParams;
         const tasks = schema.tasks.all().models;
-        const count = tasks.length;
 
         if (today) {
           const tasks = schema.tasks.where(
@@ -68,11 +68,12 @@ export function makeServer() {
         }
 
         if (completed !== undefined) {
-          completed = completed === "true" ? true : false;
-          const tasks = schema.tasks.where(
-            (task) => task.completed === completed
-          ).models;
+          const tasks = schema.tasks.where((task) => task.completed).models;
+          return { tasks };
+        }
 
+        if (uncompleted !== undefined) {
+          const tasks = schema.tasks.where((task) => !task.completed).models;
           return { tasks };
         }
 
@@ -91,8 +92,11 @@ export function makeServer() {
 
       this.patch("/api/tasks/:id", function (schema, request) {
         let attrs = JSON.parse(request.requestBody);
+        const task = schema.tasks.find(request.params.id).update(attrs);
+        const todaysTasksCount = getTodaysTasks().length;
+        const completedTasksCount = getCompletedTasks().length;
 
-        return schema.tasks.find(request.params.id).update(attrs);
+        return { task, todaysTasksCount, completedTasksCount };
       });
 
       this.delete("/api/tasks", (schema) => {

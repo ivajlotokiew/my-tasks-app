@@ -10,7 +10,7 @@ const UncompletedTasks = () => {
 
     const reload = useCallback(async () => {
         try {
-            await dispatch(fetchTasks({ completed: false })).unwrap()
+            await dispatch(fetchTasks({ uncompleted: true })).unwrap()
         } catch (e) {
             setError(e);
             console.error(e);

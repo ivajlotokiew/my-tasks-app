@@ -9,9 +9,10 @@ import LoadingOverlay from 'react-loading-overlay-ts';
 interface Props {
     task: Task,
     reload: () => void,
+    stateTasks?: string,
 }
 
-const TaskItem = ({ task, reload }: Props) => {
+const TaskItem = ({ task, reload, stateTasks }: Props) => {
     const [showModal, setShowModal] = useState(false)
     const dispatch = useDispatch()
     const loading = useSelector(isLoadingEditedTask)
@@ -83,7 +84,7 @@ const TaskItem = ({ task, reload }: Props) => {
                         <div className={styles.deleteTaskLabelPopup}>
                             Delete task
                         </div>
-                        <TasksModal task={task} modalIsOpen={showModal} setIsOpen={setShowModal} nameForm={'Edit task'}>
+                        <TasksModal task={task} modalIsOpen={showModal} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
                             <img src='/three-dots-vertical-white.svg'
                                 className={styles.threeDotsIcon}
                                 role="button"

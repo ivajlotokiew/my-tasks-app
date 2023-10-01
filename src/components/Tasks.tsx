@@ -64,7 +64,7 @@ const Tasks = ({ tasks, stateTasksName, reload }: Props) => {
                 <div className={styles.container}>
                     {sortedTasks.map((task: Task) =>
                         <div className={styles.task} key={task.id}>
-                            <TaskItem task={task} reload={reload} />
+                            <TaskItem task={task} stateTasks={stateTasksName} reload={reload} />
                         </div>)}
                     <TasksModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                         <div className={`${styles.task} ${styles.newTask}`} onClick={handleShowModalEvent}>
