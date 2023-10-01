@@ -116,6 +116,7 @@ export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
 export const deleteAllDataAction: any = createAsyncThunk('tasks/deleteAllTasks',
     async (_, { rejectWithValue }) => {
         try {
+            debugger
             const { data } = await axios.delete(`/api/tasks`)
             return data
         } catch (error) {

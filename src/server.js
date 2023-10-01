@@ -39,7 +39,6 @@ export function makeServer() {
       };
 
       const getTodaysCompletedTasks = () => {
-        debugger;
         return this.db.tasks.where(
           (task) => task.date === formatDate(new Date()) && task.completed
         );
@@ -121,7 +120,7 @@ export function makeServer() {
 
       this.delete("/api/tasks", (schema) => {
         this.db.tasks.remove();
-        return { tasks: schema.tasks.all(), count: 0 };
+        return { tasks: schema.tasks.all().models, count: 0 };
       });
 
       this.delete("/api/tasks/:id", (schema, { params }) => {
