@@ -2,9 +2,9 @@ import {
     showTasks,
     showCompletedTasksCount,
     showTodaysTasksCount,
+    showTodayCompletedTasksCount,
     showTasksCount,
-    showUserData,
-    Task
+    showUserData
 }
     from "../../features/tasks/tasksSlice"
 import CompletedTasksProgressBar from "./CompletedTasksProgressBar"
@@ -16,11 +16,11 @@ import CustomButton from "../common/CustomButton/CustomButton"
 
 const Section = () => {
     const todayTasks = useSelector(showTasks)
-    const todayTasksCompleted = todayTasks.filter((task: Task) => task.completed)
     const displayTodaysTasks = Boolean(todayTasks.length > 0)
     const allTasksCount = useSelector(showTasksCount)
     const completedTasksCount = useSelector(showCompletedTasksCount)
     const todaysTasksCount = useSelector(showTodaysTasksCount)
+    const todaysCompletedTasksCount = useSelector(showTodayCompletedTasksCount)
     const userData = useSelector(showUserData)
 
     const RedirectPage = () => {
@@ -39,7 +39,7 @@ const Section = () => {
                     {displayTodaysTasks && <CompletedTasksProgressBar
                         progressBarName="Tasks today"
                         all={todaysTasksCount}
-                        completed={todayTasksCompleted.length}
+                        completed={todaysCompletedTasksCount}
                     />}
 
                     <CompletedTasksProgressBar

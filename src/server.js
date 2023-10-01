@@ -38,6 +38,13 @@ export function makeServer() {
         );
       };
 
+      const getTodaysCompletedTasks = () => {
+        debugger;
+        return this.db.tasks.where(
+          (task) => task.date === formatDate(new Date()) && task.completed
+        );
+      };
+
       this.get("/api/tasks", (schema, { queryParams }) => {
         const { search } = queryParams;
         const { important } = queryParams;
@@ -85,18 +92,31 @@ export function makeServer() {
         const task = schema.tasks.create(attrs);
         const allTasksCount = getAllTasks().length;
         const todaysTasksCount = getTodaysTasks().length;
+        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
 
-        return { task, allTasksCount, todaysTasksCount, completedTasksCount };
+        return {
+          task,
+          allTasksCount,
+          todaysTasksCount,
+          todaysCompletedTasksCount,
+          completedTasksCount,
+        };
       });
 
       this.patch("/api/tasks/:id", function (schema, request) {
         let attrs = JSON.parse(request.requestBody);
         const task = schema.tasks.find(request.params.id).update(attrs);
         const todaysTasksCount = getTodaysTasks().length;
+        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
 
-        return { task, todaysTasksCount, completedTasksCount };
+        return {
+          task,
+          todaysTasksCount,
+          completedTasksCount,
+          todaysCompletedTasksCount,
+        };
       });
 
       this.delete("/api/tasks", (schema) => {
@@ -110,9 +130,16 @@ export function makeServer() {
         const tasks = schema.tasks.all().models;
         const allTasksCount = getAllTasks().length;
         const todaysTasksCount = getTodaysTasks().length;
+        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
 
-        return { tasks, allTasksCount, todaysTasksCount, completedTasksCount };
+        return {
+          tasks,
+          allTasksCount,
+          todaysTasksCount,
+          completedTasksCount,
+          todaysCompletedTasksCount,
+        };
       });
 
       this.get("/api/directories", (schema) => {
@@ -136,6 +163,7 @@ export function makeServer() {
       this.get("/api/user/me", () => {
         const allTasksCount = getAllTasks().length;
         const todaysTasksCount = getTodaysTasks().length;
+        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
         const user = {
           id: 1,
@@ -143,7 +171,13 @@ export function makeServer() {
           imgURL: "img_avatar.png",
         };
 
-        return { user, allTasksCount, todaysTasksCount, completedTasksCount };
+        return {
+          user,
+          allTasksCount,
+          todaysTasksCount,
+          completedTasksCount,
+          todaysCompletedTasksCount,
+        };
       });
     },
   });

@@ -128,7 +128,6 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTas
 
     if (task) {
       formTask.id = task.id
-      debugger;
       const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
       try {
         await dispatch(editTaskAction(formTask)).unwrap()

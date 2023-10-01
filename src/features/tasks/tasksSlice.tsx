@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
-import { formatDate } from "../../components/utils/utils";
 
 export interface User {
     id: number,
@@ -40,8 +39,9 @@ interface iInitialState {
     error: string | null,
     isLoading: iTaskLoading,
     count: number,
-    todaysTasksCount: number
-    completedTasksCount: number
+    todaysTasksCount: number,
+    completedTasksCount: number,
+    todaysCompletedTasksCount: number,
 }
 
 const initialState: iInitialState = {
@@ -60,6 +60,7 @@ const initialState: iInitialState = {
     count: 0,
     todaysTasksCount: 0,
     completedTasksCount: 0,
+    todaysCompletedTasksCount: 0,
 };
 
 export const fetchUser: any = createAsyncThunk('tasks/getUser',
@@ -75,7 +76,6 @@ export const fetchUser: any = createAsyncThunk('tasks/getUser',
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
     async (params: {}, { rejectWithValue }) => {
         try {
-            debugger
             const { data } = await axios.get(`/api/tasks`, { params })
             return data
         } catch (error) {
@@ -138,6 +138,7 @@ export const tasksSlice = createSlice({
                 state.isLoading.userIsLoading = false;
                 state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
+                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(fetchUser.rejected, (state, { payload }) => {
@@ -166,6 +167,7 @@ export const tasksSlice = createSlice({
                 state.error = null;
                 state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
+                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(addTaskAction.rejected, (state, { payload }) => {
@@ -183,6 +185,7 @@ export const tasksSlice = createSlice({
                 state.isLoading.editedTaskIsLoading = false;
                 state.error = null;
                 state.todaysTasksCount = payload.todaysTasksCount;
+                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(editTaskAction.rejected, (state, { payload }) => {
@@ -198,6 +201,7 @@ export const tasksSlice = createSlice({
                 state.error = null
                 state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
+                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(deleteTaskAction.rejected, (state, { payload }) => {
@@ -242,5 +246,7 @@ export const isLoadingUserData = (state: any) => state.tasks.isLoading.userIsLoa
 export const showTasksCount = (state: any) => state.tasks.count
 
 export const showTodaysTasksCount = (state: any) => state.tasks.todaysTasksCount
+
+export const showTodayCompletedTasksCount = (state: any) => state.tasks.todaysCompletedTasksCount
 
 export const showCompletedTasksCount = (state: any) => state.tasks.completedTasksCount
