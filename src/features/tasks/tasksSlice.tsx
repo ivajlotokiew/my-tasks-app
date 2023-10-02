@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
+import { Directory } from "../directories/directoriesSlice";
 
 export interface User {
     id: number,
@@ -16,11 +17,6 @@ export interface Task {
     date: string,
     important: boolean,
     completed: boolean,
-}
-
-export interface Directory {
-    id: number;
-    name: string;
 }
 
 interface iTaskLoading {

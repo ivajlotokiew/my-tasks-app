@@ -145,6 +145,33 @@ export function makeServer() {
         return schema.directories.all();
       });
 
+      this.post("/api/directories", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody);
+
+        return schema.directories.create(attrs);
+      });
+
+      this.patch("/api/directories/:id", function (schema, request) {
+        let attrs = JSON.parse(request.requestBody);
+        const directory = schema.directories
+          .find(request.params.id)
+          .update(attrs);
+
+        return directory;
+      });
+
+      this.delete("/api/directories", (schema) => {
+        this.db.directories.remove();
+        return schema.directories.all();
+      });
+
+      this.delete("/api/tasks/:id", (schema, { params }) => {
+        const { id } = params;
+        schema.directories.find(id).destroy();
+
+        return schema.tasks.all();
+      });
+
       this.get("/api/directories/:id/tasks", (schema, request) => {
         let directoryId = request.params.id;
         let directory = schema.directories.find(directoryId);
