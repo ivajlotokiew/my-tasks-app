@@ -13,6 +13,7 @@ textarea {
   all: unset;
   width: 100%;
   background: rgb(20, 30, 51);
+  border: 2px solid rgb(20, 30, 51);
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -23,7 +24,7 @@ textarea {
 .modalWrapper input[type="text"]:hover,
 .modalWrapper input[type="date"]:hover,
 textarea:hover {
-  border: 1px solid rgb(91, 33, 182);
+  border: 2px solid rgb(91, 33, 182);
 }
 
 .modalWrapper input[type="submit"] {

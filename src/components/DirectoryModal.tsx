@@ -121,7 +121,7 @@ function DirectoryModal({ directory, modalIsOpen, setIsOpen, nameForm }: Props) 
             onChange={(event) => handleTitleInput(event)}
             required />
           {error && <span style={{ color: "red" }}>{error}</span>}
-          <input type="submit" value="Create"></input>
+          <input type="submit" value="Save"></input>
         </form>
       </Modal>
     </>

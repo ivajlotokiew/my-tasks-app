@@ -38,15 +38,15 @@ interface Props {
   setIsOpen: (modalIsOpen: boolean) => void,
   nameForm: string,
   children?: JSX.Element,
-  dropdownOptions?: Option[],
+  dropdownDirOptions?: Option[],
   stateTasks?: string,
 }
 
-const defaultDropdownOptions: Option[] = [
+const defaultDropdownDirOptions: Option[] = [
   { label: "Main", value: "main" },
 ]
 
-function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks, dropdownOptions = defaultDropdownOptions }: Props) {
+function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks, dropdownDirOptions = defaultDropdownDirOptions }: Props) {
   let subtitle: any;
   const today = formatDate(new Date())
   const dispatch = useDispatch()
@@ -197,7 +197,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
             onChange={(event) => handleDescriptionInput(event)} />
 
           <label>Select directory</label>
-          <CustomDropdown options={dropdownOptions}
+          <CustomDropdown options={dropdownDirOptions}
             selectedValue={selectedOption}
             onChange={handleSelectChange}
             style={{ width: '100%', padding: '12px 20px', margin: '8px 0 20px 0' }}

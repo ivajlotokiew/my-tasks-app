@@ -2,8 +2,7 @@ import { useState } from "react"
 import { Directory } from "../features/directories/directoriesSlice"
 import styles from './DirectoryItem.module.css'
 import DirectoryModal from "./DirectoryModal"
-import { useDispatch } from "react-redux"
-import { deleteDirectoryAction } from "../features/directories/directoriesSlice"
+import DeleteItemModal from "./DeleteItemModal"
 
 interface Props {
     directory: Directory
@@ -11,18 +10,14 @@ interface Props {
 
 const DirectoryItem = ({ directory }: Props) => {
     const [showModal, setShowModal] = useState(false)
-    const dispatch = useDispatch()
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
     }
 
-    const deleteDirectory = async () => {
-        try {
-            await dispatch(deleteDirectoryAction(directory)).unwrap()
-        } catch (error) {
-            console.error('The directory failed to delete, please try again later.')
-        }
+    const handleShowDeleteModalEvent = () => {
+        setShowDeleteModal(modal => !modal)
     }
 
     return (
@@ -33,10 +28,11 @@ const DirectoryItem = ({ directory }: Props) => {
                 </div>
                 <div className={styles.actionIcons}>
                     <img src='/edit.svg' alt='edit icon' width="17" onClick={handleShowModalEvent} />
-                    <img src='/delete.svg' alt='delete icon' width="17" onClick={deleteDirectory} />
+                    <img src='/delete.svg' alt='delete icon' width="17" onClick={handleShowDeleteModalEvent} />
                 </div>
             </div>
             <DirectoryModal nameForm="Edit directory" modalIsOpen={showModal} directory={directory} setIsOpen={setShowModal} />
+            <DeleteItemModal description="This directory and all its tasks will be deleted." modalIsOpen={showDeleteModal} item={directory} setIsOpen={setShowDeleteModal} />
         </>
     )
 }
