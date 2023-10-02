@@ -13,3 +13,14 @@
   display: flex;
   justify-content: center;
 }
+
+.container > div:last-child {
+  margin-left: 40px;
+}
+
+.directories {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  gap: 5px;
+}

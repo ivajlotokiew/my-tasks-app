@@ -3,6 +3,7 @@ import styles from "./Navbar.module.css"
 import CustomButton from "./common/CustomButton/CustomButton"
 import { useState } from "react"
 import TasksModal from "./TasksModal"
+import Directories from "./Directories"
 
 const navBarMenu = [
     { target: 'today', name: "Today's tasks" },
@@ -14,6 +15,7 @@ const navBarMenu = [
 
 const Navbar = () => {
     const [showModal, setShowModal] = useState(false)
+    const [openDirectories, setOpenDirectories] = useState(false)
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
@@ -31,19 +33,27 @@ const Navbar = () => {
                     </CustomButton>
                 </TasksModal>
             </div>
-            {navBarMenu.map((item) =>
-                <div className={styles.navLink} key={item.target}>
-                    <NavLink to={item.target} style={({ isActive }) => {
-                        return {
-                            display: "block",
-                            backgroundColor: isActive ? "rgba(255, 0, 0, 0.3)" : "",
-                            borderRightWidth: '10px',
-                            borderColor: isActive ? 'yellow' : 'blue',
-                        };
-                    }}>
-                        {item.name}
-                    </NavLink>
-                </div>)}
+            <div className={styles.container}>
+                {navBarMenu.map((item) =>
+                    <div className={styles.navLink} key={item.target}>
+                        <NavLink to={item.target} style={({ isActive }) => {
+                            return {
+                                display: "block",
+                                backgroundColor: isActive ? "rgba(255, 0, 0, 0.3)" : "",
+                                borderRightWidth: '10px',
+                                borderColor: isActive ? 'yellow' : 'blue',
+                            };
+                        }}>
+                            {item.name}
+                        </NavLink>
+                    </div>)}
+                <div className={styles.directories} onClick={() => setOpenDirectories(open => !open)}>
+                    {openDirectories ?
+                        <img src='/arrow-down.svg' alt='dirImg' width="12" height='12' /> :
+                        <img src='/arrow-right.svg' alt='dirImg' width="12" height='12' />}
+                    <Directories />
+                </div>
+            </div>
         </div>
     )
 }
