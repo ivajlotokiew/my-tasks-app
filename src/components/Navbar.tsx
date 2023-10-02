@@ -48,19 +48,19 @@ const Navbar = () => {
                             {item.name}
                         </NavLink>
                     </div>)}
-                <div className={styles.directories}>
-                    <div onClick={() => setOpenDirectories(open => !open)} style={{ cursor: "pointer" }}>
+                <div className={styles.directories} onClick={() => setOpenDirectories(open => !open)}>
+                    <div style={{ cursor: "pointer" }}>
                         {openDirectories ?
                             <img src='/arrow-down.svg' alt='dirImg' width="12" height='12' /> :
                             <img src='/arrow-right.svg' alt='dirImg' width="12" height='12' />}
                         <span style={{ marginLeft: "8px" }}>Directories</span>
-                        {openDirectories &&
-                            <>
-                                <Directories />
-                                <NewDirectory />
-                            </>
-                        }
                     </div>
+                    {openDirectories &&
+                        <>
+                            <Directories />
+                            <NewDirectory />
+                        </>
+                    }
                 </div>
             </div>
         </div>
