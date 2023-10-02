@@ -48,8 +48,8 @@ const Navbar = () => {
                             {item.name}
                         </NavLink>
                     </div>)}
-                <div className={styles.directories} onClick={() => setOpenDirectories(open => !open)}>
-                    <div style={{ cursor: "pointer" }}>
+                <div className={styles.directories}>
+                    <div style={{ cursor: "pointer" }} onClick={() => setOpenDirectories(open => !open)}>
                         {openDirectories ?
                             <img src='/arrow-down.svg' alt='dirImg' width="12" height='12' /> :
                             <img src='/arrow-right.svg' alt='dirImg' width="12" height='12' />}

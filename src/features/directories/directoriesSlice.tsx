@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 
 export interface Directory {
-    id: number;
-    name: string;
+    id?: number;
+    title: string;
 }
 
 interface iInitialStateDirectories {

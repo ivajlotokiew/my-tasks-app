@@ -17,7 +17,7 @@ export function makeServer() {
       tasks,
     },
     seeds(server) {
-      let mainDirectory = server.create("directory", { name: "Main" });
+      let mainDirectory = server.create("directory", { title: "Main" });
 
       tasks.forEach((task) =>
         server.create("task", { ...task, directory: mainDirectory })

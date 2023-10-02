@@ -1,0 +1,66 @@
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(71 85 105 / 0.2);
+}
+
+.modalWrapper input[type="text"],
+.modalWrapper input[type="date"],
+textarea {
+  all: unset;
+  width: 100%;
+  background: rgb(20, 30, 51);
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.modalWrapper input[type="text"]:hover {
+  border: 1px solid rgb(91, 33, 182);
+}
+
+.modalWrapper input[type="submit"] {
+  width: 100%;
+  background-color: rgb(91, 33, 182);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modalWrapper input[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+.modalWrapper div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.closeIcon {
+  position: absolute;
+  cursor: pointer;
+  top: 25px;
+  right: 25px;
+}

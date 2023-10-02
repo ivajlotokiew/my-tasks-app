@@ -4,10 +4,10 @@ interface Props {
     directory: Directory
 }
 
-
 const DirectoryItem = ({ directory }: Props) => {
+
     return (
-        <div>{directory.name}</div>
+        <div>{directory.title}</div>
     )
 }
 
