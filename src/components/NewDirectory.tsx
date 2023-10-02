@@ -10,12 +10,14 @@ const NewDirectory = () => {
     }
 
     return (
-        <div className={styles.wrapper}>
-            <div className={`${styles.directory} ${styles.newDirectory}`} onClick={() => handleShowModalEvent()}>
-                <>+New</>
+        <>
+            <div className={styles.wrapper}>
+                <div className={`${styles.directory} ${styles.newDirectory}`} onClick={() => handleShowModalEvent()}>
+                    <>+New</>
+                </div>
             </div>
             <DirectoryModal nameForm="Create new directory" modalIsOpen={showModal} setIsOpen={setShowModal} />
-        </div>
+        </>
     )
 }
 

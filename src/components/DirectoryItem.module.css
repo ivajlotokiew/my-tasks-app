@@ -7,3 +7,11 @@
 .wrapper img:first-child {
   margin-right: 10px;
 }
+
+.actionIcons {
+  visibility: hidden;
+}
+
+.wrapper:hover .actionIcons {
+  visibility: visible;
+}
