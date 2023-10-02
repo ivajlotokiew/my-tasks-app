@@ -1,0 +1,26 @@
+.wrapper {
+  margin: 10px 0 0 20px;
+}
+
+.directory {
+  padding: 10px;
+  background: rgb(20, 30, 51);
+  border-radius: 10px;
+  min-width: 50px;
+  min-height: 20px;
+}
+
+.newDirectory {
+  display: flex;
+  border: dashed;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-color: rgb(34, 50, 85);
+}
+
+.newDirectory:hover {
+  background-color: rgb(28, 41, 70);
+  border-color: rgb(74, 89, 130);
+  transition: background-color 0.3s ease;
+}

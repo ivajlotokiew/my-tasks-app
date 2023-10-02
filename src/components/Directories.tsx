@@ -4,11 +4,7 @@ import { useEffect } from "react"
 import styles from "./Directories.module.css"
 import DirectoryItem from "./DirectoryItem"
 
-interface Props {
-    open: boolean
-}
-
-const Directories = ({ open }: Props) => {
+const Directories = () => {
     const dispatch = useDispatch()
     const directories = useSelector(showDirectories)
 
@@ -23,7 +19,7 @@ const Directories = ({ open }: Props) => {
 
     return (
         <div className={styles.wrapper}>
-            {open && directories.map((directory: Directory) =>
+            {directories.map((directory: Directory) =>
                 <DirectoryItem directory={directory} key={directory.id} />
             )}
         </div>

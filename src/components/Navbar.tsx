@@ -4,6 +4,7 @@ import CustomButton from "./common/CustomButton/CustomButton"
 import { useState } from "react"
 import TasksModal from "./TasksModal"
 import Directories from "./Directories"
+import NewDirectory from "./NewDirectory"
 
 const navBarMenu = [
     { target: 'today', name: "Today's tasks" },
@@ -53,8 +54,13 @@ const Navbar = () => {
                             <img src='/arrow-down.svg' alt='dirImg' width="12" height='12' /> :
                             <img src='/arrow-right.svg' alt='dirImg' width="12" height='12' />}
                         <span style={{ marginLeft: "8px" }}>Directories</span>
+                        {openDirectories &&
+                            <>
+                                <Directories />
+                                <NewDirectory />
+                            </>
+                        }
                     </div>
-                    <Directories open={openDirectories} />
                 </div>
             </div>
         </div>
