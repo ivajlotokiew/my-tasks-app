@@ -51,7 +51,7 @@ export const editDirectoryAction: any = createAsyncThunk('directories/editDirect
 export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDirectories',
     async (params: Directory, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/api/directories/${params.id}`)
+            const { data } = await axios.delete(`/api/directordies/${params.id}`)
             return data
         } catch (error) {
             return rejectWithValue("We couldn't delete the directory. Try again soon.");
@@ -103,10 +103,10 @@ export const directoriesSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(editDirectoryAction.fulfilled, (state, { payload }) => {
-                const id = payload.Directory.id;
+                const id = payload.directory.id;
                 const Directory = state.directories.find(Directory => Directory.id === id)!
                 const index = state.directories.indexOf(Directory);
-                state.directories[index] = payload.Directory
+                state.directories[index] = payload.directory
                 state.isLoading = false;
                 state.error = null;
             })
@@ -123,7 +123,7 @@ export const directoriesSlice = createSlice({
                 state.error = null
             })
             .addCase(deleteDirectoryAction.rejected, (state, { payload }) => {
-                state.error = payload.name
+                state.error = payload
                 state.isLoading = false;
             })
             .addCase(deleteAllDataAction.pending, (state) => {

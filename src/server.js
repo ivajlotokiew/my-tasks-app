@@ -165,11 +165,11 @@ export function makeServer() {
         return schema.directories.all();
       });
 
-      this.delete("/api/tasks/:id", (schema, { params }) => {
+      this.delete("/api/directories/:id", (schema, { params }) => {
         const { id } = params;
         schema.directories.find(id).destroy();
 
-        return schema.tasks.all();
+        return schema.directories.all();
       });
 
       this.get("/api/directories/:id/tasks", (schema, request) => {
