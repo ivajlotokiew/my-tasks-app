@@ -1,0 +1,9 @@
+.wrapper {
+  display: flex;
+  width: calc(100% - 40px);
+  justify-content: space-between;
+}
+
+.wrapper img:first-child {
+  margin-right: 10px;
+}

@@ -8,7 +8,7 @@ import { Directory } from '../features/directories/directoriesSlice';
 
 const customStyles = {
   content: {
-    width: '25rem',
+    width: '30rem',
     top: '45%',
     left: '50%',
     right: 'auto',
@@ -121,7 +121,7 @@ function DirectoryModal({ directory, modalIsOpen, setIsOpen, nameForm }: Props) 
             onChange={(event) => handleTitleInput(event)}
             required />
           {error && <span style={{ color: "red" }}>{error}</span>}
-          <input type="submit" value="Submit"></input>
+          <input type="submit" value="Create"></input>
         </form>
       </Modal>
     </>

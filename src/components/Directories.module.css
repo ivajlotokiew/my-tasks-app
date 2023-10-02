@@ -1,10 +1,15 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px 0 5px 22px;
-  cursor: pointer;
+  width: 100%;
+  padding: 10px 0 5px 22px;
 }
 
 .wrapper > span {
   margin-bottom: 15px;
+}
+
+.wrapper > div {
+  cursor: pointer;
+  margin-bottom: 10px;
 }
