@@ -5,6 +5,7 @@ import { Task } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { Directory } from '../features/directories/directoriesSlice';
 import { deleteDirectoryAction } from '../features/directories/directoriesSlice';
+import { deleteTaskAction } from '../features/tasks/tasksSlice'
 import CustomButton from './common/CustomButton/CustomButton';
 
 const customStyles = {
@@ -29,10 +30,11 @@ interface Props {
   item: Task | Directory,
   modalIsOpen: boolean,
   setIsOpen: (modalIsOpen: boolean) => void,
+  itemName: string,
   description: string,
 }
 
-function DeleteItemModal({ modalIsOpen, setIsOpen, description, item }: Props) {
+function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName }: Props) {
   const dispatch = useDispatch()
   const [error, setError] = useState<any>(null)
 
@@ -48,9 +50,10 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item }: Props) {
   const handleDeleteData = async (event: any) => {
     event.preventDefault()
     try {
-      await dispatch(deleteDirectoryAction(item)).unwrap()
+      if (itemName === 'directory') await dispatch(deleteDirectoryAction(item)).unwrap()
+      if (itemName === 'task') await dispatch(deleteTaskAction(item)).unwrap()
     } catch (error) {
-      console.error('The directory failed to delete, please try again later.')
+      console.error('The item failed to delete, please try again later.')
     }
     closeModal()
   }

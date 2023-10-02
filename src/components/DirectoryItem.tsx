@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Directory } from "../features/directories/directoriesSlice"
 import styles from './DirectoryItem.module.css'
 import DirectoryModal from "./DirectoryModal"
+
 import DeleteItemModal from "./DeleteItemModal"
 
 interface Props {
@@ -32,7 +33,7 @@ const DirectoryItem = ({ directory }: Props) => {
                 </div>
             </div>
             <DirectoryModal nameForm="Edit directory" modalIsOpen={showModal} directory={directory} setIsOpen={setShowModal} />
-            <DeleteItemModal description="This directory and all its tasks will be deleted." modalIsOpen={showDeleteModal} item={directory} setIsOpen={setShowDeleteModal} />
+            <DeleteItemModal description="This directory and all its tasks will be deleted." itemName="directory" modalIsOpen={showDeleteModal} item={directory} setIsOpen={setShowDeleteModal} />
         </>
     )
 }

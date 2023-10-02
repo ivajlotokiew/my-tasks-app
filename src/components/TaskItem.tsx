@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import TaskModal from "./TaskModal";
 import CustomButton from "./common/CustomButton/CustomButton";
 import LoadingOverlay from 'react-loading-overlay-ts';
+import DeleteItemModal from "./DeleteItemModal";
 
 interface Props {
     task: Task,
@@ -14,6 +15,7 @@ interface Props {
 
 const TaskItem = ({ task, reload, stateTasks }: Props) => {
     const [showModal, setShowModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const dispatch = useDispatch()
     const loading = useSelector(isLoadingEditedTask)
 
@@ -28,13 +30,12 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
         reload()
     }
 
-    const deleteTask = async () => {
-        await dispatch(deleteTaskAction(task))
-        reload()
-    }
-
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
+    }
+
+    const handleShowDeleteModalEvent = () => {
+        setShowDeleteModal(modal => !modal)
     }
 
     return (
@@ -79,7 +80,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                             role="button"
                             alt='mySvgImage'
                             width="22"
-                            onClick={deleteTask}
+                            onClick={handleShowDeleteModalEvent}
                             style={{ cursor: "pointer", marginLeft: "10px" }} />
                         <div className={styles.deleteTaskLabelPopup}>
                             Delete task
@@ -99,6 +100,8 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                     </div>
                 </div>
             </LoadingOverlay>
+            <DeleteItemModal description="This task will be deleted permanently." itemName="task" modalIsOpen={showDeleteModal} item={task} setIsOpen={setShowDeleteModal} />
+
         </>
     )
 }
