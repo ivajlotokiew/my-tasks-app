@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
-import styles from './TasksModal.module.css'
+import styles from './TaskModal.module.css'
 import { Task, editTaskAction, addTaskAction, fetchTasks } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { formatDate } from './utils/utils';
@@ -46,7 +46,7 @@ const defaultDropdownOptions: Option[] = [
   { label: "Main", value: "main" },
 ]
 
-function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks, dropdownOptions = defaultDropdownOptions }: Props) {
+function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks, dropdownOptions = defaultDropdownOptions }: Props) {
   let subtitle: any;
   const today = formatDate(new Date())
   const dispatch = useDispatch()
@@ -225,4 +225,4 @@ function TasksModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTas
   );
 }
 
-export default TasksModal;
+export default TaskModal;

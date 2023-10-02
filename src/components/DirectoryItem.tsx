@@ -32,8 +32,8 @@ const DirectoryItem = ({ directory }: Props) => {
                     {directory.title}
                 </div>
                 <div className={styles.actionIcons}>
-                    <img src='/edit.svg' alt='edit icon' width="16" onClick={handleShowModalEvent} />
-                    <img src='/delete.svg' alt='delete icon' width="16" onClick={deleteDirectory} />
+                    <img src='/edit.svg' alt='edit icon' width="17" onClick={handleShowModalEvent} />
+                    <img src='/delete.svg' alt='delete icon' width="17" onClick={deleteDirectory} />
                 </div>
             </div>
             <DirectoryModal nameForm="Edit directory" modalIsOpen={showModal} directory={directory} setIsOpen={setShowModal} />

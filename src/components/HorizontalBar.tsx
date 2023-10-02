@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
 import { useDispatch } from 'react-redux/es/hooks/useDispatch'
 import { fetchTasks, showTasks } from '../features/tasks/tasksSlice'
-import TasksModal from './TasksModal'
+import TaskModal from './TaskModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
 import { showCurrentDate } from './utils/utils'
@@ -66,13 +66,13 @@ const HorizontalBar = () => {
                     style={{ cursor: "pointer", marginRight: "15px" }} />
                 {isPopupVisible && <div className={styles.popup}><AlertsPopup tasksCount={todayTasks.length} /></div>}
 
-                <TasksModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
+                <TaskModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                     <CustomButton
                         style={{ height: '50px', background: 'rgb(91, 33, 182)' }}
                         onClick={handleShowModalEvent}>
                         Add new task
                     </CustomButton>
-                </TasksModal>
+                </TaskModal>
             </div>
         </div>
     )

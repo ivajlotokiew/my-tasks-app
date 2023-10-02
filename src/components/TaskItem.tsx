@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Task, editTaskAction, deleteTaskAction, isLoadingEditedTask, fetchUser } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch, useSelector } from 'react-redux'
-import TasksModal from "./TasksModal";
+import TaskModal from "./TaskModal";
 import CustomButton from "./common/CustomButton/CustomButton";
 import LoadingOverlay from 'react-loading-overlay-ts';
 
@@ -84,7 +84,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                         <div className={styles.deleteTaskLabelPopup}>
                             Delete task
                         </div>
-                        <TasksModal task={task} modalIsOpen={showModal} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
+                        <TaskModal task={task} modalIsOpen={showModal} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
                             <img src='/three-dots-vertical-white.svg'
                                 className={styles.threeDotsIcon}
                                 role="button"
@@ -92,7 +92,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                                 width="22"
                                 onClick={handleShowModalEvent}
                                 style={{ cursor: "pointer", marginLeft: "10px" }} />
-                        </TasksModal>
+                        </TaskModal>
                         <div className={styles.editTaskLabelPopup}>
                             Edit task
                         </div>

@@ -2,8 +2,8 @@ import { useState } from "react"
 import { Task, isLoading } from "../features/tasks/tasksSlice"
 import { useSelector } from 'react-redux'
 import TaskItem from "./TaskItem"
-import styles from "./Tasks.module.css"
-import TasksModal from "./TasksModal"
+import styles from "./Task.module.css"
+import TaskModal from "./TaskModal"
 import CustomDropdown, { Option } from "./common/CustomDropdown/CustomDropdown"
 import useSortTasks from "./hooks/useSortTasks"
 import LoadingOverlay from 'react-loading-overlay-ts';
@@ -66,11 +66,11 @@ const Tasks = ({ tasks, stateTasksName, reload }: Props) => {
                         <div className={styles.task} key={task.id}>
                             <TaskItem task={task} stateTasks={stateTasksName} reload={reload} />
                         </div>)}
-                    <TasksModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
+                    <TaskModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                         <div className={`${styles.task} ${styles.newTask}`} onClick={handleShowModalEvent}>
                             <>Add new task</>
                         </div>
-                    </TasksModal>
+                    </TaskModal>
                 </div>
             </div >
         </LoadingOverlay>
