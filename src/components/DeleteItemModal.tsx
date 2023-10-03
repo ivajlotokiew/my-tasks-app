@@ -1,12 +1,12 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
-import styles from './TaskModal.module.css'
 import { Task, fetchTasks } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { Directory } from '../features/directories/directoriesSlice';
 import { deleteDirectoryAction } from '../features/directories/directoriesSlice';
 import { deleteTaskAction } from '../features/tasks/tasksSlice'
 import CustomButton from './common/CustomButton/CustomButton';
+import styles from './DeleteItemModal.module.css'
 
 const customStyles = {
   content: {
@@ -30,7 +30,6 @@ const stateTasksObj = [
   { value: "Uncompleted", label: 'uncompleted' },
   { value: "Important", label: 'important' },
 ]
-
 
 Modal.setAppElement('#root');
 
@@ -82,10 +81,21 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, 
         contentLabel="Modal"
         overlayClassName={styles.Overlay}
       >
-        <h4>{description}</h4>
+        <img src='/close-white.svg'
+          className={styles.closeIcon}
+          role="button"
+          alt='Close modal icon'
+          onClick={closeModal}
+          style={{ cursor: "pointer", marginLeft: "10px" }} />
+
+        <h2 style={{ fontWeight: "500" }}>Are you sure?</h2>
+        <h4 style={{ fontWeight: "400" }}>{description}</h4>
 
         {error && <span style={{ color: "red" }}>{error}</span>}
-        <CustomButton onClick={handleDeleteData}>Delete</CustomButton>
+        <div className={styles.actionBtns}>
+          <CustomButton style={{ backgroundColor: 'rgb(15, 23, 42)' }} onClick={closeModal}>Cancel</CustomButton>
+          <CustomButton style={{ backgroundColor: 'rgb(91, 33, 182)' }} onClick={handleDeleteData}>Delete</CustomButton>
+        </div>
       </Modal>
     </>
   );

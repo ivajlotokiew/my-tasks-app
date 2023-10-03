@@ -1,0 +1,22 @@
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(71 85 105 / 0.2);
+}
+
+.closeIcon {
+  position: absolute;
+  width: 20px;
+  cursor: pointer;
+  top: 25px;
+  right: 25px;
+}
+
+.actionBtns {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
