@@ -120,7 +120,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
     debugger
     const formTask: Task = {
       title,
-      directoryId: selectedOption || 1,
+      directoryId: selectedOption || '1',
       description,
       date: dateTask,
       important: importantChecked,
