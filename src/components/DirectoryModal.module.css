@@ -7,12 +7,11 @@
   background-color: rgb(71 85 105 / 0.2);
 }
 
-.modalWrapper input[type="text"],
-.modalWrapper input[type="date"],
-textarea {
+.modalWrapper input[type="text"] {
   all: unset;
   width: 100%;
   background: rgb(20, 30, 51);
+  border: 2px solid rgb(20, 30, 51);
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -21,7 +20,7 @@ textarea {
 }
 
 .modalWrapper input[type="text"]:hover {
-  border: 1px solid rgb(91, 33, 182);
+  border: 2px solid rgb(91, 33, 182);
 }
 
 .modalWrapper input[type="submit"] {

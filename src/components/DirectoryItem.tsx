@@ -31,8 +31,20 @@ const DirectoryItem = ({ directory }: Props) => {
                     <img src='/delete.svg' alt='delete icon' width="17" onClick={handleShowDeleteModalEvent} />
                 </div>
             </div>
-            <DirectoryModal nameForm="Edit directory" modalIsOpen={showModal} directory={directory} setIsOpen={setShowModal} />
-            <DeleteItemModal description="This directory and all its tasks will be deleted." itemName="directory" modalIsOpen={showDeleteModal} item={directory} setIsOpen={setShowDeleteModal} />
+            <DirectoryModal
+                nameForm="Edit directory"
+                modalIsOpen={showModal}
+                directory={directory}
+                setIsOpen={setShowModal}
+            />
+
+            <DeleteItemModal
+                description="This directory and all its tasks will be deleted."
+                itemName="directory"
+                modalIsOpen={showDeleteModal}
+                item={directory}
+                setIsOpen={setShowDeleteModal}
+            />
         </>
     )
 }

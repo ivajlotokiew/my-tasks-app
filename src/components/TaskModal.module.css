@@ -9,7 +9,7 @@
 
 .modalWrapper input[type="text"],
 .modalWrapper input[type="date"],
-textarea {
+.modalWrapper textarea {
   all: unset;
   width: 100%;
   background: rgb(20, 30, 51);
@@ -23,7 +23,7 @@ textarea {
 
 .modalWrapper input[type="text"]:hover,
 .modalWrapper input[type="date"]:hover,
-textarea:hover {
+.modalWrapper textarea:hover {
   border: 2px solid rgb(91, 33, 182);
 }
 
