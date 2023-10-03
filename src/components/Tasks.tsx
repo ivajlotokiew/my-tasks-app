@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Task, isLoading } from "../features/tasks/tasksSlice"
 import { useSelector } from 'react-redux'
 import TaskItem from "./TaskItem"
-import styles from "./Task.module.css"
+import styles from "./Tasks.module.css"
 import TaskModal from "./TaskModal"
 import CustomDropdown, { Option } from "./common/CustomDropdown/CustomDropdown"
 import useSortTasks from "./hooks/useSortTasks"

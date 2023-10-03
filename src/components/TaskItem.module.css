@@ -6,6 +6,30 @@
   gap: 5px;
 }
 
+.taskDirectory {
+  position: absolute;
+  border: 1px solid rgb(51, 65, 85);
+  color: rgb(226, 232, 240);
+  background-color: rgb(51, 65, 85);
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  cursor: pointer;
+  top: auto;
+  right: auto;
+  transform: translate(220%, -115%);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-feature-settings: normal;
+  font-size: 16px;
+  height: 28px;
+  line-height: 28px;
+  width: 73.5px;
+  max-width: 160px;
+  text-align: center;
+  text-decoration-color: rgb(226, 232, 240);
+}
+
 .actions {
   display: flex;
   justify-content: space-between;

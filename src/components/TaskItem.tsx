@@ -45,7 +45,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
 
     return (
         <>
-            <div>{getTaskDirectory?.title}</div>
+            <div className={styles.taskDirectory}>{getTaskDirectory?.title}</div>
             <h4>{task.title}</h4>
             <h5>{task.description}</h5>
             <div className={styles.created}>
