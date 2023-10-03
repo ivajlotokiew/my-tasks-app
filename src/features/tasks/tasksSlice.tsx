@@ -92,9 +92,10 @@ export const fetchTodayTasks: any = createAsyncThunk('tasks/getTodayTasks',
     });
 
 export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
-    async (params, { rejectWithValue }) => {
+    async (params, { rejectWithValue, dispatch }) => {
         try {
             const { data } = await axios.post(`/api/tasks`, params)
+            dispatch(fetchTodayTasks())
             return data;
         } catch (error) {
             return rejectWithValue("We couldn't add the new task. Try again soon.");
@@ -102,9 +103,10 @@ export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
     });
 
 export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
-    async (params: Task, { rejectWithValue }) => {
+    async (params: Task, { rejectWithValue, dispatch }) => {
         try {
             const { data } = await axios.patch(`/api/tasks/${params.id}`, params)
+            dispatch(fetchTodayTasks())
             return data;
         } catch (error) {
             return rejectWithValue("We couldn't edit the task. Try again soon.");
@@ -112,9 +114,10 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
     });
 
 export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
-    async (params: Task, { rejectWithValue }) => {
+    async (params: Task, { rejectWithValue, dispatch }) => {
         try {
             const { data } = await axios.delete(`/api/tasks/${params.id}`)
+            dispatch(fetchTodayTasks())
             return data
         } catch (error) {
             return rejectWithValue("We couldn't delete the task. Try again soon.");
