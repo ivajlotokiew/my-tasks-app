@@ -27,7 +27,7 @@ const customStyles = {
 const stateTasksObj = [
   { value: "Today's", label: 'today' },
   { value: "Completed", label: 'completed' },
-  { value: "Uncompleted", label: 'uncommpleted' },
+  { value: "Uncompleted", label: 'uncompleted' },
   { value: "Important", label: 'important' },
 ]
 
@@ -128,6 +128,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
 
     if (task) {
       formTask.id = task.id
+      debugger
       const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
       try {
         await dispatch(editTaskAction(formTask)).unwrap()

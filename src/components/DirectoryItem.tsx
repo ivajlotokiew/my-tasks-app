@@ -12,7 +12,7 @@ const DirectoryItem = ({ directory }: Props) => {
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const isMainDir = Number(directory.id) === 1 && directory.title === 'Main' ? true : false
-    debugger
+
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
     }
@@ -34,6 +34,7 @@ const DirectoryItem = ({ directory }: Props) => {
                     </div>
                 }
             </div >
+
             <DirectoryModal
                 nameForm="Edit directory"
                 modalIsOpen={showModal}

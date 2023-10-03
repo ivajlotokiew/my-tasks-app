@@ -49,7 +49,7 @@ const Section = () => {
                     />
 
                     <hr style={{ border: '1px dashed', marginBottom: '25px' }} />
-                    {displayTodaysTasks && <ShowTodaysTasksTitle tasks={todayTasks} />}
+                    {displayTodaysTasks && <ShowTodaysTasksTitle />}
                 </div>
                 <div className={styles.footer}>
                     <DeleteAllData />

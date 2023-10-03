@@ -51,7 +51,6 @@ export function makeServer() {
         let { completed } = queryParams;
         let { uncompleted } = queryParams;
         const tasks = schema.tasks.all().models;
-
         if (today) {
           const tasks = schema.tasks.where(
             (task) => task.date === formatDate(new Date())
@@ -82,6 +81,14 @@ export function makeServer() {
           const tasks = schema.tasks.where((task) => !task.completed).models;
           return { tasks };
         }
+
+        return { tasks };
+      });
+
+      this.get("/api/todayTasks", (schema) => {
+        const tasks = schema.tasks.where(
+          (task) => task.date === formatDate(new Date())
+        ).models;
 
         return { tasks };
       });

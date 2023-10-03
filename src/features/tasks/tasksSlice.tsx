@@ -31,6 +31,7 @@ interface iTaskLoading {
 interface iInitialState {
     user: User,
     tasks: Task[],
+    todayTasks?: Task[],
     directories: Directory[],
     error: string | null,
     isLoading: iTaskLoading,
@@ -43,6 +44,7 @@ interface iInitialState {
 const initialState: iInitialState = {
     user: { id: 0, name: '', imgURL: '' },
     tasks: [],
+    todayTasks: [],
     directories: [],
     isLoading: {
         tasksIsLoading: false,
@@ -76,6 +78,16 @@ export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");
+        }
+    });
+
+export const fetchTodayTasks: any = createAsyncThunk('tasks/getTodayTasks',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get(`/api/todayTasks`)
+            return data
+        } catch (error) {
+            return rejectWithValue("We couldn't load today tasks. Try again soon.");
         }
     });
 
@@ -153,6 +165,18 @@ export const tasksSlice = createSlice({
                 state.error = payload.name
                 state.isLoading.tasksIsLoading = false;
             })
+            .addCase(fetchTodayTasks.pending, (state) => {
+                state.isLoading.tasksIsLoading = true;
+            })
+            .addCase(fetchTodayTasks.fulfilled, (state, { payload }) => {
+                state.todayTasks = payload.tasks;
+                state.isLoading.tasksIsLoading = false;
+                state.error = null;
+            })
+            .addCase(fetchTodayTasks.rejected, (state, { payload }) => {
+                state.error = payload.name
+                state.isLoading.tasksIsLoading = false;
+            })
             .addCase(addTaskAction.pending, (state) => {
                 state.isLoading.addedTaskIsLoading = true;
             })
@@ -224,6 +248,8 @@ export default tasksSlice.reducer
 export const showUserData = (state: any) => state.tasks.user
 
 export const showTasks = (state: any) => state.tasks.tasks
+
+export const showTodayTasks = (state: any) => state.tasks.todayTasks
 
 export const getError = (state: any) => state.tasks.error
 

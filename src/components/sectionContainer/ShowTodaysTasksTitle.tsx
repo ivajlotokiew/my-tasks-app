@@ -1,10 +1,25 @@
-import { Task } from '../../features/tasks/tasksSlice'
+import { useCallback, useEffect, useState } from 'react'
+import { Task, fetchTodayTasks, showTodayTasks } from '../../features/tasks/tasksSlice'
+import { useSelector, useDispatch } from 'react-redux'
 
-interface Props {
-    tasks: Task[]
-}
+const ShowTodaysTasksTitle = () => {
+    const dispatch = useDispatch()
+    const tasks = useSelector(showTodayTasks)
+    const [error, setError] = useState<any>(null)
 
-const ShowTodaysTasksTitle = ({ tasks }: Props) => {
+    const getTodayTasks = useCallback(async () => {
+        try {
+            await dispatch(fetchTodayTasks()).unwrap()
+        } catch (e) {
+            setError(e);
+            console.error(error);
+        }
+    }, [dispatch, error])
+
+    useEffect(() => {
+        getTodayTasks()
+    }, [getTodayTasks])
+
     return (
         <>
             {

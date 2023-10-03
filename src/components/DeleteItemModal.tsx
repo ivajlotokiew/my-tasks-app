@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TaskModal.module.css'
-import { Task } from '../features/tasks/tasksSlice';
+import { Task, fetchTasks } from '../features/tasks/tasksSlice';
 import { useDispatch } from 'react-redux'
 import { Directory } from '../features/directories/directoriesSlice';
 import { deleteDirectoryAction } from '../features/directories/directoriesSlice';
@@ -24,6 +24,14 @@ const customStyles = {
   },
 };
 
+const stateTasksObj = [
+  { value: "Today's", label: 'today' },
+  { value: "Completed", label: 'completed' },
+  { value: "Uncompleted", label: 'uncompleted' },
+  { value: "Important", label: 'important' },
+]
+
+
 Modal.setAppElement('#root');
 
 interface Props {
@@ -32,9 +40,10 @@ interface Props {
   setIsOpen: (modalIsOpen: boolean) => void,
   itemName: string,
   description: string,
+  stateTasks?: string
 }
 
-function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName }: Props) {
+function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, stateTasks }: Props) {
   const dispatch = useDispatch()
   const [error, setError] = useState<any>(null)
 
@@ -51,7 +60,13 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName }
     event.preventDefault()
     try {
       if (itemName === 'directory') await dispatch(deleteDirectoryAction(item)).unwrap()
-      if (itemName === 'task') await dispatch(deleteTaskAction(item)).unwrap()
+      if (itemName === 'task') {
+        const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
+        await dispatch(deleteTaskAction(item)).unwrap()
+        dispatch(fetchTasks({
+          ...(state && { [state]: true })
+        })).unwrap()
+      }
     } catch (error) {
       console.error('The item failed to delete, please try again later.')
     }

@@ -85,7 +85,12 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                         <div className={styles.deleteTaskLabelPopup}>
                             Delete task
                         </div>
-                        <TaskModal task={task} modalIsOpen={showModal} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
+                        <TaskModal task={task}
+                            modalIsOpen={showModal}
+                            stateTasks={stateTasks}
+                            setIsOpen={setShowModal}
+                            nameForm={'Edit task'}
+                        >
                             <img src='/three-dots-vertical-white.svg'
                                 className={styles.threeDotsIcon}
                                 role="button"
@@ -100,7 +105,14 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                     </div>
                 </div>
             </LoadingOverlay>
-            <DeleteItemModal description="This task will be deleted permanently." itemName="task" modalIsOpen={showDeleteModal} item={task} setIsOpen={setShowDeleteModal} />
+            <DeleteItemModal
+                description="This task will be deleted permanently."
+                itemName="task"
+                modalIsOpen={showDeleteModal}
+                item={task}
+                stateTasks={stateTasks}
+                setIsOpen={setShowDeleteModal}
+            />
 
         </>
     )
