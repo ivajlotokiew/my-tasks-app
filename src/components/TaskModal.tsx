@@ -59,8 +59,6 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
     return { value: directory.id, label: directory.title }
   })
 
-  debugger
-
   useEffect(() => {
     setIsOpen(modalIsOpen)
   }, [modalIsOpen, setIsOpen])

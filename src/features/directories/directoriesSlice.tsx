@@ -51,9 +51,7 @@ export const editDirectoryAction: any = createAsyncThunk('directories/editDirect
 export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDirectories',
     async (params: Directory, { rejectWithValue }) => {
         try {
-            debugger
             const { data } = await axios.delete(`/api/directories/${params.id}`)
-            debugger
             return data
         } catch (error) {
             return rejectWithValue("We couldn't delete the directory. Try again soon.");
