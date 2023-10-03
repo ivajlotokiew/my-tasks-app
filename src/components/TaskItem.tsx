@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Task, editTaskAction, deleteTaskAction, isLoadingEditedTask, fetchUser } from "../features/tasks/tasksSlice";
+import { Task, editTaskAction, isLoadingEditedTask } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch, useSelector } from 'react-redux'
 import TaskModal from "./TaskModal";
 import CustomButton from "./common/CustomButton/CustomButton";
 import LoadingOverlay from 'react-loading-overlay-ts';
 import DeleteItemModal from "./DeleteItemModal";
+import { Directory, showDirectories } from "../features/directories/directoriesSlice";
 
 interface Props {
     task: Task,
@@ -18,6 +19,10 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const dispatch = useDispatch()
     const loading = useSelector(isLoadingEditedTask)
+    const directories = useSelector(showDirectories)
+
+    const getTaskDirectory: Directory | undefined =
+        directories.find((directory: Directory) => directory.id === task.directoryId)
 
     const toggleCompletedTask = () => {
         dispatch(editTaskAction({ ...task, completed: !task.completed })).then(() => {
@@ -40,6 +45,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
 
     return (
         <>
+            <div>{getTaskDirectory?.title}</div>
             <h4>{task.title}</h4>
             <h5>{task.description}</h5>
             <div className={styles.created}>
@@ -85,12 +91,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                         <div className={styles.deleteTaskLabelPopup}>
                             Delete task
                         </div>
-                        <TaskModal task={task}
-                            modalIsOpen={showModal}
-                            stateTasks={stateTasks}
-                            setIsOpen={setShowModal}
-                            nameForm={'Edit task'}
-                        >
+                        <TaskModal task={task} modalIsOpen={showModal} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
                             <img src='/three-dots-vertical-white.svg'
                                 className={styles.threeDotsIcon}
                                 role="button"
@@ -105,14 +106,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                     </div>
                 </div>
             </LoadingOverlay>
-            <DeleteItemModal
-                description="This task will be deleted permanently."
-                itemName="task"
-                modalIsOpen={showDeleteModal}
-                item={task}
-                stateTasks={stateTasks}
-                setIsOpen={setShowDeleteModal}
-            />
+            <DeleteItemModal description="This task will be deleted permanently." itemName="task" modalIsOpen={showDeleteModal} item={task} setIsOpen={setShowDeleteModal} />
 
         </>
     )

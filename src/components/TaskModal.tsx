@@ -52,7 +52,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
   const [dateTask, setDateTask] = useState(() => task ? task.date : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
-  const [selectedOption, setSelectedOption] = useState(() => directories[0]?.title);
+  const [selectedOption, setSelectedOption] = useState(() => directories.find((dir: Directory) => dir.id === task?.directoryId)?.id);
   const [error, setError] = useState<any>(null)
   const navigate = useNavigate()
   const dropdownDirOptions: Option[] = directories.map((directory: Directory) => {
@@ -117,9 +117,10 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
 
   const handleSubmitData = async (event: any) => {
     event.preventDefault()
+    debugger
     const formTask: Task = {
       title,
-      directoryId: 1,
+      directoryId: selectedOption || 1,
       description,
       date: dateTask,
       important: importantChecked,
