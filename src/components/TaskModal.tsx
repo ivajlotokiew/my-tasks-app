@@ -2,7 +2,8 @@ import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TaskModal.module.css'
 import { Task, editTaskAction, addTaskAction, fetchTasks } from '../features/tasks/tasksSlice';
-import { useDispatch } from 'react-redux'
+import { Directory, showDirectories } from '../features/directories/directoriesSlice';
+import { useDispatch, useSelector } from 'react-redux'
 import { formatDate } from './utils/utils';
 import CustomDropdown, { Option } from './common/CustomDropdown/CustomDropdown';
 import { useNavigate } from 'react-router-dom';
@@ -38,26 +39,27 @@ interface Props {
   setIsOpen: (modalIsOpen: boolean) => void,
   nameForm: string,
   children?: JSX.Element,
-  dropdownDirOptions?: Option[],
   stateTasks?: string,
 }
 
-const defaultDropdownDirOptions: Option[] = [
-  { label: "Main", value: "main" },
-]
-
-function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks, dropdownDirOptions = defaultDropdownDirOptions }: Props) {
+function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks }: Props) {
   let subtitle: any;
   const today = formatDate(new Date())
   const dispatch = useDispatch()
+  const directories = useSelector(showDirectories)
   const [title, setTitle] = useState(() => task ? task.title : '')
   const [description, setDescription] = useState(() => task ? task.description : '')
   const [dateTask, setDateTask] = useState(() => task ? task.date : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
-  const [selectedOption, setSelectedOption] = useState("disabledOption");
+  const [selectedOption, setSelectedOption] = useState(() => directories[0]?.title);
   const [error, setError] = useState<any>(null)
   const navigate = useNavigate()
+  const dropdownDirOptions: Option[] = directories.map((directory: Directory) => {
+    return { value: directory.id, label: directory.title }
+  })
+
+  debugger
 
   useEffect(() => {
     setIsOpen(modalIsOpen)

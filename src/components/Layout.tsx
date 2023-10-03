@@ -6,13 +6,20 @@ import Section from "./sectionContainer/Section"
 import HorizontalBar from "./HorizontalBar"
 import { useDispatch } from "react-redux"
 import { fetchUser } from '../features/tasks/tasksSlice'
+import { fetchDirectories } from '../features/directories/directoriesSlice'
 
 const Layout = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchUser())
+        const loadItems = async () => {
+            await dispatch(fetchUser())
+            await dispatch(fetchDirectories())
+        }
+
+        loadItems()
     }, [dispatch])
+
 
     return (
         <>

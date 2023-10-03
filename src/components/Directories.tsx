@@ -1,21 +1,10 @@
-import { useDispatch, useSelector } from "react-redux"
-import { Directory, fetchDirectories, showDirectories } from "../features/directories/directoriesSlice"
-import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Directory, showDirectories } from "../features/directories/directoriesSlice"
 import styles from "./Directories.module.css"
 import DirectoryItem from "./DirectoryItem"
 
 const Directories = () => {
-    const dispatch = useDispatch()
     const directories = useSelector(showDirectories)
-
-    useEffect(() => {
-        const getDirectories = async () => {
-            await dispatch(fetchDirectories())
-        }
-
-        getDirectories()
-    }, [dispatch])
-
 
     return (
         <div className={styles.wrapper}>

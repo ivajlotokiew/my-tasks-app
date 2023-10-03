@@ -2,7 +2,6 @@ import { useState } from "react"
 import { Directory } from "../features/directories/directoriesSlice"
 import styles from './DirectoryItem.module.css'
 import DirectoryModal from "./DirectoryModal"
-
 import DeleteItemModal from "./DeleteItemModal"
 
 interface Props {
