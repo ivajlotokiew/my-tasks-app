@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TaskModal.module.css'
-import { Task, editTaskAction, addTaskAction, fetchTasks } from '../features/tasks/tasksSlice';
+import { Task, editTaskAction, addTaskAction, fetchTasks, fetchTasksByDirectory } from '../features/tasks/tasksSlice';
 import { Directory, showDirectories } from '../features/directories/directoriesSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { formatDate } from './utils/utils';
@@ -29,6 +29,7 @@ const stateTasksObj = [
   { value: "Completed", label: 'completed' },
   { value: "Uncompleted", label: 'uncompleted' },
   { value: "Important", label: 'important' },
+  { value: "Directory", label: 'directory' },
 ]
 
 Modal.setAppElement('#root');
@@ -40,9 +41,10 @@ interface Props {
   nameForm: string,
   children?: JSX.Element,
   stateTasks?: string,
+  directory?: Directory,
 }
 
-function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTasks }: Props) {
+function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory, stateTasks }: Props) {
   let subtitle: any;
   const today = formatDate(new Date())
   const dispatch = useDispatch()
@@ -117,8 +119,8 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
 
   const handleSubmitData = async (event: any) => {
     event.preventDefault()
-    debugger
     const formTask: Task = {
+      id: null,
       title,
       directoryId: selectedOption || '1',
       description,
@@ -129,13 +131,14 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, stateTask
 
     if (task) {
       formTask.id = task.id
-      debugger
       const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
       try {
         await dispatch(editTaskAction(formTask)).unwrap()
-        dispatch(fetchTasks({
+        const getTasks = state === 'directory' ? fetchTasksByDirectory(directory?.id) : fetchTasks({
           ...(state && { [state]: true })
-        })).unwrap()
+        })
+
+        dispatch(getTasks).unwrap()
       } catch (err) {
         setError(err);
         console.error(err);

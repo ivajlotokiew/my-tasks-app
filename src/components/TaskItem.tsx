@@ -15,12 +15,11 @@ interface Props {
 }
 
 const TaskItem = ({ task, reload, stateTasks }: Props) => {
+    const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const dispatch = useDispatch()
     const loading = useSelector(isLoadingEditedTask)
     const directories = useSelector(showDirectories)
-
     const getTaskDirectory: Directory | undefined =
         directories.find((directory: Directory) => directory.id === task.directoryId)
 
@@ -42,6 +41,8 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
     const handleShowDeleteModalEvent = () => {
         setShowDeleteModal(modal => !modal)
     }
+
+    console.log('Task directory: ', task)
 
     return (
         <>
@@ -91,7 +92,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                         <div className={styles.deleteTaskLabelPopup}>
                             Delete task
                         </div>
-                        <TaskModal task={task} modalIsOpen={showModal} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
+                        <TaskModal task={task} modalIsOpen={showModal} directory={getTaskDirectory} stateTasks={stateTasks} setIsOpen={setShowModal} nameForm={'Edit task'}>
                             <img src='/three-dots-vertical-white.svg'
                                 className={styles.threeDotsIcon}
                                 role="button"

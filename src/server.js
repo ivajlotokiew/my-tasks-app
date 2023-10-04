@@ -183,7 +183,7 @@ export function makeServer() {
         let directoryId = request.params.id;
         let directory = schema.directories.find(directoryId);
 
-        return directory.tasks;
+        return directory.tasks.models;
       });
 
       this.get("/api/tasks/:id/directory", (schema, request) => {

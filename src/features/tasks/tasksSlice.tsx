@@ -9,7 +9,7 @@ export interface User {
 }
 
 export interface Task {
-    id?: number,
+    id: number | null,
     directoryId?: number,
     dir?: string,
     title: string,
@@ -134,6 +134,16 @@ export const deleteAllDataAction: any = createAsyncThunk('tasks/deleteAllTasks',
         }
     });
 
+export const fetchTasksByDirectory: any = createAsyncThunk('tasks/fetchTasksByDirectory',
+    async (id: any, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get(`/api/directories/${id}/tasks`)
+            return data;
+        } catch (error) {
+            return rejectWithValue("We couldn't get the directory tasks. Try again soon.");
+        }
+    });
+
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
@@ -177,6 +187,18 @@ export const tasksSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchTodayTasks.rejected, (state, { payload }) => {
+                state.error = payload.name
+                state.isLoading.tasksIsLoading = false;
+            })
+            .addCase(fetchTasksByDirectory.pending, (state) => {
+                state.isLoading.tasksIsLoading = true;
+            })
+            .addCase(fetchTasksByDirectory.fulfilled, (state, { payload }) => {
+                state.tasks = payload;
+                state.isLoading.tasksIsLoading = false;
+                state.error = null;
+            })
+            .addCase(fetchTasksByDirectory.rejected, (state, { payload }) => {
                 state.error = payload.name
                 state.isLoading.tasksIsLoading = false;
             })
