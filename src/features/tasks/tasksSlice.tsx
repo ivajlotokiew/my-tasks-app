@@ -124,7 +124,7 @@ export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
         }
     });
 
-export const deleteAllDataAction: any = createAsyncThunk('tasks/deleteAllTasks',
+export const deleteAllTasksAction: any = createAsyncThunk('tasks/deleteAllTasks',
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await axios.delete(`/api/tasks`)
@@ -253,15 +253,15 @@ export const tasksSlice = createSlice({
                 state.error = payload.name
                 state.isLoading.deletedTaskIsLoading = false;
             })
-            .addCase(deleteAllDataAction.pending, (state) => {
+            .addCase(deleteAllTasksAction.pending, (state) => {
                 state.isLoading.allDeletedTasksIsLoading = true;
             })
-            .addCase(deleteAllDataAction.fulfilled, (state, { payload }) => {
+            .addCase(deleteAllTasksAction.fulfilled, (state, { payload }) => {
                 state.tasks = payload.tasks
                 state.isLoading.allDeletedTasksIsLoading = false;
                 state.error = null;
             })
-            .addCase(deleteAllDataAction.rejected, (state, { payload }) => {
+            .addCase(deleteAllTasksAction.rejected, (state, { payload }) => {
                 state.error = payload.name
                 state.isLoading.allDeletedTasksIsLoading = false;
             })

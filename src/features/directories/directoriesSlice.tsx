@@ -58,7 +58,7 @@ export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDi
         }
     });
 
-export const deleteAllDataAction: any = createAsyncThunk('directories/deleteAllDirectories',
+export const deleteAllDirectoriesAction: any = createAsyncThunk('directories/deleteAllDirectories',
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await axios.delete(`/api/directories`)
@@ -126,15 +126,15 @@ export const directoriesSlice = createSlice({
                 state.error = payload
                 state.isLoading = false;
             })
-            .addCase(deleteAllDataAction.pending, (state) => {
+            .addCase(deleteAllDirectoriesAction.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(deleteAllDataAction.fulfilled, (state, { payload }) => {
+            .addCase(deleteAllDirectoriesAction.fulfilled, (state, { payload }) => {
                 state.directories = payload.directories
                 state.isLoading = false;
                 state.error = null;
             })
-            .addCase(deleteAllDataAction.rejected, (state, { payload }) => {
+            .addCase(deleteAllDirectoriesAction.rejected, (state, { payload }) => {
                 state.error = payload.name
                 state.isLoading = false;
             })
