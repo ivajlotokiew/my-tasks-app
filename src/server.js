@@ -174,7 +174,9 @@ export function makeServer() {
 
       this.delete("/api/directories/:id", (schema, { params }) => {
         const { id } = params;
-        schema.directories.find(id).destroy();
+        const directory = schema.directories.find(id);
+        directory.tasks.destroy();
+        directory.destroy();
 
         return schema.directories.all();
       });
