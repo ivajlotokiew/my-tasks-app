@@ -7,6 +7,7 @@ import CustomButton from "./common/CustomButton/CustomButton";
 import LoadingOverlay from 'react-loading-overlay-ts';
 import DeleteItemModal from "./DeleteItemModal";
 import { Directory, showDirectories } from "../features/directories/directoriesSlice";
+import { NavLink } from "react-router-dom";
 
 interface Props {
     task: Task,
@@ -42,11 +43,13 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
         setShowDeleteModal(modal => !modal)
     }
 
-    console.log('Task directory: ', task)
+    console.log('Task getTaskDirectory id: ', getTaskDirectory?.id)
 
     return (
         <>
-            <div className={styles.taskDirectory}>{getTaskDirectory?.title}</div>
+            <NavLink to={`/dir/${getTaskDirectory?.id}/tasks`}>
+                <div className={styles.taskDirectory}>{getTaskDirectory?.title}</div>
+            </NavLink>
             <h4>{task.title}</h4>
             <h5>{task.description}</h5>
             <div className={styles.created}>
