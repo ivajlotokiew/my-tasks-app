@@ -120,7 +120,6 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
   const handleSubmitData = async (event: any) => {
     event.preventDefault()
     const formTask: Task = {
-      id: null,
       title,
       directoryId: selectedOption || '1',
       description,

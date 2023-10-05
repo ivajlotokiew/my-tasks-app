@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Task, editTaskAction, isLoadingEditedTask } from "../features/tasks/tasksSlice";
+import { Task, editTaskAction, isLoadingActionOnTask } from "../features/tasks/tasksSlice";
 import styles from "./TaskItem.module.css";
 import { useDispatch, useSelector } from 'react-redux'
 import TaskModal from "./TaskModal";
@@ -19,7 +19,7 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const loading = useSelector(isLoadingEditedTask)
+    const loading = useSelector(isLoadingActionOnTask(task.id || 1))
     const directories = useSelector(showDirectories)
     const getTaskDirectory: Directory | undefined =
         directories.find((directory: Directory) => directory.id === task.directoryId)

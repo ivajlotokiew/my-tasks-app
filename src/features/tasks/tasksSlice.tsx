@@ -9,7 +9,7 @@ export interface User {
 }
 
 export interface Task {
-    id: number | null,
+    id?: number,
     directoryId?: number,
     dir?: string,
     title: string,
@@ -17,15 +17,7 @@ export interface Task {
     date: string,
     important: boolean,
     completed: boolean,
-}
-
-interface iTaskLoading {
-    tasksIsLoading: boolean,
-    addedTaskIsLoading: boolean,
-    editedTaskIsLoading: boolean,
-    deletedTaskIsLoading: boolean,
-    allDeletedTasksIsLoading: boolean,
-    userIsLoading: boolean,
+    isLoading?: boolean,
 }
 
 interface iInitialState {
@@ -34,7 +26,7 @@ interface iInitialState {
     todayTasks?: Task[],
     directories: Directory[],
     error: string | null,
-    isLoading: iTaskLoading,
+    isLoading: boolean,
     count: number,
     todaysTasksCount: number,
     completedTasksCount: number,
@@ -46,14 +38,7 @@ const initialState: iInitialState = {
     tasks: [],
     todayTasks: [],
     directories: [],
-    isLoading: {
-        tasksIsLoading: false,
-        addedTaskIsLoading: false,
-        allDeletedTasksIsLoading: false,
-        deletedTaskIsLoading: false,
-        editedTaskIsLoading: false,
-        userIsLoading: false,
-    },
+    isLoading: false,
     error: null,
     count: 0,
     todaysTasksCount: 0,
@@ -150,13 +135,9 @@ export const tasksSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchUser.pending, (state) => {
-                state.isLoading.userIsLoading = true;
-            })
             .addCase(fetchUser.fulfilled, (state, { payload }) => {
                 state.user = payload.user;
                 state.error = null;
-                state.isLoading.userIsLoading = false;
                 state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
                 state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
@@ -164,51 +145,50 @@ export const tasksSlice = createSlice({
             })
             .addCase(fetchUser.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.userIsLoading = false;
             })
             .addCase(fetchTasks.pending, (state) => {
-                state.isLoading.tasksIsLoading = true;
+                state.isLoading = true;
             })
             .addCase(fetchTasks.fulfilled, (state, { payload }) => {
                 state.tasks = payload.tasks;
-                state.isLoading.tasksIsLoading = false;
+                state.isLoading = false;
                 state.error = null;
             })
             .addCase(fetchTasks.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.tasksIsLoading = false;
+                state.isLoading = false;
             })
             .addCase(fetchTodayTasks.pending, (state) => {
-                state.isLoading.tasksIsLoading = true;
+                state.isLoading = true;
             })
             .addCase(fetchTodayTasks.fulfilled, (state, { payload }) => {
                 state.todayTasks = payload.tasks;
-                state.isLoading.tasksIsLoading = false;
+                state.isLoading = false;
                 state.error = null;
             })
             .addCase(fetchTodayTasks.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.tasksIsLoading = false;
+                state.isLoading = false;
             })
             .addCase(fetchTasksByDirectory.pending, (state) => {
-                state.isLoading.tasksIsLoading = true;
+                state.isLoading = true;
             })
             .addCase(fetchTasksByDirectory.fulfilled, (state, { payload }) => {
                 state.tasks = payload;
-                state.isLoading.tasksIsLoading = false;
+                state.isLoading = false;
                 state.error = null;
             })
             .addCase(fetchTasksByDirectory.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.tasksIsLoading = false;
+                state.isLoading = false;
             })
             .addCase(addTaskAction.pending, (state) => {
-                state.isLoading.addedTaskIsLoading = true;
+                state.isLoading = true;
             })
             .addCase(addTaskAction.fulfilled, (state, { payload }) => {
                 const newTask = payload.task;
                 state.tasks.push(newTask)
-                state.isLoading.addedTaskIsLoading = false;
+                state.isLoading = false;
                 state.error = null;
                 state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
@@ -217,17 +197,19 @@ export const tasksSlice = createSlice({
             })
             .addCase(addTaskAction.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.addedTaskIsLoading = false;
+                state.isLoading = false;
             })
-            .addCase(editTaskAction.pending, (state) => {
-                state.isLoading.editedTaskIsLoading = true;
+            .addCase(editTaskAction.pending, (state, { meta: { arg } }) => {
+                const id = arg.id;
+                const task = state.tasks.find(task => task.id === id)!
+                task.isLoading = true
             })
             .addCase(editTaskAction.fulfilled, (state, { payload }) => {
                 const id = payload.task.id;
                 const task = state.tasks.find(task => task.id === id)!
                 const index = state.tasks.indexOf(task);
                 state.tasks[index] = payload.task
-                state.isLoading.editedTaskIsLoading = false;
+                task.isLoading = false;
                 state.error = null;
                 state.todaysTasksCount = payload.todaysTasksCount;
                 state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
@@ -235,14 +217,14 @@ export const tasksSlice = createSlice({
             })
             .addCase(editTaskAction.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.editedTaskIsLoading = false;
+                state.isLoading = false;
             })
             .addCase(deleteTaskAction.pending, (state) => {
-                state.isLoading.deletedTaskIsLoading = true;
+                state.isLoading = true;
             })
             .addCase(deleteTaskAction.fulfilled, (state, { payload }) => {
                 state.tasks = payload.tasks
-                state.isLoading.deletedTaskIsLoading = false
+                state.isLoading = false
                 state.error = null
                 state.count = payload.allTasksCount;
                 state.todaysTasksCount = payload.todaysTasksCount;
@@ -251,19 +233,19 @@ export const tasksSlice = createSlice({
             })
             .addCase(deleteTaskAction.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.deletedTaskIsLoading = false;
+                state.isLoading = false;
             })
             .addCase(deleteAllTasksAction.pending, (state) => {
-                state.isLoading.allDeletedTasksIsLoading = true;
+                state.isLoading = true;
             })
             .addCase(deleteAllTasksAction.fulfilled, (state, { payload }) => {
                 state.tasks = payload.tasks
-                state.isLoading.allDeletedTasksIsLoading = false;
+                state.isLoading = false;
                 state.error = null;
             })
             .addCase(deleteAllTasksAction.rejected, (state, { payload }) => {
                 state.error = payload.name
-                state.isLoading.allDeletedTasksIsLoading = false;
+                state.isLoading = false;
             })
     },
 })
@@ -278,17 +260,10 @@ export const showTodayTasks = (state: any) => state.tasks.todayTasks
 
 export const getError = (state: any) => state.tasks.error
 
-export const isLoading = (state: any) => state.tasks.isLoading.tasksIsLoading
+export const isLoading = (state: any) => state.tasks.isLoading
 
-export const isLoadingAddedTask = (state: any) => state.tasks.isLoading.addedTaskIsLoading
-
-export const isLoadingEditedTask = (state: any) => state.tasks.isLoading.editedTaskIsLoading
-
-export const isLoadingDeletedTask = (state: any) => state.tasks.isLoading.deletedTaskIsLoading
-
-export const isLoadingAllDeletedTasks = (state: any) => state.tasks.isLoading.allDeletedTasksIsLoading
-
-export const isLoadingUserData = (state: any) => state.tasks.isLoading.userIsLoading
+export const isLoadingActionOnTask = (id: number) =>
+    (state: any) => state.tasks.tasks.find((task: Task) => task.id === id)?.isLoading
 
 export const showTasksCount = (state: any) => state.tasks.count
 
