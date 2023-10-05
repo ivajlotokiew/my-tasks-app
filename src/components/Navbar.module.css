@@ -6,7 +6,8 @@
 }
 
 .navLink {
-  margin: 25px 25px;
+  width: inherit;
+  height: 50px;
 }
 
 .wrapper h3 {
@@ -15,7 +16,7 @@
 }
 
 .container > div:last-child {
-  margin-left: 40px;
+  margin: 20px 0 0 40px;
 }
 
 .directories {

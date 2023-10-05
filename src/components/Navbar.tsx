@@ -39,10 +39,13 @@ const Navbar = () => {
                     <div className={styles.navLink} key={item.target}>
                         <NavLink to={item.target} style={({ isActive }) => {
                             return {
-                                display: "block",
-                                backgroundColor: isActive ? "rgba(255, 0, 0, 0.3)" : "",
-                                borderRightWidth: '10px',
-                                borderColor: isActive ? 'yellow' : 'blue',
+                                display: "flex",
+                                width: "-webkit-fill-available",
+                                height: "inherit",
+                                alignItems: "center",
+                                paddingLeft: "25px",
+                                backgroundColor: isActive ? "rgb(51 65 85 / .2)" : "",
+                                borderRight: isActive ? "4px solid rgb(226 232 240 / .2)" : "",
                             };
                         }}>
                             {item.name}
