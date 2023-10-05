@@ -4,6 +4,10 @@
   justify-content: space-between;
 }
 
+.wrapper a:hover {
+  color: rgb(226 232 240);
+}
+
 .wrapper img:first-child {
   margin-right: 10px;
 }

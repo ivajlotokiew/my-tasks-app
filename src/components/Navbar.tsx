@@ -45,7 +45,7 @@ const Navbar = () => {
                                 alignItems: "center",
                                 paddingLeft: "25px",
                                 backgroundColor: isActive ? "rgb(51 65 85 / .2)" : "",
-                                borderRight: isActive ? "4px solid rgb(226 232 240 / .2)" : "",
+                                borderRight: isActive ? "4px solid rgb(226 232 240)" : "",
                             };
                         }}>
                             {item.name}

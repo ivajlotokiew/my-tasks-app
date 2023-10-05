@@ -10,6 +10,11 @@
   height: 50px;
 }
 
+.navLink:hover,
+.directories span {
+  color: rgb(226 232 240);
+}
+
 .wrapper h3 {
   display: flex;
   justify-content: center;
