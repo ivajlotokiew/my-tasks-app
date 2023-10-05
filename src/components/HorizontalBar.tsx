@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
 import { useDispatch } from 'react-redux/es/hooks/useDispatch'
-import { fetchTasks, showTasks } from '../features/tasks/tasksSlice'
+import { fetchTasks, showTodayTasks } from '../features/tasks/tasksSlice'
 import TaskModal from './TaskModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
@@ -13,7 +13,7 @@ const HorizontalBar = () => {
     const dispatch = useDispatch()
     const [showModal, setShowModal] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
-    const todayTasks = useSelector(showTasks)
+    const todayTasks = useSelector(showTodayTasks)
     const isPopupVisible = Boolean(todayTasks.length && showPopup)
 
     const handleShowModalEvent = () => {
