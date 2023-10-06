@@ -49,6 +49,9 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
         <>
             <NavLink to={`/dir/${getTaskDirectory?.id}/tasks`}>
                 <div className={styles.taskDirectory}>{getTaskDirectory?.title}</div>
+                <div className={styles.directoryTaskLabelPopup}>
+                    {getTaskDirectory?.title}
+                </div>
             </NavLink>
             <h4>{task.title}</h4>
             <h5>{task.description}</h5>
@@ -70,10 +73,12 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
                 }}
             >
                 <div className={styles.actions}>
-
                     <CustomButton onClick={toggleCompletedTask}>
                         {task.completed ? 'completed' : 'uncompleted'}
                     </CustomButton>
+                    <div className={styles.completedTaskLabelPopup}>
+                        {task.completed ? 'Unmark ' : 'Mark '} as completed
+                    </div>
                     <div className={styles.hdgLabelInfo} style={{ display: "flex", alignItems: "center" }}>
                         <img src={task.important ? '/star-red.svg' : '/star-white.svg'}
                             className={styles.starIcon}

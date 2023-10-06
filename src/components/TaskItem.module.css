@@ -16,18 +16,26 @@
   cursor: pointer;
   top: auto;
   right: auto;
-  transform: translate(220%, -115%);
+  transform: translate(100%, -115%);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-feature-settings: normal;
+  padding: 0 10px;
   font-size: 16px;
   height: 28px;
   line-height: 28px;
-  width: 73.5px;
+  width: 100px;
   max-width: 160px;
   text-align: center;
   text-decoration-color: rgb(226, 232, 240);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskDirectory:hover {
+  background-color: #f43f5e;
 }
 
 .actions {
@@ -37,13 +45,15 @@
 
 .importantTaskLabelPopup,
 .deleteTaskLabelPopup,
-.editTaskLabelPopup {
+.completedTaskLabelPopup,
+.editTaskLabelPopup,
+.directoryTaskLabelPopup {
   border: 1px solid black;
   color: black;
   font-size: 14px;
   border-radius: 5px;
   padding: 3px;
-  display: none;
+  visibility: hidden;
   position: absolute;
   background-color: aliceblue;
 }
@@ -56,14 +66,24 @@
   transform: translate(35px, 40px);
 }
 
+.completedTaskLabelPopup {
+  transform: translate(55px, 45px);
+}
+
 .editTaskLabelPopup {
   transform: translate(80px, 40px);
 }
 
+.directoryTaskLabelPopup {
+  transform: translate(210px, -5px);
+}
+
 .starIcon:hover ~ .importantTaskLabelPopup,
+button:hover ~ .completedTaskLabelPopup,
 .trashIcon:hover ~ .deleteTaskLabelPopup,
-.threeDotsIcon:hover ~ .editTaskLabelPopup {
-  display: block;
+.threeDotsIcon:hover ~ .editTaskLabelPopup,
+.taskDirectory:hover ~ .directoryTaskLabelPopup {
+  visibility: visible;
 }
 
 .lineSeparator {
