@@ -7,6 +7,7 @@ import UncompletedTasks from './components/pages/UncompletedTasks';
 import TodayTasks from './components/pages/TodayTasks';
 import AllTasks from './components/pages/AllTasks';
 import DirectoryTasks from './components/pages/DirectoryTasks';
+import SearchResults from './components/pages/SearchResults';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="completed" element={<CompletedTasks />} />
         <Route path="uncompleted" element={<UncompletedTasks />} />
         <Route path="dir/:id/tasks" element={<DirectoryTasks />} />
+        <Route path="results" element={<SearchResults />} />
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>

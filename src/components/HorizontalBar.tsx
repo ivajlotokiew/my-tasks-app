@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
 import { showCurrentDate } from './utils/utils'
 import CustomButton from './common/CustomButton/CustomButton'
+import { useNavigate, createSearchParams } from 'react-router-dom'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
     const todayTasks = useSelector(showTodayTasks)
@@ -26,9 +28,9 @@ const HorizontalBar = () => {
         return () => window.removeEventListener("click", handleOutsideClick);
     }, []);
 
-    useEffect(() => {
-        if (!search.length) dispatch(fetchTasks())
-    }, [dispatch, search, setSearch])
+    // useEffect(() => {
+    //     if (!search.length) dispatch(fetchTasks())
+    // }, [dispatch, search, setSearch])
 
     const handleOutsideClick = () => {
         setShowPopup(false)
@@ -40,7 +42,13 @@ const HorizontalBar = () => {
 
     const handleBtnEvent = (event: any) => {
         event.preventDefault()
-        dispatch(fetchTasks({ search }))
+        search ?
+            navigate({
+                pathname: "results",
+                search: `?${createSearchParams({
+                    q: search
+                })}`
+            }) : navigate("/")
     }
 
     const HandleAlertPopupEvent = (event: any) => {
@@ -52,9 +60,7 @@ const HorizontalBar = () => {
         <div className={styles.wrapper}>
             <form className={styles.form}>
                 <input type="search" placeholder="Search..." onChange={(e) => handleInputSearchEvent(e)} />
-                <button type="submit" onClick={(event) => handleBtnEvent(event)}>
-                    Search
-                </button>
+                <button type="submit" onClick={(event) => handleBtnEvent(event)} />
             </form>
             <div>{showCurrentDate()}</div>
             <div className={styles.notificationPart}>

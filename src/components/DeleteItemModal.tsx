@@ -7,6 +7,7 @@ import { deleteDirectoryAction } from '../features/directories/directoriesSlice'
 import { deleteTaskAction } from '../features/tasks/tasksSlice'
 import CustomButton from './common/CustomButton/CustomButton';
 import styles from './DeleteItemModal.module.css'
+import { useSearchParams } from 'react-router-dom';
 
 const customStyles = {
   content: {
@@ -45,6 +46,8 @@ interface Props {
 function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, stateTasks }: Props) {
   const dispatch = useDispatch()
   const [error, setError] = useState<any>(null)
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get('q');
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
@@ -63,7 +66,8 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, 
         const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
         await dispatch(deleteTaskAction(item)).unwrap()
         dispatch(fetchTasks({
-          ...(state && { [state]: true })
+          ...(state && { [state]: true }),
+          ...(search && { search })
         })).unwrap()
       }
     } catch (error) {
