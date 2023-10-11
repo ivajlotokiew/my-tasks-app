@@ -1,4 +1,4 @@
-import { createServer, Model, hasMany, belongsTo } from "miragejs";
+import { createServer, Model, hasMany, belongsTo, Response } from "miragejs";
 import { tasks } from "./backend/models/task-data";
 import { formatDate } from "./components/utils/utils";
 
@@ -76,7 +76,11 @@ export function makeServer() {
           ).models;
         }
 
-        return { tasks: tasks || schema.tasks.all().models };
+        return new Response(
+          200,
+          {},
+          { tasks: tasks || schema.tasks.all().models }
+        );
       });
 
       this.get("/api/todayTasks", (schema) => {
@@ -84,62 +88,137 @@ export function makeServer() {
           (task) => task.date === formatDate(new Date())
         ).models;
 
-        return { tasks };
+        return new Response(
+          200,
+          {},
+          { tasks: tasks || schema.tasks.all().models }
+        );
       });
 
       this.post("/api/tasks", (schema, request) => {
         let attrs = JSON.parse(request.requestBody);
+        let { title } = attrs;
+
+        if (title && title.length < 3) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "A title is required and must be at least 3 characters long.",
+              ],
+            }
+          );
+        }
+
         const task = schema.tasks.create(attrs);
         const allTasksCount = getAllTasks().length;
         const todaysTasksCount = getTodaysTasks().length;
         const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
 
-        return {
-          task,
-          allTasksCount,
-          todaysTasksCount,
-          todaysCompletedTasksCount,
-          completedTasksCount,
-        };
+        return new Response(
+          200,
+          {},
+          {
+            task,
+            allTasksCount,
+            todaysTasksCount,
+            todaysCompletedTasksCount,
+            completedTasksCount,
+          }
+        );
       });
 
       this.patch("/api/tasks/:id", function (schema, request) {
         let attrs = JSON.parse(request.requestBody);
-        const task = schema.tasks.find(request.params.id).update(attrs);
+        const task = schema.tasks.find(request.params.id);
+        const { title } = attrs;
+        if (!task) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: ["No such task found."],
+            }
+          );
+        }
+
+        if (title && title.length < 3) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "A title is required and must be at least 3 characters long.",
+              ],
+            }
+          );
+        }
+
+        task.update(attrs);
         const todaysTasksCount = getTodaysTasks().length;
         const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
 
-        return {
-          task,
-          todaysTasksCount,
-          completedTasksCount,
-          todaysCompletedTasksCount,
-        };
+        return new Response(
+          200,
+          {},
+          {
+            task,
+            todaysTasksCount,
+            todaysCompletedTasksCount,
+            completedTasksCount,
+          }
+        );
       });
 
       this.delete("/api/tasks", (schema) => {
         this.db.tasks.remove();
-        return { tasks: schema.tasks.all().models, count: 0 };
+        const tasks = schema.tasks.all().models;
+        const count = tasks.length;
+
+        return new Response(
+          200,
+          {},
+          {
+            tasks,
+            count,
+          }
+        );
       });
 
       this.delete("/api/tasks/:id", (schema, { params }) => {
         const { id } = params;
-        schema.tasks.find(id).destroy();
+        const task = schema.tasks.find(id);
+        if (!task) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: ["No such task found."],
+            }
+          );
+        }
+
+        task.destroy();
         const tasks = schema.tasks.all().models;
         const allTasksCount = getAllTasks().length;
         const todaysTasksCount = getTodaysTasks().length;
         const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
         const completedTasksCount = getCompletedTasks().length;
 
-        return {
-          tasks,
-          allTasksCount,
-          todaysTasksCount,
-          completedTasksCount,
-          todaysCompletedTasksCount,
-        };
+        return new Response(
+          200,
+          {},
+          {
+            tasks,
+            allTasksCount,
+            todaysTasksCount,
+            todaysCompletedTasksCount,
+            completedTasksCount,
+          }
+        );
       });
 
       this.get("/api/directories", (schema) => {

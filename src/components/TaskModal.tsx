@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import styles from './TaskModal.module.css'
-import { Task, editTaskAction, addTaskAction, fetchTasks, fetchTasksByDirectory } from '../features/tasks/tasksSlice';
+import { Task, editTaskAction, addTaskAction, fetchTasks, fetchTasksByDirectory, showError, clearError } from '../features/tasks/tasksSlice';
 import { Directory, showDirectories } from '../features/directories/directoriesSlice';
 import { useDispatch, useSelector } from 'react-redux'
 import { formatDate } from './utils/utils';
@@ -49,13 +49,14 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
   const today = formatDate(new Date())
   const dispatch = useDispatch()
   const directories = useSelector(showDirectories)
+  const error = useSelector(showError)
   const [title, setTitle] = useState(() => task ? task.title : '')
   const [description, setDescription] = useState(() => task ? task.description : '')
   const [dateTask, setDateTask] = useState(() => task ? task.date : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
   const [selectedOption, setSelectedOption] = useState(() => directories.find((dir: Directory) => dir.id === task?.directoryId)?.id);
-  const [error, setError] = useState<any>(null)
+
   const navigate = useNavigate()
   const dropdownDirOptions: Option[] = directories.map((directory: Directory) => {
     return { value: directory.id, label: directory.title }
@@ -81,7 +82,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
       setCompletedChecked(task.completed)
     }
 
-    setError(null)
+    dispatch(clearError())
     setIsOpen(false);
   }
 
@@ -139,12 +140,17 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
 
         dispatch(getTasks).unwrap()
       } catch (err) {
-        setError(err);
-        console.error(err);
+        console.error(err)
         return
       }
     } else {
-      await dispatch(addTaskAction(formTask))
+      try {
+        await dispatch(addTaskAction(formTask)).unwrap()
+      } catch (err) {
+        console.error(err)
+        return
+      }
+
       navigate("/")
     }
 

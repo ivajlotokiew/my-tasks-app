@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
+import request from "axios";
 import { Directory } from "../directories/directoriesSlice";
 
 export interface User {
@@ -81,8 +82,13 @@ export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
         try {
             const { data } = await axios.post(`/api/tasks`, params)
             dispatch(fetchTodayTasks())
+
             return data;
-        } catch (error) {
+        } catch (err) {
+            if (request.isAxiosError(err) && err.response) {
+                return rejectWithValue(err.response?.data.errors[0]);
+            }
+
             return rejectWithValue("We couldn't add the new task. Try again soon.");
         }
     });
@@ -93,8 +99,12 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
             const { data } = await axios.patch(`/api/tasks/${params.id}`, params)
             dispatch(fetchTodayTasks())
             return data;
-        } catch (error) {
-            return rejectWithValue("We couldn't edit the task. Try again soon.");
+        } catch (err) {
+            if (request.isAxiosError(err) && err.response) {
+                return rejectWithValue(err.response?.data.errors[0]);
+            }
+
+            return rejectWithValue("We couldn't add the new task. Try again soon.");
         }
     });
 
@@ -104,8 +114,12 @@ export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
             const { data } = await axios.delete(`/api/tasks/${params.id}`)
             dispatch(fetchTodayTasks())
             return data
-        } catch (error) {
-            return rejectWithValue("We couldn't delete the task. Try again soon.");
+        } catch (err) {
+            if (request.isAxiosError(err) && err.response) {
+                return rejectWithValue(err.response?.data.errors[0]);
+            }
+
+            return rejectWithValue("We couldn't add the new task. Try again soon.");
         }
     });
 
@@ -132,7 +146,11 @@ export const fetchTasksByDirectory: any = createAsyncThunk('tasks/fetchTasksByDi
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
-    reducers: {},
+    reducers: {
+        clearError(state) {
+            state.error = null
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchUser.fulfilled, (state, { payload }) => {
@@ -147,6 +165,7 @@ export const tasksSlice = createSlice({
                 state.error = payload.name
             })
             .addCase(fetchTasks.pending, (state) => {
+                debugger
                 state.isLoading = true;
             })
             .addCase(fetchTasks.fulfilled, (state, { payload }) => {
@@ -196,7 +215,7 @@ export const tasksSlice = createSlice({
                 state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(addTaskAction.rejected, (state, { payload }) => {
-                state.error = payload.name
+                state.error = payload
                 state.isLoading = false;
             })
             .addCase(editTaskAction.pending, (state, { meta: { arg } }) => {
@@ -215,8 +234,11 @@ export const tasksSlice = createSlice({
                 state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
-            .addCase(editTaskAction.rejected, (state, { payload }) => {
-                state.error = payload.name
+            .addCase(editTaskAction.rejected, (state, { payload, meta }) => {
+                const id = meta.arg.id;
+                const task = state.tasks.find(task => task.id === id)!
+                task.isLoading = false
+                state.error = payload
                 state.isLoading = false;
             })
             .addCase(deleteTaskAction.pending, (state) => {
@@ -231,8 +253,11 @@ export const tasksSlice = createSlice({
                 state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
                 state.completedTasksCount = payload.completedTasksCount;
             })
-            .addCase(deleteTaskAction.rejected, (state, { payload }) => {
-                state.error = payload.name
+            .addCase(deleteTaskAction.rejected, (state, { payload, meta }) => {
+                const id = meta.arg.id;
+                const task = state.tasks.find(task => task.id === id)!
+                task.isLoading = false
+                state.error = payload
                 state.isLoading = false;
             })
             .addCase(deleteAllTasksAction.pending, (state) => {
@@ -250,7 +275,10 @@ export const tasksSlice = createSlice({
     },
 })
 
+
 export default tasksSlice.reducer
+
+export const { clearError } = tasksSlice.actions
 
 export const showUserData = (state: any) => state.tasks.user
 
@@ -258,7 +286,7 @@ export const showTasks = (state: any) => state.tasks.tasks
 
 export const showTodayTasks = (state: any) => state.tasks.todayTasks
 
-export const getError = (state: any) => state.tasks.error
+export const showError = (state: any) => state.tasks.error
 
 export const isLoading = (state: any) => state.tasks.isLoading
 
