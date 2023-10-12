@@ -15,8 +15,6 @@ import DeleteAllData from "./DeleteAllData"
 import CustomButton from "../common/CustomButton/CustomButton"
 
 const Section = () => {
-    const todayTasks = useSelector(showTasks)
-    const displayTodaysTasks = Boolean(todayTasks.length > 0)
     const allTasksCount = useSelector(showTasksCount)
     const completedTasksCount = useSelector(showCompletedTasksCount)
     const todaysTasksCount = useSelector(showTodaysTasksCount)
@@ -26,7 +24,6 @@ const Section = () => {
     const RedirectPage = () => {
         window.open('https://github.com/ivajlotokiew', '_blank')
     }
-
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
@@ -36,7 +33,7 @@ const Section = () => {
                         <img src={userData.imgURL} alt="Avatar" className={styles.avatar} />
                     </div>
 
-                    {displayTodaysTasks && <CompletedTasksProgressBar
+                    {todaysTasksCount && <CompletedTasksProgressBar
                         progressBarName="Tasks today"
                         all={todaysTasksCount}
                         completed={todaysCompletedTasksCount}
@@ -49,7 +46,7 @@ const Section = () => {
                     />
 
                     <hr style={{ border: '1px dashed', marginBottom: '25px' }} />
-                    {displayTodaysTasks && <ShowTodaysTasksTitle />}
+                    {todaysTasksCount && <ShowTodaysTasksTitle />}
                 </div>
                 <div className={styles.footer}>
                     <DeleteAllData />

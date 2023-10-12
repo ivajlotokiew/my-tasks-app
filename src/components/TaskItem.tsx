@@ -43,8 +43,6 @@ const TaskItem = ({ task, reload, stateTasks }: Props) => {
         setShowDeleteModal(modal => !modal)
     }
 
-    console.log('Task getTaskDirectory id: ', getTaskDirectory?.id)
-
     return (
         <>
             <div>
