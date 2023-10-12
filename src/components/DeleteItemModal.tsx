@@ -8,6 +8,7 @@ import { deleteTaskAction, showError, clearError } from '../features/tasks/tasks
 import CustomButton from './common/CustomButton/CustomButton';
 import styles from './DeleteItemModal.module.css'
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const customStyles = {
   content: {
@@ -48,6 +49,7 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, 
   const [searchParams] = useSearchParams();
   const search = searchParams.get('q');
   const error = useSelector(showError);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
@@ -61,7 +63,14 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, 
   const handleDeleteData = async (event: any) => {
     event.preventDefault()
     try {
-      if (itemName === 'directory') await dispatch(deleteDirectoryAction(item)).unwrap()
+      if (itemName === 'directory') {
+        try {
+          await dispatch(deleteDirectoryAction(item)).unwrap()
+          navigate('/')
+        } catch (error) {
+          console.error(error)
+        }
+      }
       if (itemName === 'task') {
         const state = stateTasksObj.find((st: any) => st.value.includes(stateTasks))?.label
         await dispatch(deleteTaskAction(item)).unwrap()
