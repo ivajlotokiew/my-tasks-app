@@ -1,10 +1,10 @@
 import Modal from 'react-modal';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Task, fetchTasks } from '../features/tasks/tasksSlice';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Directory } from '../features/directories/directoriesSlice';
 import { deleteDirectoryAction } from '../features/directories/directoriesSlice';
-import { deleteTaskAction } from '../features/tasks/tasksSlice'
+import { deleteTaskAction, showError, clearError } from '../features/tasks/tasksSlice'
 import CustomButton from './common/CustomButton/CustomButton';
 import styles from './DeleteItemModal.module.css'
 import { useSearchParams } from 'react-router-dom';
@@ -45,16 +45,16 @@ interface Props {
 
 function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, stateTasks }: Props) {
   const dispatch = useDispatch()
-  const [error, setError] = useState<any>(null)
   const [searchParams] = useSearchParams();
   const search = searchParams.get('q');
+  const error = useSelector(showError);
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
   }, [modalIsOpen, setIsOpen])
 
   const closeModal = () => {
-    setError(null)
+    if (error) dispatch(clearError())
     setIsOpen(false);
   }
 
@@ -71,7 +71,8 @@ function DeleteItemModal({ modalIsOpen, setIsOpen, description, item, itemName, 
         })).unwrap()
       }
     } catch (error) {
-      console.error('The item failed to delete, please try again later.')
+      console.error(error)
+      return
     }
     closeModal()
   }

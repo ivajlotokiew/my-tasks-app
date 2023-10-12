@@ -111,7 +111,7 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
 export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
     async (params: Task, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.delete(`/api/tasks/${params.id}`)
+            const { data } = await axios.delete(`/api/taks/${params.id}`)
             dispatch(fetchTodayTasks())
             return data
         } catch (err) {
@@ -119,7 +119,7 @@ export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
                 return rejectWithValue(err.response?.data.errors[0]);
             }
 
-            return rejectWithValue("We couldn't add the new task. Try again soon.");
+            return rejectWithValue("The item failed to delete, please try again later.");
         }
     });
 
@@ -165,7 +165,6 @@ export const tasksSlice = createSlice({
                 state.error = payload.name
             })
             .addCase(fetchTasks.pending, (state) => {
-                debugger
                 state.isLoading = true;
             })
             .addCase(fetchTasks.fulfilled, (state, { payload }) => {
