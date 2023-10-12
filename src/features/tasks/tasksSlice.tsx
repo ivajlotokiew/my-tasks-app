@@ -111,7 +111,7 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
 export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
     async (params: Task, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.delete(`/api/taks/${params.id}`)
+            const { data } = await axios.delete(`/api/tasks/${params.id}`)
             dispatch(fetchTodayTasks())
             return data
         } catch (err) {
@@ -192,7 +192,7 @@ export const tasksSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(fetchTasksByDirectory.fulfilled, (state, { payload }) => {
-                state.tasks = payload;
+                state.tasks = payload.tasks;
                 state.isLoading = false;
                 state.error = null;
             })

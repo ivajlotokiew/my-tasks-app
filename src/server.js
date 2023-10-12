@@ -178,14 +178,7 @@ export function makeServer() {
         const tasks = schema.tasks.all().models;
         const count = tasks.length;
 
-        return new Response(
-          200,
-          {},
-          {
-            tasks,
-            count,
-          }
-        );
+        return new Response(200, {}, { tasks, count });
       });
 
       this.delete("/api/tasks/:id", (schema, { params }) => {
@@ -222,50 +215,73 @@ export function makeServer() {
       });
 
       this.get("/api/directories", (schema) => {
-        return schema.directories.all();
+        const directories = schema.directories.all().models;
+        return new Response(200, {}, { directories });
       });
 
       this.post("/api/directories", (schema, request) => {
         let attrs = JSON.parse(request.requestBody);
+        const directory = schema.directories.create(attrs);
 
-        return schema.directories.create(attrs);
+        return new Response(200, {}, { directory });
       });
 
       this.patch("/api/directories/:id", function (schema, request) {
         let attrs = JSON.parse(request.requestBody);
-        const directory = schema.directories
-          .find(request.params.id)
-          .update(attrs);
+        const directory = schema.directories.find(request.params.id);
+        if (!directory) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: ["No such directory found."],
+            }
+          );
+        }
 
-        return directory;
+        directory.update(attrs);
+
+        return new Response(200, {}, { directory });
       });
 
       this.delete("/api/directories", (schema) => {
         this.db.directories.remove();
-        return schema.directories.all();
+        const directories = schema.directories.all().models;
+
+        return new Response(200, {}, { directories });
       });
 
       this.delete("/api/directories/:id", (schema, { params }) => {
         const { id } = params;
         const directory = schema.directories.find(id);
+        if (!directory) {
+          return new Response(
+            404,
+            {},
+            { errors: ["No such directory found."] }
+          );
+        }
         directory.tasks.destroy();
         directory.destroy();
+        const directories = schema.directories.all().models;
 
-        return schema.directories.all();
+        return new Response(200, {}, { directories });
       });
 
       this.get("/api/directories/:id/tasks", (schema, request) => {
-        let directoryId = request.params.id;
-        let directory = schema.directories.find(directoryId);
+        const directoryId = request.params.id;
+        const directory = schema.directories.find(directoryId);
+        const tasks = directory.tasks.models;
 
-        return directory.tasks.models;
+        return new Response(200, {}, { tasks });
       });
 
       this.get("/api/tasks/:id/directory", (schema, request) => {
         let taskId = request.params.id;
         let task = schema.tasks.find(taskId);
+        let directory = task.directory;
 
-        return task.directory;
+        return new Response(200, {}, { directory });
       });
 
       this.get("/api/user/me", () => {
@@ -279,13 +295,17 @@ export function makeServer() {
           imgURL: "img_avatar.png",
         };
 
-        return {
-          user,
-          allTasksCount,
-          todaysTasksCount,
-          completedTasksCount,
-          todaysCompletedTasksCount,
-        };
+        return new Response(
+          200,
+          {},
+          {
+            user,
+            allTasksCount,
+            todaysTasksCount,
+            completedTasksCount,
+            todaysCompletedTasksCount,
+          }
+        );
       });
     },
   });

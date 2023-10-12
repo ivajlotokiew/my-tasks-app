@@ -48,7 +48,7 @@ export const editDirectoryAction: any = createAsyncThunk('directories/editDirect
         }
     });
 
-export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDirectories',
+export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDirectory',
     async (params: Directory, { rejectWithValue }) => {
         try {
             const { data } = await axios.delete(`/api/directories/${params.id}`)
