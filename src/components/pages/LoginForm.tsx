@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../features/authentication/authenticationSlice";
 import { useEffect } from "react";
+import styles from "./LoginForm.module.css"
+import CustomButton from "../common/CustomButton/CustomButton";
 
 function LoginForm() {
     const [loginData, setLoginData] = useState({ username: "", password: "" });
     const [errorData, setErrorData] = useState(false);
-    const [show, setShow] = useState(false);
-    const handleClick = () => setShow(!show);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { authToken } = useSelector((state: any) => state.authentication);
@@ -42,40 +42,45 @@ function LoginForm() {
     };
 
     return (
-        <form style={{ width: "100%" }} onSubmit={loginHandler} noValidate>
-            <h3>Username</h3>
-            <input
-                placeholder="Enter username"
-                value={loginData.username}
-                onChange={(e) =>
-                    setLoginData({ ...loginData, username: e.target.value })
-                }
-                onFocus={() => setErrorData(false)}
-            />
+        <>
+            <div className={styles.background}>
+                <div className={styles.shape}></div>
+                <div className={styles.shape}></div>
+            </div>
+            <form className={styles.loginForm} onSubmit={loginHandler} noValidate>
+                <h3>Login Here</h3>
 
-            <input
-                placeholder="Enter password"
-                type={show ? "text" : "password"}
-                value={loginData.password}
-                onChange={(e) =>
-                    setLoginData({ ...loginData, password: e.target.value })
-                }
-                onFocus={() => setErrorData(false)}
-            />
-            <button
-                onClick={handleClick}
-            >
-                click
-            </button>
-            <button type="submit" >
-                Log In
-            </button>
-            <button
-                onClick={(e) => loginHandler(e)}
-            >
-                Log In as Guest
-            </button>
-        </form>
+                <label htmlFor="username">Username</label>
+                <input
+                    id="username"
+                    placeholder="Enter username"
+                    value={loginData.username}
+                    onChange={(e) =>
+                        setLoginData({ ...loginData, username: e.target.value })
+                    }
+                    onFocus={() => setErrorData(false)}
+                />
+
+                <label htmlFor="password">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Enter password"
+                    value={loginData.password}
+                    onChange={(e) =>
+                        setLoginData({ ...loginData, password: e.target.value })
+                    }
+                    onFocus={() => setErrorData(false)}
+                />
+
+                <CustomButton style={{ backgroundColor: "rgb(91, 33, 182)" }} type="submit" >Log In</CustomButton>
+                <CustomButton style={{ backgroundColor: "#f43f5e" }}
+                    onClick={(e) => loginHandler(e)}
+                >
+                    Log In as Guest
+                </CustomButton>
+            </form>
+        </>
     );
 }
 

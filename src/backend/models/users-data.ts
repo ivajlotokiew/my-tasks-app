@@ -14,7 +14,7 @@ export const users: User[] = [
     id: 2,
     firstName: "Ivan",
     lastName: "Petrov",
-    username: "ivancho",
+    username: "ivan",
     password: "ivan123",
     imgURL:
       "https://gravatar.com/avatar/a10b7cc30a246f2f2d2627a250ff3658?s=400&d=robohash&r=x",
