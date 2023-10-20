@@ -5,8 +5,12 @@ import { Directory } from "../directories/directoriesSlice";
 
 export interface User {
     id: number,
-    name: string,
-    imgURL: string,
+    directory?: Directory,
+    firstName?: string,
+    lastName?: string,
+    username: string,
+    password: string | null,
+    imgURL: string | null,
 }
 
 export interface Task {
@@ -35,7 +39,7 @@ interface iInitialState {
 }
 
 const initialState: iInitialState = {
-    user: { id: 0, name: '', imgURL: '' },
+    user: { id: 0, password: null, username: '', imgURL: '' },
     tasks: [],
     todayTasks: [],
     directories: [],
@@ -278,8 +282,6 @@ export const tasksSlice = createSlice({
 export default tasksSlice.reducer
 
 export const { clearError } = tasksSlice.actions
-
-export const showUserData = (state: any) => state.tasks.user
 
 export const showTasks = (state: any) => state.tasks.tasks
 

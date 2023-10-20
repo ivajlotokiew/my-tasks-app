@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
-import { useDispatch } from 'react-redux/es/hooks/useDispatch'
-import { fetchTasks, showTodayTasks } from '../features/tasks/tasksSlice'
+import { showTodayTasks } from '../features/tasks/tasksSlice'
 import TaskModal from './TaskModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
@@ -11,7 +10,6 @@ import { useNavigate, createSearchParams } from 'react-router-dom'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')
-    const dispatch = useDispatch()
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
@@ -27,10 +25,6 @@ const HorizontalBar = () => {
 
         return () => window.removeEventListener("click", handleOutsideClick);
     }, []);
-
-    // useEffect(() => {
-    //     if (!search.length) dispatch(fetchTasks())
-    // }, [dispatch, search, setSearch])
 
     const handleOutsideClick = () => {
         setShowPopup(false)

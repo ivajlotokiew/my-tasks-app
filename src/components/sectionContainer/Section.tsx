@@ -1,10 +1,8 @@
 import {
-    showTasks,
     showCompletedTasksCount,
     showTodaysTasksCount,
     showTodayCompletedTasksCount,
-    showTasksCount,
-    showUserData
+    showTasksCount
 }
     from "../../features/tasks/tasksSlice"
 import CompletedTasksProgressBar from "./CompletedTasksProgressBar"
@@ -13,24 +11,40 @@ import styles from "./Section.module.css"
 import { useSelector } from "react-redux"
 import DeleteAllData from "./DeleteAllData"
 import CustomButton from "../common/CustomButton/CustomButton"
+import { useState } from "react"
+import LogoutPopup from "../LogoutPopup"
 
 const Section = () => {
     const allTasksCount = useSelector(showTasksCount)
     const completedTasksCount = useSelector(showCompletedTasksCount)
     const todaysTasksCount = useSelector(showTodaysTasksCount)
     const todaysCompletedTasksCount = useSelector(showTodayCompletedTasksCount)
-    const userData = useSelector(showUserData)
+    const { authUser } = useSelector((state: any) => state.authentication);
+    const [showPopup, setShowPopup] = useState(false)
 
     const RedirectPage = () => {
         window.open('https://github.com/ivajlotokiew', '_blank')
     }
+
+    const HandleAlertPopupEvent = (event: any) => {
+        event.stopPropagation();
+        setShowPopup(show => !show)
+    }
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
                 <div className={styles.heading}>
                     <div className={styles.account}>
-                        <span>{'Hi, ' + userData.name}</span>
-                        <img src={userData.imgURL} alt="Avatar" className={styles.avatar} />
+                        <span>{'Hi, ' + authUser.username}</span>
+                        <img src={authUser.imgURL}
+                            alt="Avatar"
+                            className={styles.avatar}
+                            onClick={HandleAlertPopupEvent}
+                            role="button"
+                            style={{ cursor: "pointer" }}
+                        />
+                        {showPopup && <div className={styles.popup}><LogoutPopup /></div>}
                     </div>
 
                     {todaysTasksCount && <CompletedTasksProgressBar
