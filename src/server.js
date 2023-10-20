@@ -1,11 +1,17 @@
 import { createServer, Model, hasMany, belongsTo, Response } from "miragejs";
 import { tasks } from "./backend/models/task-data";
+import { users } from "./backend/models/users-data";
 import { formatDate } from "./components/utils/utils";
 
 export function makeServer() {
   const server = createServer({
     models: {
+      user: Model.extend({
+        directories: hasMany(),
+      }),
+
       directory: Model.extend({
+        user: belongsTo(),
         tasks: hasMany(),
       }),
 
@@ -15,13 +21,20 @@ export function makeServer() {
     },
     fixtures: {
       tasks,
+      users,
     },
     seeds(server) {
-      let mainDirectory = server.create("directory", { title: "Main" });
+      users.forEach((user) => {
+        let mainDirectory = server.create("directory", {
+          title: "Main",
+        });
+        server.create("user", { ...user, directories: [mainDirectory] });
+      });
 
-      tasks.forEach((task) =>
-        server.create("task", { ...task, directory: mainDirectory })
-      );
+      const mainUser = server.schema.users.first();
+      const directory = mainUser.directories.models[0];
+
+      tasks.forEach((task) => server.create("task", { ...task, directory }));
     },
     routes() {
       const getAllTasks = () => {
@@ -43,6 +56,98 @@ export function makeServer() {
           (task) => task.date === formatDate(new Date()) && task.completed
         );
       };
+
+      this.post("/api/auth/login", (schema, request) => {
+        const { username, password } = JSON.parse(request.requestBody);
+        try {
+          const foundUser = schema.users.findBy({ username: username });
+
+          if (!foundUser) {
+            return new Response(
+              404,
+              {},
+              {
+                errors: [
+                  "The username you entered is not Registered. Not Found error",
+                ],
+              }
+            );
+          }
+          if (password === foundUser.password) {
+            const jwt = require("jsonwebtoken");
+            const encodedToken = jwt.sign(
+              { _id: foundUser._id, username },
+              `${username}_([])_${password}`
+            );
+
+            return new Response(200, {}, { foundUser, encodedToken });
+          }
+
+          return new Response(
+            401,
+            {},
+            {
+              errors: [
+                "The credentials you entered are invalid. Unauthorized access error.",
+              ],
+            }
+          );
+        } catch (error) {
+          return new Response(
+            500,
+            {},
+            {
+              error,
+            }
+          );
+        }
+      });
+
+      this.post("/api/auth/login", (schema, request) => {
+        const { username, password } = JSON.parse(request.requestBody);
+        try {
+          const foundUser = schema.users.findBy({ username: username });
+
+          if (!foundUser) {
+            return new Response(
+              404,
+              {},
+              {
+                errors: [
+                  "The username you entered is not Registered. Not Found error",
+                ],
+              }
+            );
+          }
+          if (password === foundUser.password) {
+            const jwt = require("jsonwebtoken");
+            const encodedToken = jwt.sign(
+              { _id: foundUser._id, username },
+              `${username}_([])_${password}`
+            );
+
+            return new Response(200, {}, { foundUser, encodedToken });
+          }
+
+          return new Response(
+            401,
+            {},
+            {
+              errors: [
+                "The credentials you entered are invalid. Unauthorized access error.",
+              ],
+            }
+          );
+        } catch (error) {
+          return new Response(
+            500,
+            {},
+            {
+              error,
+            }
+          );
+        }
+      });
 
       this.get("/api/tasks", (schema, { queryParams }) => {
         const { search } = queryParams;
