@@ -64,7 +64,12 @@ export const fetchUser: any = createAsyncThunk('tasks/getUser',
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
     async (params: {}, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/tasks`, { params })
+            let user;
+            if (localStorage.getItem("authUser") !== null) {
+                user = localStorage.getItem("authUser")
+            }
+            const id = user ? JSON.parse(user).id : null
+            const { data } = await axios.get(`/api/tasks/${id}`, { params })
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");

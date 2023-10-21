@@ -149,43 +149,40 @@ export function makeServer() {
         }
       });
 
-      this.get("/api/tasks", (schema, { queryParams }) => {
-        const { search } = queryParams;
-        const { important } = queryParams;
-        const { today } = queryParams;
-        let { completed } = queryParams;
-        let { uncompleted } = queryParams;
-        let tasks;
+      this.get("/api/tasks/:id", (schema, { queryParams, params }) => {
+        const { search, important, today, completed, uncompleted } =
+          queryParams;
+        const { id } = params;
+        let user = schema.users.find(id);
+        let tasks = [];
+
+        user.directories.models.forEach((d) =>
+          d.tasks.models.forEach((t) => tasks.push(t))
+        );
 
         if (important) {
-          tasks = schema.tasks.where((task) => task.important).models;
+          tasks = tasks.filter((task) => task.important);
         }
 
         if (completed !== undefined) {
-          tasks = schema.tasks.where((task) => task.completed).models;
+          tasks = tasks.filter((task) => task.completed);
         }
 
         if (uncompleted !== undefined) {
-          tasks = schema.tasks.where((task) => !task.completed).models;
+          tasks = tasks.filter((task) => !task.completed);
         }
 
         if (today) {
-          tasks = schema.tasks.where(
-            (task) => task.date === formatDate(new Date())
-          ).models;
+          tasks = tasks.filter((task) => task.date === formatDate(new Date()));
         }
 
         if (search) {
-          tasks = schema.tasks.where((task) =>
+          tasks = tasks.filter((task) =>
             task.title.toLowerCase().includes(search.toLowerCase())
-          ).models;
+          );
         }
 
-        return new Response(
-          200,
-          {},
-          { tasks: tasks || schema.tasks.all().models }
-        );
+        return new Response(200, {}, { tasks });
       });
 
       this.get("/api/todayTasks", (schema) => {

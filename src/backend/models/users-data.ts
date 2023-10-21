@@ -6,7 +6,7 @@ export const users: User[] = [
     firstName: "Ivaylo",
     lastName: "Tokiev",
     username: "iv4o",
-    password: "iv4o123",
+    password: "iv4o",
     imgURL:
       "https://gravatar.com/avatar/52d4d352d73806258f1cdf65341244c6?s=400&d=robohash&r=x",
   },
@@ -15,7 +15,7 @@ export const users: User[] = [
     firstName: "Ivan",
     lastName: "Petrov",
     username: "ivan",
-    password: "ivan123",
+    password: "ivan",
     imgURL:
       "https://gravatar.com/avatar/a10b7cc30a246f2f2d2627a250ff3658?s=400&d=robohash&r=x",
   },
@@ -24,7 +24,7 @@ export const users: User[] = [
     firstName: "Petko",
     lastName: "Petkov",
     username: "petko",
-    password: "petko123",
+    password: "petko",
     imgURL:
       "https://gravatar.com/avatar/b2c11babc045b6357c261aff6b2d3962?s=400&d=robohash&r=x",
   },

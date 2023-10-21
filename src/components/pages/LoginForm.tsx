@@ -26,7 +26,7 @@ function LoginForm() {
                 username: "iv4o",
                 password: "iv4o1234",
             });
-            dispatch(loginUser({ username: "iv4o", password: "iv4o123" })
+            dispatch(loginUser({ username: "iv4o", password: "iv4o" })
             );
         } else {
             if (loginData.username.trim() === "" || loginData.password.trim() === "")
