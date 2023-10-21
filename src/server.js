@@ -316,8 +316,11 @@ export function makeServer() {
         );
       });
 
-      this.get("/api/directories", (schema) => {
-        const directories = schema.directories.all().models;
+      this.get("/api/directories/:id", (schema, { params }) => {
+        const id = params.id;
+        const user = schema.users.find(id);
+
+        const directories = user.directories.models;
         return new Response(200, {}, { directories });
       });
 

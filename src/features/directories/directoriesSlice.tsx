@@ -21,7 +21,12 @@ const initialState: iInitialStateDirectories = {
 export const fetchDirectories: any = createAsyncThunk('directories/getDirectories',
     async (params: {}, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/directories`, { params })
+            let user;
+            if (localStorage.getItem("authUser") !== null) {
+                user = localStorage.getItem("authUser")
+            }
+            const id = user ? JSON.parse(user).id : null
+            const { data } = await axios.get(`/api/directories/${id}`, { params })
             return data
         } catch (error) {
             return rejectWithValue("Failed to load directories. Try again soon.");
