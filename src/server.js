@@ -2,6 +2,7 @@ import { createServer, Model, hasMany, belongsTo, Response } from "miragejs";
 import { tasks } from "./backend/models/task-data";
 import { users } from "./backend/models/users-data";
 import { formatDate } from "./components/utils/utils";
+import { requiresAuth } from "./backend/utils/authUtil";
 
 export function makeServer() {
   const server = createServer({
@@ -60,7 +61,7 @@ export function makeServer() {
       this.post("/api/auth/login", (schema, request) => {
         const { username, password } = JSON.parse(request.requestBody);
         try {
-          const foundUser = schema.users.findBy({ username: username });
+          const foundUser = schema.users.findBy({ username });
 
           if (!foundUser) {
             return new Response(
@@ -76,7 +77,7 @@ export function makeServer() {
           if (password === foundUser.password) {
             const jwt = require("jsonwebtoken");
             const encodedToken = jwt.sign(
-              { _id: foundUser._id, username },
+              { id: foundUser.id, username },
               `${username}_([])_${password}`
             );
 
@@ -149,15 +150,25 @@ export function makeServer() {
         }
       });
 
-      this.get("/api/tasks/:id", (schema, { queryParams, params }) => {
-        const { search, important, today, completed, uncompleted } =
-          queryParams;
-        const { id } = params;
-        let user = schema.users.find(id);
-        let tasks = [];
+      this.get("/api/tasks/:id", (schema, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
 
-        user.directories.models.forEach((d) =>
-          d.tasks.models.forEach((t) => tasks.push(t))
+        const { search, important, today, completed, uncompleted } =
+          request.queryParams;
+
+        let tasks = this.db.tasks.where((task) =>
+          user.directoryIds.includes(task.directoryId)
         );
 
         if (important) {

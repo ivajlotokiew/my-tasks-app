@@ -51,6 +51,8 @@ const initialState: iInitialState = {
     todaysCompletedTasksCount: 0,
 };
 
+const authToken = localStorage.getItem('authToken')
+
 export const fetchUser: any = createAsyncThunk('tasks/getUser',
     async (_, { rejectWithValue }) => {
         try {
@@ -69,7 +71,8 @@ export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
                 user = localStorage.getItem("authUser")
             }
             const id = user ? JSON.parse(user).id : null
-            const { data } = await axios.get(`/api/tasks/${id}`, { params })
+            const { data } = await axios.get(`/api/tasks/${id}`,
+                { headers: { authorization: authToken }, params })
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");
