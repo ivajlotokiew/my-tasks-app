@@ -12,7 +12,7 @@ interface Props {
 const DirectoryItem = ({ directory }: Props) => {
     const [showModal, setShowModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const isMainDir = Number(directory.id) === 1 && directory.title === 'Main' ? true : false
+    const isMainDir = directory.title === 'Main' ? true : false
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
