@@ -104,53 +104,8 @@ export function makeServer() {
         }
       });
 
-      this.post("/api/auth/login", (schema, request) => {
-        const { username, password } = JSON.parse(request.requestBody);
-        try {
-          const foundUser = schema.users.findBy({ username: username });
-
-          if (!foundUser) {
-            return new Response(
-              404,
-              {},
-              {
-                errors: [
-                  "The username you entered is not Registered. Not Found error",
-                ],
-              }
-            );
-          }
-          if (password === foundUser.password) {
-            const jwt = require("jsonwebtoken");
-            const encodedToken = jwt.sign(
-              { _id: foundUser._id, username },
-              `${username}_([])_${password}`
-            );
-
-            return new Response(200, {}, { foundUser, encodedToken });
-          }
-
-          return new Response(
-            401,
-            {},
-            {
-              errors: [
-                "The credentials you entered are invalid. Unauthorized access error.",
-              ],
-            }
-          );
-        } catch (error) {
-          return new Response(
-            500,
-            {},
-            {
-              error,
-            }
-          );
-        }
-      });
-
       this.get("/api/tasks/:id", (schema, request) => {
+        debugger;
         const user = requiresAuth.call(this, request);
         if (!user) {
           return new Response(
