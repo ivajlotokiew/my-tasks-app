@@ -293,6 +293,8 @@ export const showTasks = (state: any) => state.tasks.tasks
 
 export const showTodayTasks = (state: any) => state.tasks.todayTasks
 
+export const showTodayUncompletedTasks = (state: any) => state.tasks.todayTasks.filter((task: any) => !task.completed)
+
 export const showError = (state: any) => state.tasks.error
 
 export const isLoading = (state: any) => state.tasks.isLoading

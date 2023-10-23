@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styles from './HorizontalBar.module.css'
-import { showTodayTasks } from '../features/tasks/tasksSlice'
+import { showTodayUncompletedTasks } from '../features/tasks/tasksSlice'
 import TaskModal from './TaskModal'
 import { useSelector } from 'react-redux'
 import AlertsPopup from './AlertsPopup'
@@ -13,8 +13,9 @@ const HorizontalBar = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
-    const todayTasks = useSelector(showTodayTasks)
-    const isPopupVisible = Boolean(todayTasks.length && showPopup)
+    const todayUncompletedTasks = useSelector(showTodayUncompletedTasks)
+    debugger
+    const isPopupVisible = Boolean(todayUncompletedTasks.length && showPopup)
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
@@ -58,13 +59,13 @@ const HorizontalBar = () => {
             </form>
             <div>{showCurrentDate()}</div>
             <div className={styles.notificationPart}>
-                <img src={Boolean(todayTasks.length) ? '/bell-alert.svg' : '/bell.svg'}
+                <img src={Boolean(todayUncompletedTasks.length) ? '/bell-alert.svg' : '/bell.svg'}
                     onClick={HandleAlertPopupEvent}
                     role="button"
                     alt='Notification bell'
                     width="30px"
                     style={{ cursor: "pointer", marginRight: "15px" }} />
-                {isPopupVisible && <div className={styles.popup}><AlertsPopup tasksCount={todayTasks.length} /></div>}
+                {isPopupVisible && <div className={styles.popup}><AlertsPopup tasksCount={todayUncompletedTasks.length} /></div>}
 
                 <TaskModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                     <CustomButton

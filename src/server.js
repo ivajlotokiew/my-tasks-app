@@ -105,7 +105,6 @@ export function makeServer() {
       });
 
       this.get("/api/tasks/:id", (schema, request) => {
-        debugger;
         const user = requiresAuth.call(this, request);
         if (!user) {
           return new Response(
@@ -121,7 +120,7 @@ export function makeServer() {
 
         const { search, important, today, completed, uncompleted } =
           request.queryParams;
-
+        debugger;
         let tasks = this.db.tasks.where((task) =>
           user.directoryIds.includes(task.directoryId)
         );
