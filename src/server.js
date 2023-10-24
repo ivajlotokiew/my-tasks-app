@@ -3,6 +3,7 @@ import { tasks } from "./backend/models/task-data";
 import { users } from "./backend/models/users-data";
 import { formatDate } from "./components/utils/utils";
 import { requiresAuth } from "./backend/utils/authUtil";
+import { getUserTasks } from "./backend/helpers/tasksHelper";
 
 export function makeServer() {
   const server = createServer({
@@ -38,31 +39,10 @@ export function makeServer() {
       tasks.forEach((task) => server.create("task", { ...task, directory }));
     },
     routes() {
-      const getAllTasks = () => {
-        return this.db.tasks;
-      };
-
-      const getCompletedTasks = () => {
-        return this.db.tasks.where((task) => task.completed);
-      };
-
-      const getTodaysTasks = () => {
-        return this.db.tasks.where(
-          (task) => task.date === formatDate(new Date())
-        );
-      };
-
-      const getTodaysCompletedTasks = () => {
-        return this.db.tasks.where(
-          (task) => task.date === formatDate(new Date()) && task.completed
-        );
-      };
-
       this.post("/api/auth/login", (schema, request) => {
         const { username, password } = JSON.parse(request.requestBody);
         try {
           const foundUser = schema.users.findBy({ username });
-
           if (!foundUser) {
             return new Response(
               404,
@@ -104,7 +84,7 @@ export function makeServer() {
         }
       });
 
-      this.get("/api/tasks/:id", (schema, request) => {
+      this.get("/api/tasks", (_, request) => {
         const user = requiresAuth.call(this, request);
         if (!user) {
           return new Response(
@@ -117,10 +97,16 @@ export function makeServer() {
             }
           );
         }
+        const { allTasks, completedTasks, todayTasks, todayCompletedTasks } =
+          getUserTasks.call(this, user);
+        const allTasksCount = allTasks.length;
+        const completedTasksCount = completedTasks.length;
+        const todaysTasksCount = todayTasks.length;
+        const todaysCompletedTasksCount = todayCompletedTasks.length;
 
         const { search, important, today, completed, uncompleted } =
           request.queryParams;
-        debugger;
+
         let tasks = this.db.tasks.where((task) =>
           user.directoryIds.includes(task.directoryId)
         );
@@ -147,7 +133,17 @@ export function makeServer() {
           );
         }
 
-        return new Response(200, {}, { tasks });
+        return new Response(
+          200,
+          {},
+          {
+            tasks,
+            allTasksCount,
+            todaysTasksCount,
+            completedTasksCount,
+            todaysCompletedTasksCount,
+          }
+        );
       });
 
       this.get("/api/todayTasks", (schema) => {
@@ -163,6 +159,19 @@ export function makeServer() {
       });
 
       this.post("/api/tasks", (schema, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
+
         let attrs = JSON.parse(request.requestBody);
         let { title } = attrs;
 
@@ -179,10 +188,12 @@ export function makeServer() {
         }
 
         const task = schema.tasks.create(attrs);
-        const allTasksCount = getAllTasks().length;
-        const todaysTasksCount = getTodaysTasks().length;
-        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
-        const completedTasksCount = getCompletedTasks().length;
+        const { allTasks, completedTasks, todayTasks, todayCompletedTasks } =
+          getUserTasks.call(this, user);
+        const allTasksCount = allTasks.length;
+        const completedTasksCount = completedTasks.length;
+        const todaysTasksCount = todayTasks.length;
+        const todaysCompletedTasksCount = todayCompletedTasks.length;
 
         return new Response(
           200,
@@ -197,7 +208,20 @@ export function makeServer() {
         );
       });
 
-      this.patch("/api/tasks/:id", function (schema, request) {
+      this.patch("/api/tasks/:id", (schema, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
+
         let attrs = JSON.parse(request.requestBody);
         const task = schema.tasks.find(request.params.id);
         const { title } = attrs;
@@ -224,9 +248,11 @@ export function makeServer() {
         }
 
         task.update(attrs);
-        const todaysTasksCount = getTodaysTasks().length;
-        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
-        const completedTasksCount = getCompletedTasks().length;
+        const { completedTasks, todayTasks, todayCompletedTasks } =
+          getUserTasks.call(this, user);
+        const completedTasksCount = completedTasks.length;
+        const todaysTasksCount = todayTasks.length;
+        const todaysCompletedTasksCount = todayCompletedTasks.length;
 
         return new Response(
           200,
@@ -248,8 +274,21 @@ export function makeServer() {
         return new Response(200, {}, { tasks, count });
       });
 
-      this.delete("/api/tasks/:id", (schema, { params }) => {
-        const { id } = params;
+      this.delete("/api/tasks/:id", (schema, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
+
+        const { id } = request.params;
         const task = schema.tasks.find(id);
         if (!task) {
           return new Response(
@@ -262,11 +301,17 @@ export function makeServer() {
         }
 
         task.destroy();
-        const tasks = schema.tasks.all().models;
-        const allTasksCount = getAllTasks().length;
-        const todaysTasksCount = getTodaysTasks().length;
-        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
-        const completedTasksCount = getCompletedTasks().length;
+        const tasks = schema.tasks
+          .all()
+          .models.filter((task) =>
+            user.directoryIds.includes(task.directoryId)
+          );
+        const { allTasks, completedTasks, todayTasks, todayCompletedTasks } =
+          getUserTasks.call(this, user);
+        const allTasksCount = allTasks.length;
+        const completedTasksCount = completedTasks.length;
+        const todaysTasksCount = todayTasks.length;
+        const todaysCompletedTasksCount = todayCompletedTasks.length;
 
         return new Response(
           200,

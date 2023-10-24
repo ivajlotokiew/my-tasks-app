@@ -54,12 +54,7 @@ const initialState: iInitialState = {
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
     async (params: {}, { rejectWithValue }) => {
         try {
-            let user;
-            if (localStorage.getItem("authUser") !== null) {
-                user = localStorage.getItem("authUser")
-            }
-            const id = user ? JSON.parse(user).id : null
-            const { data } = await axios.get(`/api/tasks/${id}`,
+            const { data } = await axios.get(`/api/tasks`,
                 { headers: { authorization: localStorage.getItem('authToken') }, params })
             return data
         } catch (error) {
@@ -80,7 +75,8 @@ export const fetchTodayTasks: any = createAsyncThunk('tasks/getTodayTasks',
 export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
     async (params, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.post(`/api/tasks`, params)
+            const { data } = await axios.post(`/api/tasks`, params,
+                { headers: { authorization: localStorage.getItem('authToken') } })
             dispatch(fetchTodayTasks())
 
             return data;
@@ -96,7 +92,8 @@ export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
 export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
     async (params: Task, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.patch(`/api/tasks/${params.id}`, params)
+            const { data } = await axios.patch(`/api/tasks/${params.id}`, params,
+                { headers: { authorization: localStorage.getItem('authToken') } })
             dispatch(fetchTodayTasks())
             return data;
         } catch (err) {
@@ -111,7 +108,8 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
 export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
     async (params: Task, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.delete(`/api/tasks/${params.id}`)
+            const { data } = await axios.delete(`/api/tasks/${params.id}`,
+                { headers: { authorization: localStorage.getItem('authToken') }, params })
             dispatch(fetchTodayTasks())
             return data
         } catch (err) {
@@ -160,6 +158,10 @@ export const tasksSlice = createSlice({
                 state.tasks = payload.tasks;
                 state.isLoading = false;
                 state.error = null;
+                state.count = payload.allTasksCount;
+                state.todaysTasksCount = payload.todaysTasksCount;
+                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
+                state.completedTasksCount = payload.completedTasksCount;
             })
             .addCase(fetchTasks.rejected, (state, { payload }) => {
                 state.error = payload.name
