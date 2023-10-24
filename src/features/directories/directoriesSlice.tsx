@@ -21,12 +21,8 @@ const initialState: iInitialStateDirectories = {
 export const fetchDirectories: any = createAsyncThunk('directories/getDirectories',
     async (params: {}, { rejectWithValue }) => {
         try {
-            let user;
-            if (localStorage.getItem("authUser") !== null) {
-                user = localStorage.getItem("authUser")
-            }
-            const id = user ? JSON.parse(user).id : null
-            const { data } = await axios.get(`/api/directories/${id}`, { params })
+            const { data } = await axios.get(`/api/directories`,
+                { headers: { authorization: localStorage.getItem('authToken') }, params })
             return data
         } catch (error) {
             return rejectWithValue("Failed to load directories. Try again soon.");
@@ -34,9 +30,10 @@ export const fetchDirectories: any = createAsyncThunk('directories/getDirectorie
     });
 
 export const addDirectoryAction: any = createAsyncThunk('directories/addDirectories',
-    async (params, { rejectWithValue }) => {
+    async (params: {}, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`/api/directories`, params)
+            const { data } = await axios.post(`/api/directories`, params,
+                { headers: { authorization: localStorage.getItem('authToken') } })
             return data;
         } catch (error) {
             return rejectWithValue("We couldn't add a new directory. Try again soon.");

@@ -97,6 +97,7 @@ export function makeServer() {
             }
           );
         }
+
         const { allTasks, completedTasks, todayTasks, todayCompletedTasks } =
           getUserTasks.call(this, user);
         const allTasksCount = allTasks.length;
@@ -326,17 +327,45 @@ export function makeServer() {
         );
       });
 
-      this.get("/api/directories/:id", (schema, { params }) => {
-        const id = params.id;
-        const user = schema.users.find(id);
+      this.get("/api/directories", (_, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
 
-        const directories = user.directories.models;
+        const directories = this.db.directories.where((dir) =>
+          user.directoryIds.includes(dir.id)
+        );
         return new Response(200, {}, { directories });
       });
 
       this.post("/api/directories", (schema, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
         let attrs = JSON.parse(request.requestBody);
-        const directory = schema.directories.create(attrs);
+        const directory = schema.directories.create({
+          ...attrs,
+          userId: user.id,
+        });
+        // user.directoryIds.push(directory.id);
 
         return new Response(200, {}, { directory });
       });

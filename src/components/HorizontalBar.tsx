@@ -14,7 +14,6 @@ const HorizontalBar = () => {
     const [showModal, setShowModal] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
     const todayUncompletedTasks = useSelector(showTodayUncompletedTasks)
-    debugger
     const isPopupVisible = Boolean(todayUncompletedTasks.length && showPopup)
 
     const handleShowModalEvent = () => {
