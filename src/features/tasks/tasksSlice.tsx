@@ -51,16 +51,6 @@ const initialState: iInitialState = {
     todaysCompletedTasksCount: 0,
 };
 
-export const fetchUser: any = createAsyncThunk('tasks/getUser',
-    async (_, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get("/api/user/me")
-            return data
-        } catch (error) {
-            return rejectWithValue("We couldn't load your tasks. Try again soon.");
-        }
-    });
-
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
     async (params: {}, { rejectWithValue }) => {
         try {
@@ -163,17 +153,6 @@ export const tasksSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchUser.fulfilled, (state, { payload }) => {
-                state.user = payload.user;
-                state.error = null;
-                state.count = payload.allTasksCount;
-                state.todaysTasksCount = payload.todaysTasksCount;
-                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
-                state.completedTasksCount = payload.completedTasksCount;
-            })
-            .addCase(fetchUser.rejected, (state, { payload }) => {
-                state.error = payload.name
-            })
             .addCase(fetchTasks.pending, (state) => {
                 state.isLoading = true;
             })

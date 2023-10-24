@@ -353,30 +353,6 @@ export function makeServer() {
 
         return new Response(200, {}, { directory });
       });
-
-      this.get("/api/user/me", () => {
-        const allTasksCount = getAllTasks().length;
-        const todaysTasksCount = getTodaysTasks().length;
-        const todaysCompletedTasksCount = getTodaysCompletedTasks().length;
-        const completedTasksCount = getCompletedTasks().length;
-        const user = {
-          id: 1,
-          name: "Ivaylo Tokiev",
-          imgURL: "img_avatar.png",
-        };
-
-        return new Response(
-          200,
-          {},
-          {
-            user,
-            allTasksCount,
-            todaysTasksCount,
-            completedTasksCount,
-            todaysCompletedTasksCount,
-          }
-        );
-      });
     },
   });
 
