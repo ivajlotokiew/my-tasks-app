@@ -24,7 +24,7 @@ function LoginForm() {
         if (e && e.target.innerText === "Log In as Guest") {
             setLoginData({
                 username: "iv4o",
-                password: "iv4o1234",
+                password: "iv4o",
             });
             dispatch(loginUser({ username: "iv4o", password: "iv4o" })
             );

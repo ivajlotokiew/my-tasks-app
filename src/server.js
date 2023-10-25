@@ -365,7 +365,6 @@ export function makeServer() {
           ...attrs,
           userId: user.id,
         });
-        // user.directoryIds.push(directory.id);
 
         return new Response(200, {}, { directory });
       });
