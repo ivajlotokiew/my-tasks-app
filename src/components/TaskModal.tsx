@@ -55,13 +55,16 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
   const [dateTask, setDateTask] = useState(() => task ? task.date : today)
   const [importantChecked, setImportantChecked] = useState(() => task ? task.important : false)
   const [completedChecked, setCompletedChecked] = useState(() => task ? task.completed : false)
-  const [selectedOption, setSelectedOption] = useState(task ?
-    directories.find((dir: Directory) => dir.id === task?.directoryId)?.id : directories[0].id);
-
+  const [selectedOption, setSelectedOption] = useState(() => directories.find((dir: Directory) => dir.id === task?.directoryId)?.id);
   const navigate = useNavigate()
   const dropdownDirOptions: Option[] = directories.map((directory: Directory) => {
     return { value: directory.id, label: directory.title }
   })
+
+  useEffect(() => {
+    if (directories)
+      setSelectedOption(directories[0].id)
+  }, [directories, setSelectedOption])
 
   useEffect(() => {
     setIsOpen(modalIsOpen)
