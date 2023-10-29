@@ -11,7 +11,7 @@ import styles from "./Section.module.css"
 import { useSelector } from "react-redux"
 import DeleteAllData from "./DeleteAllData"
 import CustomButton from "../common/CustomButton/CustomButton"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import LogoutPopup from "../LogoutPopup"
 
 const Section = () => {
@@ -22,11 +22,21 @@ const Section = () => {
     const { authUser } = useSelector((state: any) => state.authentication);
     const [showPopup, setShowPopup] = useState(false)
 
+    useEffect(() => {
+        window.addEventListener("click", handleOutsideClick);
+
+        return () => window.removeEventListener("click", handleOutsideClick);
+    }, []);
+
+    const handleOutsideClick = () => {
+        setShowPopup(false)
+    };
+
     const RedirectPage = () => {
         window.open('https://github.com/ivajlotokiew', '_blank')
     }
 
-    const HandleAlertPopupEvent = (event: any) => {
+    const HandleLogoutPopup = (event: any) => {
         event.stopPropagation();
         setShowPopup(show => !show)
     }
@@ -40,7 +50,7 @@ const Section = () => {
                         <img src={authUser.imgURL}
                             alt="Avatar"
                             className={styles.avatar}
-                            onClick={HandleAlertPopupEvent}
+                            onClick={HandleLogoutPopup}
                             role="button"
                             style={{ cursor: "pointer" }}
                         />
