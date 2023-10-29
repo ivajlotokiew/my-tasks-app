@@ -25,7 +25,7 @@ const Navbar = () => {
     return (
         <div className={styles.wrapper}>
             <h3>TO-DO LIST</h3>
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: '25px' }}>
                 <TaskModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                     <CustomButton
                         style={{ width: '-webkit-fill-available', margin: '0 15px', padding: '15px 0', background: 'rgb(91, 33, 182)' }}
