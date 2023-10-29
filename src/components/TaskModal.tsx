@@ -62,7 +62,6 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
   })
 
   useEffect(() => {
-    debugger
     if (directories.length > 0)
       setSelectedOption(directories[0].id)
   }, [directories, setSelectedOption])
