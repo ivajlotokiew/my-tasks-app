@@ -11,7 +11,7 @@ import styles from "./Section.module.css"
 import { useSelector } from "react-redux"
 import DeleteAllData from "./DeleteAllData"
 import CustomButton from "../common/CustomButton/CustomButton"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import LogoutPopup from "../LogoutPopup"
 
 const Section = () => {
