@@ -3,17 +3,45 @@ import CustomButton from "./common/CustomButton/CustomButton"
 import { logoutUser } from "../features/authentication/authenticationSlice"
 import { useDispatch } from "react-redux"
 import { User } from '../features/tasks/tasksSlice'
+import { useEffect, useRef } from 'react'
 
 interface Props {
-    user: User
+    user: User,
+    setShowPopup: (show: boolean) => void
 }
 
-const LogoutPopup = ({ user }: Props) => {
+const LogoutPopup = ({ user, setShowPopup }: Props) => {
     const dispatch = useDispatch()
+    const ref = useRef<HTMLDivElement>(null);
+    const refChild = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClick = (event: any) => {
+            event.stopPropagation()
+            setShowPopup(true)
+        };
+
+        const handleLogoutClick = (event: any) => {
+            dispatch(logoutUser())
+        }
+
+        const elParent = ref.current;
+        const elChild = refChild.current;
+        elChild?.addEventListener("click", handleClick);
+        elChild?.addEventListener("click", handleLogoutClick);
+
+        elParent?.addEventListener('click', handleClick);
+
+        return () => {
+            elParent?.removeEventListener('click', handleClick);
+            elChild?.removeEventListener('click', handleLogoutClick);
+        };
+    }, [dispatch, setShowPopup]);
+
 
     return (
 
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} ref={ref}>
             <div>
                 <img src={user.imgURL ?? './unknown-user.svg'}
                     alt="Avatar"
@@ -22,7 +50,9 @@ const LogoutPopup = ({ user }: Props) => {
                 />
                 <span>{user.firstName + ' ' + user.lastName}</span>
             </div>
-            <CustomButton style={{ background: 'rgb(51, 65, 85)', marginTop: '20px' }} onClick={() => dispatch(logoutUser())}>Logout</CustomButton>
+            <div ref={refChild}>
+                <CustomButton style={{ background: 'rgb(51, 65, 85)', marginTop: '20px' }}>Logout</CustomButton>
+            </div>
         </div>
     )
 }

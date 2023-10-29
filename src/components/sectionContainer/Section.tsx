@@ -54,7 +54,8 @@ const Section = () => {
                             role="button"
                             style={{ cursor: "pointer" }}
                         />
-                        {showPopup && <div className={styles.popup}><LogoutPopup user={authUser} /></div>}
+                        {showPopup && <div className={styles.popup}><LogoutPopup user={authUser} setShowPopup={setShowPopup} />
+                        </div>}
                     </div>
 
                     {todaysTasksCount && <CompletedTasksProgressBar
