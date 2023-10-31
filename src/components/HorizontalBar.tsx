@@ -27,7 +27,7 @@ const HorizontalBar = () => {
     useEffect(() => {
         window.addEventListener("click", handleOutsideClick);
 
-        return () => window.removeEventListener("click", handleOutsideClick);
+        return () => window.removeEventListener("click", handleOutsideClick)
     }, []);
 
     const handleOutsideClick = () => {
@@ -54,6 +54,7 @@ const HorizontalBar = () => {
 
     useEffect(() => {
         searchedResults()
+
     }, [searchedResults, search])
 
     const handleBtnEvent = (event: any) => {
@@ -79,7 +80,7 @@ const HorizontalBar = () => {
                     <input type="search" placeholder="Search..." onChange={(e) => handleInputSearchEvent(e)} />
                     <button type="submit" onClick={(event) => handleBtnEvent(event)} />
                 </form>
-                {show && <SearchPopup tasks={searchedTasks} setShow={setShow} search={search} />}
+                {show && <SearchPopup tasks={searchedTasks} setShow={setShow} search={search} setSearch={setSearch} />}
             </div>
             <div>{showCurrentDate()}</div>
             <div className={styles.notificationPart}>

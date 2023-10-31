@@ -209,6 +209,49 @@ export function makeServer() {
         );
       });
 
+      this.get("/api/tasks/:id", (schema, request) => {
+        const user = requiresAuth.call(this, request);
+        if (!user) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: [
+                "The username you entered is not Registered. Not Found error",
+              ],
+            }
+          );
+        }
+
+        const task = schema.tasks.find(request.params.id);
+        if (!task) {
+          return new Response(
+            404,
+            {},
+            {
+              errors: ["No such task found."],
+            }
+          );
+        }
+
+        const { completedTasks, todayTasks, todayCompletedTasks } =
+          getUserTasks.call(this, user);
+        const completedTasksCount = completedTasks.length;
+        const todaysTasksCount = todayTasks.length;
+        const todaysCompletedTasksCount = todayCompletedTasks.length;
+
+        return new Response(
+          200,
+          {},
+          {
+            task,
+            todaysTasksCount,
+            todaysCompletedTasksCount,
+            completedTasksCount,
+          }
+        );
+      });
+
       this.patch("/api/tasks/:id", (schema, request) => {
         const user = requiresAuth.call(this, request);
         if (!user) {

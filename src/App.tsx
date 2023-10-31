@@ -10,6 +10,7 @@ import DirectoryTasks from './components/pages/DirectoryTasks';
 import SearchResults from './components/pages/SearchResults';
 import { LoginForm } from './components/pages/LoginForm';
 import { PrivateRoute } from './components/PrivateRoute';
+import SearchedTask from './components/pages/SearchedTask';
 
 function App() {
   return (
@@ -42,6 +43,11 @@ function App() {
         <Route path="uncompleted" element={
           <PrivateRoute>
             <UncompletedTasks />
+          </PrivateRoute>
+        } />
+        <Route path="task/:id" element={
+          <PrivateRoute>
+            <SearchedTask />
           </PrivateRoute>
         } />
         <Route path="dir/:id/tasks" element={

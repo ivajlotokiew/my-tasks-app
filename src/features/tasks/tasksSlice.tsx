@@ -27,6 +27,7 @@ export interface Task {
 
 interface iInitialState {
     user: User,
+    task: Task,
     tasks: Task[],
     todayTasks?: Task[],
     directories: Directory[],
@@ -40,6 +41,7 @@ interface iInitialState {
 
 const initialState: iInitialState = {
     user: { id: 0, password: null, username: '', imgURL: '' },
+    task: {} as Task,
     tasks: [],
     todayTasks: [],
     directories: [],
@@ -56,6 +58,17 @@ export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
         try {
             const { data } = await axios.get(`/api/tasks`,
                 { headers: { authorization: localStorage.getItem('authToken') }, params })
+            return data
+        } catch (error) {
+            return rejectWithValue("We couldn't load your tasks. Try again soon.");
+        }
+    });
+
+export const fetchTask: any = createAsyncThunk('tasks/getTask',
+    async (id: number, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get(`/api/tasks/${id}`,
+                { headers: { authorization: localStorage.getItem('authToken') } })
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");
@@ -156,6 +169,22 @@ export const tasksSlice = createSlice({
             })
             .addCase(fetchTasks.fulfilled, (state, { payload }) => {
                 state.tasks = payload.tasks;
+                state.isLoading = false;
+                state.error = null;
+                state.count = payload.allTasksCount;
+                state.todaysTasksCount = payload.todaysTasksCount;
+                state.todaysCompletedTasksCount = payload.todaysCompletedTasksCount;
+                state.completedTasksCount = payload.completedTasksCount;
+            })
+            .addCase(fetchTask.rejected, (state, { payload }) => {
+                state.error = payload.name
+                state.isLoading = false;
+            })
+            .addCase(fetchTask.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchTask.fulfilled, (state, { payload }) => {
+                state.task = payload.task;
                 state.isLoading = false;
                 state.error = null;
                 state.count = payload.allTasksCount;
@@ -270,7 +299,9 @@ export default tasksSlice.reducer
 
 export const { clearError } = tasksSlice.actions
 
-export const showTasks = (state: any) => state.tasks.tasks
+export const showTasks = (state: any) => state?.tasks?.tasks
+
+export const showTask = (state: any) => state?.tasks?.task
 
 export const showTodayTasks = (state: any) => state.tasks.todayTasks
 
