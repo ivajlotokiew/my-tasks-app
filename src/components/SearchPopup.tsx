@@ -19,6 +19,7 @@ const SearchPopup = ({ tasks, setShow, search, setSearch }: Props) => {
 
     useEffect(() => {
         const handleClick = (event: any) => {
+            setSearch('')
             setShow(false)
         };
 
@@ -27,7 +28,7 @@ const SearchPopup = ({ tasks, setShow, search, setSearch }: Props) => {
         return () => {
             window.removeEventListener('click', handleClick);
         };
-    }, [dispatch, setShow]);
+    }, [dispatch, setSearch, setShow]);
 
     const handleBtnEvent = (event: any) => {
         event.preventDefault()
