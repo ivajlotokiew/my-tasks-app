@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios";
 import request from "axios";
 import { Directory } from "../directories/directoriesSlice";
+import { addTaskToServer, deleteAllTasksToServer, deleteTaskToServer, editTaskToServer, getAllTasksFromServer, getTaskFromServer, getTasksByDirectoryFromServer, getTodayTasksFromServer } from "../../services/tasksService";
 
 export interface User {
     id: number,
@@ -56,8 +56,7 @@ const initialState: iInitialState = {
 export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
     async (params: {}, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/tasks`,
-                { headers: { authorization: localStorage.getItem('authToken') }, params })
+            const { data } = await getAllTasksFromServer(params)
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");
@@ -67,8 +66,7 @@ export const fetchTasks: any = createAsyncThunk('tasks/getTasks',
 export const fetchTask: any = createAsyncThunk('tasks/getTask',
     async (id: number, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/tasks/${id}`,
-                { headers: { authorization: localStorage.getItem('authToken') } })
+            const { data } = await getTaskFromServer(id)
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load your tasks. Try again soon.");
@@ -78,7 +76,7 @@ export const fetchTask: any = createAsyncThunk('tasks/getTask',
 export const fetchTodayTasks: any = createAsyncThunk('tasks/getTodayTasks',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/todayTasks`)
+            const { data } = await getTodayTasksFromServer()
             return data
         } catch (error) {
             return rejectWithValue("We couldn't load today tasks. Try again soon.");
@@ -88,8 +86,7 @@ export const fetchTodayTasks: any = createAsyncThunk('tasks/getTodayTasks',
 export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
     async (params, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.post(`/api/tasks`, params,
-                { headers: { authorization: localStorage.getItem('authToken') } })
+            const { data } = await addTaskToServer(params)
             dispatch(fetchTodayTasks())
 
             return data;
@@ -105,9 +102,9 @@ export const addTaskAction: any = createAsyncThunk('tasks/addTasks',
 export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
     async (params: Task, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.patch(`/api/tasks/${params.id}`, params,
-                { headers: { authorization: localStorage.getItem('authToken') } })
+            const { data } = await editTaskToServer(params)
             dispatch(fetchTodayTasks())
+
             return data;
         } catch (err) {
             if (request.isAxiosError(err) && err.response) {
@@ -121,9 +118,9 @@ export const editTaskAction: any = createAsyncThunk('tasks/editTasks',
 export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
     async (params: Task, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.delete(`/api/tasks/${params.id}`,
-                { headers: { authorization: localStorage.getItem('authToken') }, params })
+            const { data } = await deleteTaskToServer(params)
             dispatch(fetchTodayTasks())
+
             return data
         } catch (err) {
             if (request.isAxiosError(err) && err.response) {
@@ -137,7 +134,8 @@ export const deleteTaskAction: any = createAsyncThunk('tasks/deleteTasks',
 export const deleteAllTasksAction: any = createAsyncThunk('tasks/deleteAllTasks',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/api/tasks`)
+            const { data } = await deleteAllTasksToServer()
+
             return data
         } catch (error) {
             return rejectWithValue("We couldn't delete the all tasks. Try again soon.");
@@ -147,7 +145,7 @@ export const deleteAllTasksAction: any = createAsyncThunk('tasks/deleteAllTasks'
 export const fetchTasksByDirectory: any = createAsyncThunk('tasks/fetchTasksByDirectory',
     async (id: any, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/directories/${id}/tasks`)
+            const { data } = await getTasksByDirectoryFromServer(id)
             return data;
         } catch (error) {
             return rejectWithValue("We couldn't get the directory tasks. Try again soon.");

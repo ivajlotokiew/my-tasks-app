@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios";
 import request from "axios";
+import { editUserToServer, loginUserFromServer, signupUserToServer } from "../../services/authenticationService";
 
 export interface User {
     id: number,
@@ -33,10 +33,7 @@ export const loginUser: any = createAsyncThunk(
     "authenticate/loginUser",
     async ({ username, password }: { username: string, password: string }, { rejectWithValue }) => {
         try {
-            const loginResponse = await axios.post("/api/auth/login", {
-                username,
-                password,
-            })
+            const loginResponse = await loginUserFromServer({ username, password })
             return loginResponse.data;
         } catch (error) {
             if (request.isAxiosError(error) && error.response) {
@@ -51,10 +48,7 @@ export const signupUser = createAsyncThunk(
     "authenticate/signupUser",
     async (userDetails: {}, { rejectWithValue }) => {
         try {
-            const signupResponse = await axios.post("/api/auth/signup", {
-                ...userDetails,
-                avatarURL: "",
-            })
+            const signupResponse = await signupUserToServer(userDetails)
             return signupResponse.data;
         } catch (error) {
             if (request.isAxiosError(error) && error.response) {
@@ -69,13 +63,7 @@ export const editUserProfile = createAsyncThunk(
     "authenticate/editUserProfile",
     async ({ userDetails, authToken }: { userDetails: {}, authToken: string }, { rejectWithValue }) => {
         try {
-            const resp = await axios.post(
-                "/api/users/edit",
-                { userDetails },
-                {
-                    headers: { authToken },
-                }
-            )
+            const resp = await editUserToServer({ userDetails, authToken })
             return resp.data.user;
         } catch (error) {
             if (request.isAxiosError(error) && error.response) {

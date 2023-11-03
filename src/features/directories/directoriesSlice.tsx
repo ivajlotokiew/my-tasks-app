@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios";
+import { addDirectoryToServer, deleteAllDirectoriesToServer, deleteDirectoryToServer, editDirectoryToServer, getAllDirectoriesFromServer } from "../../services/directoriesService";
 
 export interface Directory {
     id?: number;
@@ -21,8 +21,7 @@ const initialState: iInitialStateDirectories = {
 export const fetchDirectories: any = createAsyncThunk('directories/getDirectories',
     async (params: {}, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/directories`,
-                { headers: { authorization: localStorage.getItem('authToken') }, params })
+            const { data } = await getAllDirectoriesFromServer(params)
             return data
         } catch (error) {
             return rejectWithValue("Failed to load directories. Try again soon.");
@@ -32,8 +31,7 @@ export const fetchDirectories: any = createAsyncThunk('directories/getDirectorie
 export const addDirectoryAction: any = createAsyncThunk('directories/addDirectories',
     async (params: {}, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`/api/directories`, params,
-                { headers: { authorization: localStorage.getItem('authToken') } })
+            const { data } = await addDirectoryToServer(params)
             return data;
         } catch (error) {
             return rejectWithValue("We couldn't add a new directory. Try again soon.");
@@ -43,7 +41,7 @@ export const addDirectoryAction: any = createAsyncThunk('directories/addDirector
 export const editDirectoryAction: any = createAsyncThunk('directories/editDirectories',
     async (params: Directory, { rejectWithValue }) => {
         try {
-            const { data } = await axios.patch(`/api/directories/${params.id}`, params)
+            const { data } = await editDirectoryToServer(params)
             return data;
         } catch (error) {
             return rejectWithValue("We couldn't edit the directory. Try again soon.");
@@ -53,7 +51,7 @@ export const editDirectoryAction: any = createAsyncThunk('directories/editDirect
 export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDirectory',
     async (params: Directory, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/api/directories/${params.id}`)
+            const { data } = await deleteDirectoryToServer(params)
             return data
         } catch (error) {
             return rejectWithValue("We couldn't delete the directory. Try again soon.");
@@ -63,7 +61,7 @@ export const deleteDirectoryAction: any = createAsyncThunk('directories/deleteDi
 export const deleteAllDirectoriesAction: any = createAsyncThunk('directories/deleteAllDirectories',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/api/directories`)
+            const { data } = await deleteAllDirectoriesToServer()
             return data
         } catch (error) {
             return rejectWithValue("We couldn't delete the all directories. Try again soon.");
