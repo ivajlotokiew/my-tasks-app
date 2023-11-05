@@ -8,6 +8,7 @@ import { showCurrentDate } from './utils/utils'
 import CustomButton from './common/CustomButton/CustomButton'
 import { useNavigate, createSearchParams } from 'react-router-dom'
 import SearchPopup from './SearchPopup'
+import { useDebounce } from './hooks/useDebounce'
 
 const HorizontalBar = () => {
     const [search, setSearch] = useState('')
@@ -19,6 +20,7 @@ const HorizontalBar = () => {
     const todayUncompletedTasks = useSelector(showTodayUncompletedTasks)
     const tasks = useSelector(showTasks)
     const isPopupVisible = Boolean(todayUncompletedTasks.length && showPopup)
+    const debouncedSearch = useDebounce(search)
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
@@ -40,22 +42,23 @@ const HorizontalBar = () => {
 
     const searchedResults = useCallback(async () => {
         try {
-            const result = search ?
-                tasks.filter((task: any) => task.title.toLowerCase().includes(search.toLowerCase())) :
+            const result = debouncedSearch ?
+                tasks.filter((task: any) => task.title.toLowerCase().includes(debouncedSearch.toLowerCase())) :
                 []
             setSearchedTasks(result)
             if (result.length > 0) { setShow(true) } else {
-                if (!search) setShow(false)
+                if (!debouncedSearch) setShow(false)
             }
         } catch (e) {
             console.error(e);
         }
-    }, [search, tasks])
+    }, [debouncedSearch, tasks])
 
     useEffect(() => {
+        console.log('Overflow')
         searchedResults()
 
-    }, [searchedResults, search])
+    }, [searchedResults])
 
     const handleBtnEvent = (event: any) => {
         event.preventDefault()
