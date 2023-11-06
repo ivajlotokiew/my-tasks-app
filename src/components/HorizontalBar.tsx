@@ -29,7 +29,9 @@ const HorizontalBar = () => {
     useEffect(() => {
         window.addEventListener("click", handleOutsideClick);
 
-        return () => window.removeEventListener("click", handleOutsideClick)
+        return () => {
+            window.removeEventListener("click", handleOutsideClick)
+        }
     }, []);
 
     const handleOutsideClick = () => {

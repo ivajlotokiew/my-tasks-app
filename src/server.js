@@ -455,7 +455,6 @@ export function makeServer() {
       });
 
       this.get("/api/directories/:id/tasks", (schema, request) => {
-        debugger;
         const directoryId = request.params.id;
         const directory = schema.directories.find(directoryId);
         const tasks = directory.tasks.models;

@@ -52,10 +52,12 @@ const SearchPopup = ({ tasks, setShow, search, setSearch }: Props) => {
 
     return (
         <div className={styles.wrapper}>
-            {tasks.length > 0 ? tasks.map((task: any) => <div key={task.id}
-                onClick={() => handlePointedTask(task.id)}>{task.title}</div>) : 'No tasks found'}
-            <div>
-                <CustomButton style={{ background: 'rgb(51, 65, 85)', marginTop: '20px' }}
+            <div className={styles.tasksWrapper}>
+                {tasks.length > 0 ? tasks.map((task: any) => <div key={task.id}
+                    onClick={() => handlePointedTask(task.id)}>{task.title}</div>) : 'No tasks found'}
+            </div>
+            <div style={{ paddingRight: '10px' }}>
+                <CustomButton style={{ background: 'rgb(51, 65, 85)', marginTop: '20px', width: '100%' }}
                     onClick={handleBtnEvent}>All resuls for "{search}"</CustomButton>
             </div>
         </div>
