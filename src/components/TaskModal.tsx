@@ -107,6 +107,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
   }
 
   const handleDescriptionInput = (event: any) => {
+    debugger
     setDescription(event.target.value)
   }
 
@@ -123,6 +124,7 @@ function TaskModal({ children, modalIsOpen, setIsOpen, nameForm, task, directory
   }
 
   const handleSubmitData = async (event: any) => {
+    debugger
     event.preventDefault()
     const formTask: Task = {
       title,

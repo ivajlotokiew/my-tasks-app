@@ -21,6 +21,7 @@ const HorizontalBar = () => {
     const tasks = useSelector(showTasks)
     const isPopupVisible = Boolean(todayUncompletedTasks.length && showPopup)
     const debouncedSearch = useDebounce(search)
+    const [open, setOpen] = useState(false);
 
     const handleShowModalEvent = () => {
         setShowModal(modal => !modal)
@@ -57,7 +58,6 @@ const HorizontalBar = () => {
     }, [debouncedSearch, tasks])
 
     useEffect(() => {
-        console.log('Overflow')
         searchedResults()
 
     }, [searchedResults])
@@ -76,6 +76,7 @@ const HorizontalBar = () => {
     const HandleAlertPopupEvent = (event: any) => {
         event.stopPropagation();
         setShowPopup(show => !show)
+        setOpen(open => !open)
     }
 
     return (
@@ -95,7 +96,13 @@ const HorizontalBar = () => {
                     alt='Notification bell'
                     width="30px"
                     style={{ cursor: "pointer", marginRight: "15px" }} />
-                {isPopupVisible && <div className={styles.popup}><AlertsPopup tasksCount={todayUncompletedTasks.length} /></div>}
+                <div className={styles.popup}>
+                    <AlertsPopup
+                        tasksCount={todayUncompletedTasks.length}
+                        open={open}
+                        setOpen={setOpen}
+                    />
+                </div>
 
                 <TaskModal nameForm="Add a task" modalIsOpen={showModal} setIsOpen={setShowModal}>
                     <CustomButton

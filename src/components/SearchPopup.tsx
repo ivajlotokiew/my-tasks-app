@@ -5,7 +5,6 @@ import { Task } from '../features/tasks/tasksSlice'
 import { useEffect } from 'react'
 import { useNavigate, createSearchParams } from 'react-router-dom'
 
-
 interface Props {
     tasks: Task[] | [],
     setShow: (res: boolean) => void,

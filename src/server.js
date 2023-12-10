@@ -98,8 +98,9 @@ export function makeServer() {
           );
         }
 
+        const nFunc = getUserTasks.bind(this, user);
         const { allTasks, completedTasks, todayTasks, todayCompletedTasks } =
-          getUserTasks.call(this, user);
+          nFunc();
         const allTasksCount = allTasks.length;
         const completedTasksCount = completedTasks.length;
         const todaysTasksCount = todayTasks.length;
