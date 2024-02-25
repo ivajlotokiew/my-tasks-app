@@ -14,7 +14,6 @@ import SearchedTask from './components/pages/SearchedTask';
 
 function App() {
   return (
-    //Changes before merge
     <Routes>
       <Route path="/" element={
         <PrivateRoute>
