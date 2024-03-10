@@ -28,7 +28,6 @@ const HorizontalBar = () => {
     }
 
     useEffect(() => {
-        console.log("Second");
         window.addEventListener("click", handleOutsideClick);
 
         return () => {
