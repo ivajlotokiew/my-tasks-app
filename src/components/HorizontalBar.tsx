@@ -31,6 +31,7 @@ const HorizontalBar = () => {
         window.addEventListener("click", handleOutsideClick);
 
         return () => {
+            console.log('first')
             window.removeEventListener("click", handleOutsideClick)
         }
     }, []);
