@@ -28,10 +28,10 @@ const HorizontalBar = () => {
     }
 
     useEffect(() => {
+        console.log('first')
         window.addEventListener("click", handleOutsideClick);
 
         return () => {
-            console.log('first')
             window.removeEventListener("click", handleOutsideClick)
         }
     }, []);
