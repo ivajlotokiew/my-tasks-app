@@ -28,7 +28,7 @@ const HorizontalBar = () => {
     }
 
     useEffect(() => {
-        console.log('first')
+        console.log("Second");
         window.addEventListener("click", handleOutsideClick);
 
         return () => {
@@ -60,7 +60,6 @@ const HorizontalBar = () => {
 
     useEffect(() => {
         searchedResults()
-
     }, [searchedResults])
 
     const handleBtnEvent = (event: any) => {
